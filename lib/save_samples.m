@@ -11,9 +11,9 @@ function data = save_samples(L,W,num_samples,n_vecs,savepath)
         [data_temp.vecs, nrg] = eigs(full(H),2^data.L);
         data_temp.nrg = diag(nrg);
         %% Select vectors & build state graph Laplacian
-        data_temp.sel = 1:floor((2^data.L)/data.num_eigs):2^data.L;
+        data_temp.sel = ceil(linspace(1,2^data.L,n_vecs));
         v_sel = data_temp.vecs(:,data_temp.sel);
-        data_temp.L_list = vec_to_graph(v_sel);
+        data_temp.graph_data = vec_to_graph(v_sel);
 
         data.samp{k} = data_temp;
     end

@@ -4,114 +4,145 @@
 
 close all
 
-% savepath = '/home/jacob/ent_loc/dat/';
+% savepath = '/home/jacob/ent_loc/dat/'; % office machine
+savepath = 'C:\Users\jaker\Documents\MATLAB\ent_loc\dat\'; %home machine
+
+%% Generate data
+
 % data = [];
-% num_samples = 15;
-% num_vecs = 30;
-% L = 12;
-% W = 0:10;
-% profile on
-% 
-% parfor i=1:numel(W)
-%     if W(i) == 0
-%         n_samp = 1
+% num_samples = 1;
+% num_vecs = 10;
+% L = 6;
+% Ws = [0:2:10];
+% % profile on
+% data = cell(length(Ws),1);
+% for i=1:numel(Ws)
+%     if Ws(i) == 0
+%         n_samp = 1;
 %     else
 %         n_samp = num_samples;
 %     end
-%     W(i)
-%     data=save_samples(L,W(i),n_samp,num_vecs,savepath);
+%     Ws(i)
+%     data{i}=save_samples(L,Ws(i),n_samp,num_vecs,savepath);
 % end
-% profile off
-% profile viewer
+% % profile off
+% % profile viewer
 
-fname = ['/home/jacob/ent_loc/dat/E_mat/L-13-W6-N30-PBC.mat'];
-data = load(fname);
-
-% Ws = 1:3:7;
-% profile on
-
-% S = 1:2;
-% % for N=1:numel(Ws)
-%     W  = Ws(2);
-% %     fname = ['/home/jacob/Desktop/ent_loc/dat/L-13-W',num2str(W),'-N30-PBC.mat'];
-% %     data = load(fname);
-%     for k=1:numel(data.samp)
-%         for l=1:numel(S)
-%            V_temp = data.samp{k}.vecs(:,S(l));
-%            rho_temp = conj(V_temp').*V_temp;
-% %            dims = 2*ones(data.L,1);
-% %            systems = 1:data.L;
-% %            systems(3) = [];
-% %            pt_test = TrX(rho_temp,systems,dims);
-%            % USE TRX INSTEAD OF QETLAB
-%            L = vec_to_graph(V_temp);
-%         end
-% 
-%     end
-% % end
-% profile off
-% profile viewer
-
-
+%%  load data
+%Ws = [0:2:8];
 % for N=1:numel(Ws)
-%     figure();
-%     W  = Ws(N);
-%     fname = ['/home/jacob/Desktop/ent_loc/dat/L13-W',num2str(W),'-N13.mat'];
-%     data = load(fname);
-%     L_coll = cellfun(@(x) x.L_list,data.samp,'UniformOutput',false);
-%     for k=1:numel(data.samp)
-%         L_list = L_coll{k};
-%         DS=data.samp{k};
-%         E=rescale(DS.nrg(DS.sel));
-%         colormap winter(110)
-%         cm = colormap;
-%         A_sum = zeros(size(L_list{1}));
-%         for i=1:numel(L_list)
-%             
-%             if ~isequal(zeros(size(L_list{i})),L_list{i})
-% 
-%                 [L1,R,R2,S,A]=inspect_state_graph(L_list{i},ceil(100*E(i)+.5)); 
-%                 A_sum = A_sum + A;
-%                 subplot(3,3,3)
-%                 a=plot(E(i), L1,'x');
-%                 a.Color = cm(ceil(100*E(i)+.5),:);
-%                 ylim([0,15])
-%                 title('Spectral power')
-%                 hold on
-%                 
-%                 subplot(3,3,4)
-%                 b=plot(E(i),S,'x');
-%                 b.Color = cm(ceil(100*E(i)+.5),:);
-%                 ylim([0,2.5])
-%                 title('Spectral entropy')        
-%                 hold on
-% 
-%                 subplot(3,3,5)
-%                 c=plot(E(i),R,'x');
-%                 c.Color = cm(ceil(100*E(i)+.5),:);
-%                 title('N0/N')
-%                 ylim([0,1])
-%                 hold on
-%                 
-%                 subplot(3,3,6)
-%                 d=plot(E(i),R2,'x');
-%                 d.Color = cm(ceil(100*E(i)+.5),:);
-%                 ylim([0,1])
-%                 title('Power concentration')
-%                 hold on
-%             end
-%         end
-%         subplot(3,3,1)
-%         G = graph(rescale(A_sum.*(A_sum>0.01)));
-%         LW = G.Edges.Weight;
-%         LWL=(rescale(log(LW))+1).^3;
-%         plot(G,'Layout','circle','LineWidth',LW)
-%         hold off
-% 
-%         title(['W=',num2str(W)])
-%     end
+    % fname = [savepath,'L-12-W6-N30-PBC.mat'];
+    % data{N} = load(fname);
 % end
-% profile off
+Ws = [2:2:6];
+close all
+%% plot results
+for N=1:numel(Ws)
+    W  = Ws(N);
+    fname = [savepath,'L-6-W',num2str(W),'-N10-PBC.mat'];
+    data = load(fname);
+    kmax = numel(data.samp);
+    figure();
+    for k=1:kmax
+        sample=data.samp{k};
+        
+        L_list = sample.graph_data.L_list;
+        E_list = sample.graph_data.E_list;
+        Energies=rescale(sample.nrg(sample.sel));
+        colormap winter(110)
+        cm = colormap;
+        A_sum = zeros(size(L_list{1}));
+        L_sum = zeros(size(L_list{1}));
+        degree_list = zeros(data.num_eigs,data.L);
+        weight_list = zeros(data.num_eigs,(data.L)*(data.L+1)/2);
+        for ii=1:data.num_eigs
+            if ~isequal(zeros(size(L_list{ii})),L_list{ii})
+                Laplacian = data.samp{1}.graph_data.L_list{ii};
+                [~,L_vals] = eigs(Laplacian,data.L); 
+                L_vals = diag(L_vals);
+                A = -Laplacian;
+                for j = 1:L
+                    A(j,j) = 0;
+                end
+                A_sum = A_sum + A;
+                L_sum = L_sum + Laplacian;
+                evals_nz = L_vals(1:end-1);
+                TraceL = sum(evals_nz);
+                DetL = prod(evals_nz);
+                spectral_entropy = -sum((evals_nz/TraceL).*log(evals_nz/TraceL));
+                mode_Q = max(evals_nz)/TraceL;
+                degree_list(ii,:) = diag(Laplacian);
+                mask = triu(ones(L))==1;
+                weight_all = A(mask);
+                weight_list(ii,:) = weight_all(:);
+                    
+                subplot(3,3,2)
+                p2=plot(L_vals);
+                p2.Color = cm(ii,:);
+                hold on
+                
+                subplot(3,3,3)
+                p3=plot(Energies(ii), TraceL,'x');
+                p3.Color = cm(round(100*k/kmax),:);
+                hold on
+                
+                subplot(3,3,4)
+                b=plot(Energies(ii),DetL,'x');
+                b.Color = cm(round(100*k/kmax),:);     
+                hold on
+
+                subplot(3,3,5)
+                c=plot(Energies(ii),mode_Q,'x');
+                c.Color = cm(round(100*k/kmax),:);  
+                hold on
+                
+                subplot(3,3,6)
+                d=plot(Energies(ii),spectral_entropy,'x');
+                d.Color =  cm(round(100*k/kmax),:);  
+                hold on
+            end
+        end
+        subplot(3,3,1)
+        G = graph(rescale(A_sum.*(A_sum>0.01)));
+        plot(G,'Layout','circle')
+        hold off
+        
+        subplot(3,3,7)
+        histogram(log(degree_list(:)),25)
+        
+        subplot(3,3,8)
+        histogram(log(weight_list(:)),25)
+        
+        subplot(3,3,9)
+        imagesc(A_sum)
+        
+        title(['W=',num2str(W)])
+        
+    end
+    
+    subplot(3,3,1)
+    title('Graph eg')
+    subplot(3,3,2)
+    title('Spectrum')
+    subplot(3,3,3)
+    title('Trace')
+    subplot(3,3,4)
+    title('|L|')
+    subplot(3,3,5)
+    title('\lambda_N /Tr(L)')
+    ylim([0,1])
+    subplot(3,3,6)
+    title('Spectrum entropy')
+    subplot(3,3,7)
+    title('Degree distribution')
+    subplot(3,3,8)
+    title('Weight distribution')
+    subplot(3,3,9)
+    title('mean A')
+%     subplot(3,3,9)
+   
+end
+profile off
 % profile viewer
 
 
