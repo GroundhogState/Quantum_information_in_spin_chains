@@ -3,38 +3,146 @@
 % partial trace and Pauli functions. 
 
 close all
-data = [];
-num_samples = 5;
-L = 12;W
-save_samples(L,W,num_samples)
-data.samp= cell(num_samples,1);
-data.L = 12;
-data.W = 17;
-data.num_eigs = 10;
-for k=1:num_samples
-%% Build H
-%     data_temp.H = [];
-%     data_temp.
-    [data_temp.H, data_temp.h_list] = disorder_H(data.L,data.W); 
-    [data_temp.vecs, data_temp.nrg] = eigs(full(data_temp.H),2^data.L);
-    %% Select vectors & build state graph Laplacian
-    data_temp.sel = 1:floor((2^data.L)/data.num_eigs):2^data.L;
-    data_temp.v_sel = data_temp.vecs(:,data_temp.sel);
-    data_temp.L_list = vec_to_graph(data_temp.v_sel);
-    for i=1:numel(L_list)
-        [data_temp.L_vec{i}, data_temp.L_val{i}] = eigs(L_list{i});
-    end
-    data.samp{k} = data_temp;
-end
-fname=['C:\Users\jaker\Documents\MATLAB\ent_loc\dat\L',num2str(data.L),...
-    '-W',num2str(data.W),'-',num2str(now),'.mat'];
-save(fname,'-struct','data');
 
+% savepath = '/home/jacob/ent_loc/dat/'; % office machine
+savepath = 'C:\Users\jaker\Documents\MATLAB\ent_loc\dat\'; %home machine
 
-% figure()
-% for i=1:numel(L_list)
-%     inspect_state_graph(L_list{i})
+%% Generate data
+
+% data = [];
+% num_samples = 1;
+% num_vecs = 10;
+% L = 6;
+% Ws = [0:2:10];
+% % profile on
+% data = cell(length(Ws),1);
+% for i=1:numel(Ws)
+%     if Ws(i) == 0
+%         n_samp = 1;
+%     else
+%         n_samp = num_samples;
+%     end
+%     Ws(i)
+%     data{i}=save_samples(L,Ws(i),n_samp,num_vecs,savepath);
 % end
+% % profile off
+% % profile viewer
+
+%%  load data
+%Ws = [0:2:8];
+% for N=1:numel(Ws)
+    % fname = [savepath,'L-12-W6-N30-PBC.mat'];
+    % data{N} = load(fname);
+% end
+Ws = [2:2:6];
+close all
+%% plot results
+for N=1:numel(Ws)
+    W  = Ws(N);
+    fname = [savepath,'L-6-W',num2str(W),'-N10-PBC.mat'];
+    data = load(fname);
+    kmax = numel(data.samp);
+    figure();
+    for k=1:kmax
+        sample=data.samp{k};
+        
+        L_list = sample.graph_data.L_list;
+        E_list = sample.graph_data.E_list;
+        Energies=rescale(sample.nrg(sample.sel));
+        colormap winter(110)
+        cm = colormap;
+        A_sum = zeros(size(L_list{1}));
+        degree_list = zeros(data.num_eigs,data.L);
+        weight_list = zeros(data.num_eigs,(data.L)*(data.L+1)/2);
+        for ii=1:data.num_eigs
+            if ~isequal(zeros(size(L_list{ii})),L_list{ii})
+                Laplacian = data.samp{1}.graph_data.L_list{ii};
+                [~,L_vals] = eigs(Laplacian,data.L); 
+                L_vals = diag(L_vals);
+                A = -Laplacian;
+                for j = 1:L
+                    A(j,j) = 0;
+                end
+                A_sum = A_sum + A;
+                evals_nz = L_vals(1:end-1);
+                TraceL = sum(evals_nz);
+                DetL = prod(evals_nz);
+                spectral_entropy = -sum((evals_nz/TraceL).*log(evals_nz/TraceL));
+                mode_Q = max(evals_nz)/TraceL;
+                degree_list(ii,:) = diag(Laplacian);
+                mask = triu(ones(L))==1;
+                weight_all = A(mask);
+                weight_list(ii,:) = weight_all(:);
+                    
+                subplot(3,3,2)
+                p2=plot(L_vals);
+                p2.Color = cm(ii,:);
+                hold on
+                
+                subplot(3,3,3)
+                p3=plot(Energies(ii), TraceL,'x');
+                p3.Color = cm(round(100*k/kmax),:);
+                hold on
+                
+                subplot(3,3,4)
+                b=plot(Energies(ii),DetL,'x');
+                b.Color = cm(round(100*k/kmax),:);     
+                hold on
+
+                subplot(3,3,5)
+                c=plot(Energies(ii),mode_Q,'x');
+                c.Color = cm(round(100*k/kmax),:);  
+                hold on
+                
+                subplot(3,3,6)
+                d=plot(Energies(ii),spectral_entropy,'x');
+                d.Color =  cm(round(100*k/kmax),:);  
+                hold on
+            end
+        end
+        subplot(3,3,1)
+        G = graph(rescale(A_sum.*(A_sum>0.01)));
+        plot(G,'Layout','circle')
+        hold off
+        
+        subplot(3,3,7)
+        histogram(log(degree_list(:)),25)
+        
+        subplot(3,3,8)
+        histogram(weight_list(:),25)
+%         subplot(3,3,9)
+
+        title(['W=',num2str(W)])
+        
+    end
+    
+    subplot(3,3,1)
+    title('Graph eg')
+    subplot(3,3,2)
+    title('Spectrum')
+    subplot(3,3,3)
+    title('Trace')
+    subplot(3,3,4)
+    title('|L|')
+    subplot(3,3,5)
+    title('\lambda_N /Tr(L)')
+    ylim([0,1])
+    subplot(3,3,6)
+    title('Spectrum entropy')
+    
+    subplot(3,3,7)
+    title('Degree distribution')
+    subplot(3,3,8)
+    title('Weight distribution')
+    subplot(3,3,9)
+    title('mean L')
+%     subplot(3,3,9)
+   
+end
+profile off
+% profile viewer
+
+
 
 %To do: Store disorder lists, Laplacian (& some spectral data_temp) for varying
 %L,W as .mat struct. Build I/O
@@ -47,4 +155,17 @@ save(fname,'-struct','data');
 % single disorder 
 % Vizualise the function sum(L_eval.*L_evec) on graph nodes
 % Normalized Laplacian?
-% 
+% SMALL demo systems
+% Remove PermuteSystems bottleneck...
+% Directions:
+%       L-bits ~ decomposition into (approximate) union of subgraphs?
+%           System decomposition as (generalized) graph product
+%       Degree distribution!
+%       Weight distribution!
+%       Majorization by spectrum?
+%       Linear-algebraic entanglement measures
+
+% Observations: Localized phase seems to have generically lower spectral
+% entropy and the 'ground state' mode population grows. Spectral power
+% seems lower, too, but maybe more interesting is the entropy. 
+% Product states have no links between components!
