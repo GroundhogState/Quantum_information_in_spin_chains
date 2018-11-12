@@ -4,28 +4,27 @@
 
 close all
 
-% savepath = '/home/jacob/ent_loc/dat/';
-% data = [];
-% num_samples = 15;
-% num_vecs = 30;
-% L = 12;
-% W = 0:10;
-% profile on
-% 
-% parfor i=1:numel(W)
-%     if W(i) == 0
-%         n_samp = 1
-%     else
-%         n_samp = num_samples;
-%     end
-%     W(i)
-%     data=save_samples(L,W(i),n_samp,num_vecs,savepath);
-% end
-% profile off
-% profile viewer
+savepath = '/home/jacob/ent_loc/dat/';
+data = [];
+num_samples = 10;
+num_vecs = 15;
+L = 13;
+W = 1:8;
+profile on
+% data=save_samples(L,W,num_samples,num_vecs,savepath);
+parfor i=1:numel(W)
+    if W(i) == 0
+        n_samp = 1
+    else
+        n_samp = num_samples;
+    end
+    data=save_samples(L,W(i),n_samp,num_vecs,savepath);
+end
+profile off
+profile viewer
 
-fname = ['/home/jacob/ent_loc/dat/E_mat/L-13-W6-N30-PBC.mat'];
-data = load(fname);
+% fname = ['/home/jacob/ent_loc/dat/E_mat/L-13-W6-N30-PBC.mat'];
+% data = load(fname);
 
 % Ws = 1:3:7;
 % profile on
