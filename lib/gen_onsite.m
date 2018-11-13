@@ -9,7 +9,7 @@ end
 H = sparse(zeros(2^L));
 for ii = 1:L 
    op_list = eye_list;
-   op_list{ii} = sparse(h_list(ii)*Pauli('Z'));
+   op_list{ii} = sparse(h_list(ii)*Pauli('Z',0));
    H = H + Tensor(op_list);
 end
 
