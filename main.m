@@ -1,31 +1,35 @@
+
+
 %%
 % For playing with spin chains. Uses QETLab for now, at least for the
 % partial trace and Pauli functions. 
 close all
 
-% savepath = '/home/jacob/ent_loc/dat/'; % office machine
-savepath = 'C:\Users\jaker\Documents\MATLAB\ent_loc\dat\'; %home machine
-Ws = [2:2:6];
+savepath = '/home/jacob/ent_loc/dat/';
+data = [];
+num_samples = 10;
+num_vecs = 15;
+L = 13;
+W = 1:8;
+profile on
+% data=save_samples(L,W,num_samples,num_vecs,savepath);
+parfor i=1:numel(W)
+    if W(i) == 0
+        n_samp = 1
+    else
+        n_samp = num_samples;
+    end
+    data=save_samples(L,W(i),n_samp,num_vecs,savepath);
+end
+profile off
+profile viewer
 
+% fname = ['/home/jacob/ent_loc/dat/E_mat/L-13-W6-N30-PBC.mat'];
+% data = load(fname);
 
-%% Generate data
-% num_samples = 1;
-% num_vecs = 10;
-% L = 6;
-% Ws = [0:2:10];
-% % profile on
-% data = cell(length(Ws),1);
-% for i=1:numel(Ws)
-%     if Ws(i) == 0
-%         n_samp = 1;
-%     else
-%         n_samp = num_samples;
-%     end
-%     Ws(i)
-%     save_samples(L,Ws(i),n_samp,num_vecs,savepath);
-% end
-% % profile off
-% % profile viewer
+% Ws = 1:3:7;
+% profile on
+
 
 %%  load data for scratching
 % Ws = [0:2:8];
@@ -37,12 +41,7 @@ Ws = [2:2:6];
 
 %% load & process data for plotting
 %Want to plot a few things as a function of disorder strength:
-net_data = cell(numel(Ws),1);
-for N=1:numel(Ws)
-    fname = [savepath,'L-6-W',num2str(Ws(N)),'-N10-PBC.mat'];
-    data = load(fname);
-    net_data{N} = get_network_data(data);
-end
+
 
 
 %% Plotting
