@@ -1,3 +1,8 @@
 function rho = toDM(ket)
-    rho = conj(ket').*ket;
+    if ket == zeros(size(ket))
+        rho =  zeros(length(ket));
+    else
+        ket = ket/norm(ket);
+        rho = ket'.*ket;
+    end
 end

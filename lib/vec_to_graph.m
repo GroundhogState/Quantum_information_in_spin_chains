@@ -10,10 +10,12 @@ function graph_data = vec_to_graph(vs)
         A = zeros(L);
         pair_list = cell(L*(L-1)/2,1);
         systems = 1:L;
-        for ii=1:L
+        for ii=1:L %sadly do need to loop over this twice - otherwise A is generated incorrectly. Would be great fun to come up with a more efficient method.
             trace_sys = systems;
             trace_sys(ii) = [];
             ent_list(ii) = Entropy(TrX(rho, trace_sys,dims));
+        end
+        for ii=1:L
             for jj = ii+1:L
                trace_pair = systems;
                trace_pair(ii) =[];

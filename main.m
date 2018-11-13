@@ -1,7 +1,8 @@
+
+
 %%
 % For playing with spin chains. Uses QETLab for now, at least for the
 % partial trace and Pauli functions. 
-
 close all
 
 savepath = '/home/jacob/ent_loc/dat/';
@@ -29,91 +30,148 @@ profile viewer
 % Ws = 1:3:7;
 % profile on
 
-% S = 1:2;
-% % for N=1:numel(Ws)
-%     W  = Ws(2);
-% %     fname = ['/home/jacob/Desktop/ent_loc/dat/L-13-W',num2str(W),'-N30-PBC.mat'];
-% %     data = load(fname);
-%     for k=1:numel(data.samp)
-%         for l=1:numel(S)
-%            V_temp = data.samp{k}.vecs(:,S(l));
-%            rho_temp = conj(V_temp').*V_temp;
-% %            dims = 2*ones(data.L,1);
-% %            systems = 1:data.L;
-% %            systems(3) = [];
-% %            pt_test = TrX(rho_temp,systems,dims);
-%            % USE TRX INSTEAD OF QETLAB
-%            L = vec_to_graph(V_temp);
-%         end
-% 
-%     end
-% % end
-% profile off
-% profile viewer
 
+%%  load data for scratching
+% Ws = [0:2:8];
+% % for N=1:numel(Ws)
+% fname = [savepath,'L-6-W2-N10-PBC.mat'];
+% data = load(fname);
+% % end
+
+
+%% load & process data for plotting
+%Want to plot a few things as a function of disorder strength:
+
+
+
+%% Plotting
 
 % for N=1:numel(Ws)
-%     figure();
 %     W  = Ws(N);
-%     fname = ['/home/jacob/Desktop/ent_loc/dat/L13-W',num2str(W),'-N13.mat'];
+%     fname = [savepath,'L-6-W',num2str(W),'-N10-PBC.mat'];
 %     data = load(fname);
-%     L_coll = cellfun(@(x) x.L_list,data.samp,'UniformOutput',false);
-%     for k=1:numel(data.samp)
-%         L_list = L_coll{k};
-%         DS=data.samp{k};
-%         E=rescale(DS.nrg(DS.sel));
+%     kmax = numel(data.samp);
+%     figure();        
+% 
+%     for k=1:kmax
+%         sample=data.samp{k}; 
+%         L_list = sample.graph_data.L_list;
+%         E_list = sample.graph_data.E_list;
+%         Energies=rescale(sample.nrg(sample.sel));
 %         colormap winter(110)
 %         cm = colormap;
 %         A_sum = zeros(size(L_list{1}));
-%         for i=1:numel(L_list)
-%             
-%             if ~isequal(zeros(size(L_list{i})),L_list{i})
-% 
-%                 [L1,R,R2,S,A]=inspect_state_graph(L_list{i},ceil(100*E(i)+.5)); 
+%         L_sum = zeros(size(L_list{1}));
+%         degree_list = zeros(data.num_eigs,data.L);
+%         weight_list = zeros(data.num_eigs,(data.L)*(data.L+1)/2);
+%         
+%         
+%         net_Wdata.W = W;
+%         net_Wdata.entropies = zeros(kmax,data.num_eigs);
+%         net_Wdata.traces = zeros(kmax,data.num_eigs);
+%         net_Wdata.determinants = zeros(kmax,data.num_eigs);
+%         net_Wdata.Qs = zeros(kmax,data.num_eigs);
+%         
+%         for ii=1:data.num_eigs
+%             if ~isequal(zeros(size(L_list{ii})),L_list{ii})
+%                 % Retrieve data
+%                 Laplacian = data.samp{1}.graph_data.L_list{ii};
+%                 [~,L_vals] = eigs(Laplacian,data.L); 
+%                 L_vals = diag(L_vals);
+%                 A = -Laplacian;
+%                 for j = 1:L
+%                     A(j,j) = 0;
+%                 end
+%                 
+%                 % Create/update measures
 %                 A_sum = A_sum + A;
+%                 L_sum = L_sum + Laplacian;
+%                 evals_nz = L_vals(1:end-1);
+%                 TraceL = sum(evals_nz);
+%                 DetL = prod(evals_nz);
+%                 spectral_entropy = -sum((evals_nz/TraceL).*log(evals_nz/TraceL));
+%                 mode_Q = max(evals_nz)/TraceL;
+%                 degree_list(ii,:) = diag(Laplacian);
+%                 mask = triu(ones(L))==1;
+%                 weight_all = A(mask);
+%                 weight_list(ii,:) = weight_all(:);
+%                 
+%                 net_Wdata.entropies(k,ii) = spectral_entropy;
+%                 net_Wdata.Qs(k,ii) = mode_Q;
+%                 net_Wdata.traces(k,ii) = TraceL;
+%                 net_Wdata.determinants(k,ii) = DetL;
+%                 
+%                 % Plotting 
+%                 
+%                 subplot(3,3,2)
+%                 p2=plot(L_vals);
+%                 p2.Color = cm(ii,:);
+%                 hold on
+%                 
 %                 subplot(3,3,3)
-%                 a=plot(E(i), L1,'x');
-%                 a.Color = cm(ceil(100*E(i)+.5),:);
-%                 ylim([0,15])
-%                 title('Spectral power')
+%                 p3=plot(Energies(ii), TraceL,'x');
+%                 p3.Color = cm(round(100*k/kmax),:);
 %                 hold on
 %                 
 %                 subplot(3,3,4)
-%                 b=plot(E(i),S,'x');
-%                 b.Color = cm(ceil(100*E(i)+.5),:);
-%                 ylim([0,2.5])
-%                 title('Spectral entropy')        
+%                 b=plot(Energies(ii),DetL,'x');
+%                 b.Color = cm(round(100*k/kmax),:);     
 %                 hold on
 % 
 %                 subplot(3,3,5)
-%                 c=plot(E(i),R,'x');
-%                 c.Color = cm(ceil(100*E(i)+.5),:);
-%                 title('N0/N')
-%                 ylim([0,1])
+%                 c=plot(Energies(ii),mode_Q,'x');
+%                 c.Color = cm(round(100*k/kmax),:);  
 %                 hold on
 %                 
 %                 subplot(3,3,6)
-%                 d=plot(E(i),R2,'x');
-%                 d.Color = cm(ceil(100*E(i)+.5),:);
-%                 ylim([0,1])
-%                 title('Power concentration')
+%                 d=plot(Energies(ii),spectral_entropy,'x');
+%                 d.Color =  cm(round(100*k/kmax),:);  
 %                 hold on
 %             end
 %         end
 %         subplot(3,3,1)
 %         G = graph(rescale(A_sum.*(A_sum>0.01)));
-%         LW = G.Edges.Weight;
-%         LWL=(rescale(log(LW))+1).^3;
-%         plot(G,'Layout','circle','LineWidth',LW)
+%         plot(G,'Layout','circle')
 %         hold off
-% 
+%         
+%         subplot(3,3,7)
+%         histogram(log(degree_list(:)),25)
+%         
+%         subplot(3,3,8)
+%         histogram(log(weight_list(:)),25)
+%         
+%         subplot(3,3,9)
+%         imagesc(A_sum)
+%         
 %         title(['W=',num2str(W)])
+%         
 %     end
+%     
+%     subplot(3,3,1)
+%     title('Graph eg')
+%     subplot(3,3,2)
+%     title('Spectrum')
+%     subplot(3,3,3)
+%     title('Trace')
+%     subplot(3,3,4)
+%     title('|L|')
+%     subplot(3,3,5)
+%     title('\lambda_N /Tr(L)')
+%     ylim([0,1])
+%     subplot(3,3,6)
+%     title('Spectrum entropy')
+%     subplot(3,3,7)
+%     title('Degree distribution')
+%     subplot(3,3,8)
+%     title('Weight distribution')
+%     subplot(3,3,9)
+%     title('mean A')
+% %     subplot(3,3,9)
+%    network_data{N} = net_Wdata;
 % end
 % profile off
-% profile viewer
-
-
+% % close all
+% % profile viewer
 
 %To do: Store disorder lists, Laplacian (& some spectral data_temp) for varying
 %L,W as .mat struct. Build I/O
