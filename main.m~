@@ -22,8 +22,7 @@ close all
 
 % Tonight: 
     % Finish W trends for L analysis
-        % Spectral power ratios; sum of weights; spectral embeddings; 
-    % Try fast-trace
+        % Spectral power ratios;
 
 %% Generate data
 % clear all

@@ -26,8 +26,7 @@ function network_data = network_data(data)
                 % Retrieve data
                 Laplacian = data.samp{k}.graph_data.L_list{ii};
                 [~,L_vals] = eigs(Laplacian,data.L); 
-                L_vals = abs(diag(L_vals)); % L is positive semidefinite
-
+                L_vals = diag(L_vals); % L is positive semidefinite
                 evals_nz = L_vals(1:end-1);
                 mask = triu(ones(network_data.L),1)==1;
                 weight_all = -Laplacian(mask);
@@ -35,16 +34,19 @@ function network_data = network_data(data)
 
                 %Write to output obj
                 network_data.laplacians(k,ii,:,:) = Laplacian;
-                network_data.entropy_VN(k,ii,:) = data.samp{k}.graph_data.E_list{ii};
+                network_data.entropy_VN(k,ii,:) = 0.5*diag(data.samp{k}.graph_data.G_list{ii});
                 network_data.lap_evals(k,ii,:) = L_vals;
                 network_data.traces(k,ii) = TraceL;
-                network_data.determinants(k,ii) =  prod(evals_nz);
+                network_data.determinants(k,ii) =  abs(prod(evals_nz));
                 network_data.entropies(k,ii) = -sum((evals_nz/TraceL).*log(evals_nz/TraceL));
                 network_data.Qs(k,ii) = max(evals_nz)/TraceL;
                 network_data.degree_list(k,ii,:) = diag(Laplacian);
                 network_data.weight_list(k,ii,:) = weight_all(:);
-                network_data.aleph(k,ii,:,:) = Laplacian - diag(diag(Laplacian)) + diag(squeeze(network_data.entropy_VN(k,ii,:)));
+%                 network_data.aleph(k,ii,:,:) = Laplacian - diag(diag(Laplacian)) + diag(squeeze(network_data.entropy_VN(k,ii,:)));
                 
+                network_data.G.G = data.samp{k}.graph_data.G_list{ii};
+                [network_data.G.vecs, network_data.G.eigs] = eigs(network_data.G.G,network_data.L);
+
             end
         end 
 %         clear sample
@@ -53,7 +55,7 @@ function network_data = network_data(data)
     network_data.stats.entropies = network_data.entropies(:);
     network_data.stats.entropy_VN = network_data.entropy_VN(:);
     network_data.stats.determinants = squeeze(network_data.determinants(:));
-    network_data.stats.fielder_vals = log(squeeze(network_data.lap_evals(:,:,end-1)));
+    network_data.stats.fielder_vals = squeeze(network_data.lap_evals(:,:,end-1));
     network_data.stats.weights = network_data.degree_list(:);
     network_data.stats.traces = network_data.traces(:);
 end
