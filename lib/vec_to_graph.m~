@@ -39,7 +39,7 @@ function graph_data = vec_to_graph(vs)
         A = A - 0.5*(diag(diag(A)));
         D = diag(sum(A_hollow));
         graph_data.L_list{k} = D-A_hollow; %Corrected laplacian
-        graph_data.A_list{k} = A; %Aleph - has on-site entropy on diagonal. Can recover G (zero diag) easy)
+        graph_data.A_list{k} = A; %Aleph - has on-site entropy on diagonal. Can recover 
     end
 
 %     graph_data.L_list = cell(size(vs,2),1);

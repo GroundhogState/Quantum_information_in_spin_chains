@@ -9,21 +9,25 @@ close all
 
 %% To DO
 % Optimize TrX calls/faster trace
-% Fit distributions & plot vs W
 
+% Plot trends vs W
 % What is the structural interpretation of these spectra?
 % Sum of all weights ~ distance from locality ~ divergence from volume law?
-
+% Add: Spectral embeddings
     % Compare Fielder vector with NN couplings - where does it suggest
     % partition?
     % Spectral properties of A, G.
+    % Spectral embeddings hilariously bad; orders of magnitude of
+    % difference in elements make this comical
+
+% Tonight: 
+    % Finish W trends for L analysis
+        % Spectral power ratios; sum of weights; spectral embeddings; 
+    % Try fast-trace
     % Higher-order degrees?
         % D1 = total weight of links
         % D2 = total weight of links to second neighbours
         % Tr(exp(L))?!
-
-    
-    % Try fast-trace
 %% Generate data
 % clear all
 % close all
