@@ -1,3 +1,5 @@
+
+
 %%
 % For playing with spin chains. Uses QETLab for now, at least for the
 % partial trace and Pauli functions. 
@@ -44,6 +46,7 @@ gen_data(gen_config)
 profile off
 profile viewer
 
+% <<<<<<< HEAD
 
 
 
