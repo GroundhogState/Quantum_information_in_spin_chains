@@ -51,7 +51,7 @@ dim = dim(find(dim ~= 1));
 
 % calculate systems, dimensions, etc.
 n = length(dim);
-rdim = dim(end:-1:1);
+rdim = dim(end:-1:1)';
 keep = [1:n];
 keep(sys) = [];
 dimtrace = prod(dim(sys));
