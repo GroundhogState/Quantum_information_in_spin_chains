@@ -94,7 +94,7 @@ function display_network_data(in_net_data,display_opts)
             % Fielder vectors
             for ns = 1:net_data.num_samples
                 nrg_scale = round(rescale(net_data.energies(ns,:),1,1000));
-                norm_fielders = squeeze(net_data.stats.fielder_vals(ns,:))'./max(squeeze(net_data.lap_evals(ns,:,:)),[],2);
+                norm_fielders = squeeze(net_data.lap_evals(ns,:,end-1))'./max(squeeze(net_data.lap_evals(ns,:,:)),[],2);
                 p9=plot(net_data.energies(ns,:),log(norm_fielders),'.');    
                 p9.Color = cm_nsm(nrg_scale(ns),:);
                 hold on
@@ -122,7 +122,7 @@ function display_network_data(in_net_data,display_opts)
             
 
             subplot(5,3,13)
-            all_norm_fielders = squeeze(net_data.stats.fielder_vals(:,:))./squeeze(net_data.lap_evals(:,:,1));
+            all_norm_fielders = squeeze(net_data.lap_evals(:,:,end-1))./squeeze(net_data.lap_evals(:,:,1));
             histogram(log10(all_norm_fielders(:)))
             title('1st connectivity dist')
 
@@ -169,13 +169,13 @@ function display_network_data(in_net_data,display_opts)
         imagesc(W_list,H.BinEdges,all_spec')
         xlabel('Disorder')
         ylabel('log eigenvalue')
-        title('L spectral density')
+        title('L spectral pdf')
         
         subplot(3,3,2)
         hist_win = linspace(0,6,100);
         all_field = zeros(numel(net_data),length(hist_win)-1);
         for N = 1:numel(in_net_data)
-            all_norm_fielders = squeeze(in_net_data{N}.stats.fielder_vals(:,:));%./squeeze(in_net_data{N}.lap_evals(:,:,1));
+            all_norm_fielders = squeeze(in_net_data{N}.lap_evals(:,:,end-1));%./squeeze(in_net_data{N}.lap_evals(:,:,1));
             H = histogram(-log(all_norm_fielders),hist_win,'Normalization','pdf');
             all_field(N,:)=H.Values;
         end
@@ -185,7 +185,7 @@ function display_network_data(in_net_data,display_opts)
         title('First connectivity density ')
         
         subplot(3,3,3)
-        hist_win = linspace(2,6,100);
+        hist_win = linspace(-2,6,100);
         all_field = zeros(numel(net_data),length(hist_win)-1);
         for N = 1:numel(in_net_data)
             all_norm_fielders = squeeze(in_net_data{N}.lap_evals(:,:,round(in_net_data{N}.L/2)));%./squeeze(in_net_data{N}.lap_evals(:,:,1));
@@ -201,7 +201,7 @@ function display_network_data(in_net_data,display_opts)
         hist_win = linspace(0,30,100);
         all_trace = zeros(numel(net_data),length(hist_win)-1);
         for N = 1:numel(in_net_data)
-            data = in_net_data{N}.stats.traces;
+            data = in_net_data{N}.traces(:);
             H = histogram(abs(data),hist_win,'Normalization','pdf');
             all_trace(N,:)=H.Values;
         end
@@ -236,7 +236,7 @@ function display_network_data(in_net_data,display_opts)
         title('Weight distribution')
         
         subplot(3,3,7)
-        hist_win = linspace(-0.1,2.1,100);
+        hist_win = linspace(-0.1,1.1,100);
         all_entropy = zeros(numel(net_data),length(hist_win)-1);
         for N = 1:numel(in_net_data)
             data = squeeze(in_net_data{N}.entropy_VN(:));
@@ -245,19 +245,39 @@ function display_network_data(in_net_data,display_opts)
         end
         imagesc(W_list,H.BinEdges,log(all_entropy+1)')
         title('Local entropy')
+        
+        subplot(3,3,8)
+%         plot_win = linspace(-0.1,1,100);
+        all_spec = zeros(numel(net_data),in_net_data{N}.L-1);
+        for N = 1:numel(in_net_data)
+            data = squeeze(nanmean(in_net_data{N}.lap_evals(:,:,1:end-1)./in_net_data{N}.lap_evals(:,:,1),1));
+            data = mean(data);
+%             H = histogram((abs(data(:))),hist_win,'Normalization','pdf');
+            all_spec(N,:)=data;
+            imagesc(all_spec')
+        end
+        
+        xlabel('Disorder')
+        ylabel('Mode index')
+        title('Scaled spectrum')
+        
+        subplot(3,3,9)
+        all_spec = zeros(numel(net_data),in_net_data{N}.L-1);
+        for N = 1:numel(in_net_data)
+            data = squeeze(nanmean(in_net_data{N}.A.eigs(:,:,1:end-1)));
+            data = mean(data);
+%             H = histogram((abs(data(:))),hist_win,'Normalization','pdf');
+            all_spec(N,:)=data;
+            imagesc(all_spec')
+        end
+        
+        xlabel('Disorder')
+        ylabel('Mode index')
+        title('')
      end
       
      
-     subplot(3,3,8)
-    hist_win = linspace(-0.1,2.1,100);
-    all_entropy = zeros(numel(net_data),length(hist_win)-1);
-    for N = 1:numel(in_net_data)
-        data = squeeze(in_net_data{N}.entropy_VN(:));
-        H = histogram((abs(data)),hist_win,'Normalization','pdf');
-        all_entropy(N,:)=H.Values;
-    end
-    imagesc(W_list,H.BinEdges,log(all_entropy+1)')
-    title('Scaled spectrum')
+    
      
        
 

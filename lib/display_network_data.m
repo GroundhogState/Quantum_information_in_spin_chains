@@ -155,7 +155,7 @@ function display_network_data(in_net_data,display_opts)
         W_list = cellfun(@(x) x.W, in_net_data);
         figure();
         
-        cm_nrg = colormap(magma(1000));
+        cm = colormap(magma(1000));
         
         subplot(3,3,1)
         hist_win = linspace(-5,5,100);
@@ -236,7 +236,7 @@ function display_network_data(in_net_data,display_opts)
         title('Weight distribution')
         
         subplot(3,3,7)
-        hist_win = linspace(-0.1,2.1,100);
+        hist_win = linspace(-0.1,1.1,100);
         all_entropy = zeros(numel(net_data),length(hist_win)-1);
         for N = 1:numel(in_net_data)
             data = squeeze(in_net_data{N}.entropy_VN(:));
@@ -273,11 +273,48 @@ function display_network_data(in_net_data,display_opts)
         
         xlabel('Disorder')
         ylabel('Mode index')
-        title('Scaled A spectrum')
+        title('')
+        
+        figure()
+        subplot(2,2,1)
+        for N=1:numel(in_net_data)
+             plot(sort((in_net_data{N}.degree_list(:))),'color', cm(ceil(1000*(N/numel(in_net_data))),:));
+             hold on
+        end
+        xlabel('Index')
+        ylabel('Degree')
+        
+        subplot(2,2,2)
+        for N=1:numel(in_net_data)
+             plot(sort(log10(in_net_data{N}.degree_list(:))),'color', cm(ceil(1000*(N/numel(in_net_data))),:));
+             set(gca,'Xscale','log')
+             hold on
+        end
+        xlabel('Index')
+        ylabel('Degree')
+        
+
+        subplot(2,2,3)
+        for N=1:numel(in_net_data)
+             plot(sort((in_net_data{N}.weight_list(:))),'color', cm(ceil(1000*(N/numel(in_net_data))),:));
+             hold on
+        end
+        xlabel('Index')
+        ylabel('Weight')
+        
+        subplot(2,2,4)
+        for N=1:numel(in_net_data)
+             plot(sort(log10(in_net_data{N}.weight_list(:))),'color', cm(ceil(1000*(N/numel(in_net_data))),:));
+             set(gca,'Xscale','log')
+             hold on
+        end
+        xlabel('Index')
+        ylabel('Weight')
      end
       
      
-
+    
+    
      
        
 

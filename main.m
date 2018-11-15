@@ -31,15 +31,15 @@ gen_config.savepath = '/home/jacob/Projects/ent_loc/dat/'; % office machine
 % % savepath = 'C:\Users\jaker\Documents\MATLAB\ent_loc\dat\'; %notebook
 % % savepath = '/home/j/Documents/MATLAB/ent_loc/dat/20181111-20L13/'; %Home machine
 
-gen_config.num_samples = 15;
-gen_config.num_vecs = 20;
-gen_config.L = 13;
+gen_config.num_samples = 8;
+gen_config.num_vecs = 10;
+gen_config.L = 12;
 gen_config.verbose = true;
 gen_config.profile = true;
-% gen_config.Ws = [1:10];
+gen_config.Ws = linspace(1,7,10);
 
 % profile on
-% gen_data(gen_config)
+% % gen_data(gen_config)
 % profile off
 % profile viewer
 
