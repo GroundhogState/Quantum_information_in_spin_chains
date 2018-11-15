@@ -1,0 +1,19 @@
+Debugging?
+	Changed some code in the generation of L. Now the structure has vanished.
+	What happened? Was L wrong, or the analysis? Go through and ensure trust in all stages.
+
+Anatomy of the program
+   main	
+   Generating data
+      gen_data.m
+         disorder_H
+            inputs: System length & disorder strength OK 
+            outputs: Hamiltonian: Looks fine... Nice diagonal structure from the tensor prod
+         vec_to_graph
+	    Suspicious! Diagonal of A looks super wrong. First elt always zero?!
+		Fixed! Wasn't including diagonal of A in the generating loop
+	 get_network_data
+		Seems OK. Just extracts a bunch of stuff from the loaded file... And performs OK in tests.
+
+	display_network_data
+		OK, a bit of a mess. Let's clean up as we debug. Then push and go home.
