@@ -28,7 +28,9 @@ for i=1:numel(gen_config.Ws)
             [vecs, nrg] = eigs(full(H),2^data.L);
             data_temp.nrg = rescale(diag(nrg));
             %% Select vectors & build state graph Laplacian
-            data_temp.sel = ceil(linspace(1,2^data.L,data.num_eigs));
+%             c = (2^data.L)/2-data.num_eigs:(2^data.L)/2+data.num_eigs
+            data_temp.sel = (2^data.L)/2-data.num_eigs:(2^data.L)/2+data.num_eigs; 
+            % Now sampling from middle of spectrum
             data_temp.v_sel = vecs(:,data_temp.sel);
             data_temp.graph_data = vec_to_graph(data_temp.v_sel);
             data.samp{k} = data_temp;

@@ -19,8 +19,10 @@ function network_data = network_data(data)
     network_data.determinants = zeros(kmax,data.num_eigs);
     network_data.Qs = zeros(kmax,data.num_eigs);
     network_data.degree_list = zeros(kmax,data.num_eigs,data.L);
-
     network_data.weight_list = zeros(kmax,data.num_eigs,data.L*(data.L-1)/2);
+    network_data.A.A = zeros(kmax,data.num_eigs,data.L,data.L);
+    network_data.A.vecs=zeros(kmax,data.num_eigs,data.L,data.L);
+    network_data.A.eigs=zeros(kmax,data.num_eigs,data.L);
 
     for k=1:kmax        
         network_data.energies(k,:)=rescale(data.samp{k}.nrg(data.samp{k}.sel));
@@ -41,7 +43,7 @@ function network_data = network_data(data)
                 %Write to output obj
                 network_data.laplacians(k,ii,:,:) = Laplacian;
 
-                network_data.entropy_VN(k,ii,:) = 0.5*diag(data.samp{k}.graph_data.G_list{ii});
+                network_data.entropy_VN(k,ii,:) = 0.5*diag(data.samp{k}.graph_data.A_list{ii});
                 network_data.lap_evals(k,ii,:) = L_vals;
                 network_data.traces(k,ii) = TraceL;
                 network_data.determinants(k,ii) =  abs(prod(evals_nz));
@@ -51,9 +53,9 @@ function network_data = network_data(data)
                 network_data.degree_list(k,ii,:) = diag(Laplacian);
                 network_data.weight_list(k,ii,:) = weight_all(:);
         
-                network_data.G.G = data.samp{k}.graph_data.G_list{ii};
-                [network_data.G.vecs, network_data.G.eigs] = eigs(network_data.G.G,network_data.L);
-
+                network_data.A.A(k,ii,:,:) = data.samp{k}.graph_data.A_list{ii};
+                [network_data.A.vecs(k,ii,:,:), eigs_temp] = eigs(data.samp{k}.graph_data.A_list{ii},network_data.L);
+                network_data.A.eigs(k,ii,:) = diag(eigs_temp);
 
             end
         end 
@@ -61,11 +63,6 @@ function network_data = network_data(data)
     end
 %     clear data
 
-    network_data.stats.entropies = network_data.entropies(:);
-    network_data.stats.entropy_VN = network_data.entropy_VN(:);
-    network_data.stats.determinants = squeeze(network_data.determinants(:));
-    network_data.stats.fielder_vals = squeeze(network_data.lap_evals(:,:,end-1));
-    network_data.stats.weights = network_data.degree_list(:);
-    network_data.stats.traces = network_data.traces(:);
+    network_data.fielder_vals = squeeze(network_data.lap_evals(:,:,end-1));
 
 end
