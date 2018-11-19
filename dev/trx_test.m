@@ -1,54 +1,78 @@
-P = cell(4);
-P{1} = eye(2);
-P{2} = Pauli('X',0);
-P{3} = Pauli('Y',0);
-P{4} = Pauli('Z',0);
 
-% bloch
 
-rho1 = qubit([0 0 0]);
-rho2 = qubit([1 0 1]);
-rho3 = qubit([0 1 0]);
-rho4 = qubit([1 1 1]);
-rho = Tensor(rho1,rho2,rho3,rho4);
-
-systems = [1,4];
 
 % rho_out = TrX2(rho,systems)
 %Cool! Seems to work. Let's put it through some paces.
 
-Ls = 3:10;
-num_trials = 10;
-times = zeros(2,length(Ls),num_trials); %Toby vs Me
+% User spec
 
-profile on
-for i=1:length(Ls)
-    for j = 1:num_trials
-        L = Ls(i);
-        idxs = 1:L;
-        dims = 2*ones(L,1);
-        v_test = 2*(rand(2^L,1)-0.5);
-        v_test = v_test/norm(v_test);
-        rho_test = toDM(v_test);
-        systems =[1 L];
-        sys_cubitt = setdiff(idxs,systems);
-%         t0 = clock;
-        TrX(rho_test,sys_cubitt,dims);
-%         t1 = clock;
-        TrX2(rho_test,systems);
-%         t2 = clock;
-%         times(1,i,j) = (t1(end)-t0(end));
-%         times(2,i,j) = (t2(end)-t1(end));
-    end
-end
+% Ls = 3:15;
+% %Init variables
+% 
+% basis_vec = cell(2,2);
+% 
+% time_toby = zeros(size(Ls));
+% time_jacob = zeros(size(Ls));       
+% 
+% num_trials = 1;
+% for i=1:length(Ls)
+%     L=Ls(i)
+%     systems =[1 L];
+%     l = length(systems);
+%     idxs = 1:L;
+%     sys_cubitt = setdiff(idxs,systems);
+%     dims = 2*ones(L,1);
+%     eye_list = cell(L,1);
+% 
+%     for j = 1:num_trials
+%         v_test = 2*(rand(2^L,1)-0.5);
+%         v_test = v_test/norm(v_test);
+%         rho_test = toDM(v_test);
+% 
+%         toby  = @() TrX(rho_test,sys_cubitt,dims);
+%         
+%         time_toby(i) = timeit(toby);
+% 
+%     end
+% end
+close all
+figure();
+subplot(2,1,1)
+plot(Ls,log(time_toby));
+hold on
+expmdl = @(p,x) p(1) + p(2)*exp(p(3)*x);
+p0 = [-8 1 1];
+fit = fitnlm(Ls,log(time_toby),expmdl,p0);
+plot(Ls,expmdl(fit.Coefficients.Estimate,Ls));
+p1 = fit.Coefficients.Estimate;
+% plot(Ls,time_jacob);
+% poly_J = polyfit(Ls,time_jacob,5);
+% poly_T = polyfit(Ls,time_toby,5);
+% plot(polyval(poly_T,Ls));
+% plot(polyval(poly_J,Ls));
+legend('permutation method',['fit log(T)=',num2str(p1(1)),'+',num2str(p1(2)),'exp(',...
+            num2str(p1(3)),'L)'])
+title('Time scaling: trace to 2 systems')
+xlabel('L')
+ylabel('log(walltime)')
 
+subplot(2,1,2)
+plot(1:13,exp(expmdl(p1,1:13)));
+% set(gca,'Yscale','log')
 profile off
 profile viewer
 
-% close all
-% figure()
-% plot(Ls,mean(times(1,:,:),3))
-% hold on
-% plot(Ls,mean(times(2,:,:),3))
-% legend('Toby','Me')
-
+%Conclusion: The homebrew sucks. Toby's TrX is good. What if we
+%   Remove the Pauli calls? Probably not much different.
+%       With        Without
+%       49.7/43.5   48.4/42.4       Gains trivial, as expected.
+%   The time in kron() is not so small, which is from all the Tensor calls.
+%   But it looks like all the time is in TrX2. What if we generate the
+%   basis vectors and then pass them in? Expect a few seconds less in TrX2
+%   - and if basis vectors reused in multiple calls, this will add up. But
+%   probably still marginal.
+%   NICE. Now we're talking. Taking the basis generation out makes things
+%   much faster, as it happens. Now TrX and TrX2 have comparable total
+%   times - but TrX has more self-time! Note that I'm currently averaging
+%   over lengths. Let's look at how the cost scales with L.
+% Looks like Toby's is quadratically faster... Let's fit a polynomial model

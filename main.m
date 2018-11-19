@@ -27,19 +27,22 @@ close all
 %% Generate data
 % clear all
 % close all
-gen_config.savepath = '/home/jacob/Projects/ent_loc/dat/'; % office machine
+config.gen.savepath = '/home/jacob/Projects/ent_loc/dat/'; % office machine
 % % savepath = 'C:\Users\jaker\Documents\MATLAB\ent_loc\dat\'; %notebook
 % % savepath = '/home/j/Documents/MATLAB/ent_loc/dat/20181111-20L13/'; %Home machine
 
-gen_config.num_samples = 8;
-gen_config.num_vecs = 10;
-gen_config.L = 12;
-gen_config.verbose = true;
-gen_config.profile = true;
-gen_config.Ws = linspace(1,7,10);
-
+config.gen.num_samples = 8;
+config.gen.num_vecs = 10;
+config.gen.L = 12;
+config.gen.verbose = true;
+config.gen.profile = true;
+config.gen.Ws = linspace(1,7,10);
+config.viz.local = false;
+config.viz.global = true;
+config.viz.num_bins = 30;
+config.viz.scaling = false;
 % profile on
-% % gen_data(gen_config)
+% % gen_data(config.gen)
 % profile off
 % profile viewer
 
@@ -47,15 +50,15 @@ gen_config.Ws = linspace(1,7,10);
 
 %% Import & preprocess (doesn't cache full data as it's very memory demanding)
 
-
-net_data = cell(numel(gen_config.Ws,1));
-for N=1:numel(gen_config.Ws)
-    fname = [gen_config.savepath,'L-',num2str(gen_config.L),'-W',num2str(gen_config.Ws(N)),...
-        '-N',num2str(gen_config.num_vecs),'-PBC.mat'];
-    data = load(fname);
-    net_data{N} = get_network_data(data);
-    clear data
-end
+% clear net_data;
+% net_data = cell(numel(config.gen.Ws,1));
+% for N=1:numel(config.gen.Ws)
+%     fname = [config.gen.savepath,'L-',num2str(config.gen.L),'-W',num2str(config.gen.Ws(N)),...
+%         '-N',num2str(config.gen.num_vecs),'-PBC.mat'];
+%     data = load(fname);
+%     net_data{N} = get_network_data(data);
+%     clear data
+% end
 
 
 %% Plot results
@@ -66,7 +69,7 @@ display_opts.savefig=false;
 display_opts.local = false;
 display_opts.global = true;
 net_data_sel = net_data([1,5]);
-display_network_data(net_data,display_opts);
+display_network_data(net_data,config);
 
 % profile off
 % profile viewer

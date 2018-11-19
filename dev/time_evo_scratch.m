@@ -1,67 +1,116 @@
 % THIS BEARS INVESTIGATION
-
+% GOODNESS ME.
+% Product states are completely disconnected. They get 'close' to locality
+% sometimes.
+% Local Hamiltonians leave Aleph completely invariant.
+% The norm of Aleph does seem to reflect some kind of nonlocality. 
+% So WHAT governs the evolution of Aleph?
+    % It would be most instructive to look at a single Bell pair. 
 % clear all
-close all
-L = 4;
-T = linspace(0,0.01,100);
+for NN=1:20
+NN
+L = 7;
+T = logspace(-2,0,50);
+
+psi_list = cell(L,1);
+for i=1:L
+    psi_list{i} = rand_qubit;
+end
+rho_prod = Tensor(psi_list);
+
 
 W = 1;
+
+% H = disorder_H(L,W);
+H = gen_onsite(L,rand(L,1));
+psi = rand(2^L,1); % THIS IS DEFINITELY NOT LOCAL
+
 ns = 1;
-psi_list = zeros(ns,length(T),2^L);
-L_list = zeros(ns,length(T),L,L);
-rho_list = zeros(ns,length(T),2^L,2^L);
+
 U_list = zeros(size(L_list));
 V_list = zeros(ns,length(T),L);
 
-figure()
+vals = zeros(numel(T),L);
+vecs = zeros(numel(T),L,L);
+traces = zeros(numel(T),1);
+dets = zeros(numel(T),1);
+TMI = zeros(numel(T,1));
+weights = zeros(numel(T), L*(L-1)/2);
 
-H = disorder_H(L,W);
-psi = randi([0 1], 2^L,1)
-rho = toDM(psi');
-v_out = vec_to_graph(psi);
-L = v_out.L_list{1};
-[U, V] = eigs(L);
-D0=[L,U,V]
 
-T = 0.01
-psi1 = expm(-1j*T*H)*psi
-rho1 = toDM(psi1);
-v_out = vec_to_graph(psi1);
-L1 = v_out.L_list{1};
-[U1, V1] = eigs(L1);
-[L1,U1,V1]-D0
+% rho = toDM(psi');
+% v_out = vec_to_graph(psi);
+A = v_out.A_list{1};
+[U, V] = eigs(A);
+% D0=[A,U,V]
 
-T = 0.1
-psi1 = expm(-1j*T*H)*psi
-rho1 = toDM(psi1);
-v_out = vec_to_graph(psi1);
-L1 = v_out.L_list{1};
-[U1, V1] = eigs(L1);
-[L1,U1,V1]-D0
-% 
-%         psi_list(t,:) = expm(-1i*t*H)*squeeze(psi_list(1,:));
-%         rho_list(t,:,:) = toDM(squeeze(psi_list(t,:))');
-%         v_out = vec_to_graph(squeeze(psi_list(t,:)));
-%         L_list(t,:,:) = v_out.L_list{1};
-%         [U_list(t,:,:), V] = eigs(squeeze(L_list(t,:,:)));
-%         V_list(t,:,:) = diag(V);
-%         Ut = U_list(t,:,1);
-% %         plot(t*ones(L,1),squeeze(Ut(:)),'.')
-%     end
-%     
-% %     subplot(2,1,2)
-% %     histogram(squeeze(U_list(i,:)))
-% %     hold on
-%     
-%     figure()
-%     subplot(2,1,1)
-%     for j=1:L
-%         V = diag(squeeze(L_list(:,j,j)));
-%         plot(T,V)
-%         hold on
-%         subplot(2,1,2)  
-%         plot(T,sum(V))
-%     end
+for t=1:numel(T)
+%     rho1 = expm(-1j*T(t)*H)*rho_prod*expm(-1j*T(t)*H)';
+    psi1 = expm(-1j*T(t)*H)*psi;
+    rho1 = toDM(psi1);
+    v_out = rho_to_graph({rho1});
+    A1 = v_out.A_list{1};
+%     hollow = A1- diag(diag(A1));
+%     w = triu(hollow,1);
+%     w = w(w>0);
+%     weights(t,:)=w;
+    TMI(t) = 0.5*sum(sum(hollow));
+    [U1, V1] = eigs(A1,L);
+    vals(t,:) = diag(V1);
+    vecs(t,:,:) = U1;
+    traces(t) = trace(A1)/(2*L);
+    dets(t) = det(A1);
+end
 
+
+%% Plotting 
+% close all
+% figure()
+
+for u=1:L
+    subplot(4,1,1)
+    plot(T,(vals(:,u)));
+    hold on
+    for v = 1:L
+        subplot(4,1,2)
+        plot(T,abs(vecs(:,u,1)))
+        hold on
+    end
+end
+
+subplot(4,2,5)
+plot(T,traces)
+hold on
+
+subplot(4,2,6)
+plot(T,TMI/4)
+hold on
+subplot(4,1,4)
+
+
+for t=1:numel(T)
+   obj = norm(sum(squeeze(vecs(t,:,:))*diag(vals(t,:)),2));
+   plot(T(t),obj,'.')
+   hold on
+   
+end
+end
+
+% for t=1:numel(T)
+%     psi1 = expm(-1j*T(t)*H)*psi;
+%     rho1 = toDM(psi1);
+%     v_out = vec_to_graph(psi1);
+%     A1 = v_out.A_list{1};
+%     hollow = A1- diag(diag(A1));
+%     w = triu(hollow,1);
+%     w = w(w>0);
+%     weights(t,:)=w;
+%     TMI(t) = 0.5*sum(sum(hollow));
+%     [U1, V1] = eigs(A1,L);
+%     vals(t,:) = diag(V1);
+%     vecs(t,:,:) = U1;
+%     traces(t) = trace(A1)/(2*L);
+%     dets(t) = det(A1);
+% end
     
     

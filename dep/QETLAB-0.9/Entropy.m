@@ -24,7 +24,7 @@ function ent = Entropy(rho,varargin)
 % set optional argument defaults: base=2, alpha=1
 [base,alpha] = opt_args({ 2, 1 },varargin{:});
 
-lam = eig(full(rho));
+lam = eig(full(rho)); %Abs in case of numerical error at zero
 
 % If alpha == 1, compute the von Neumann entropy
 if(abs(alpha - 1) <= eps^(3/4))

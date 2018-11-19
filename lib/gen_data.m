@@ -1,26 +1,26 @@
-function gen_data(gen_config)
-if gen_config.profile
+function gen_data(config)
+if config.gen.profile
     profile on
 end
 
-for i=1:numel(gen_config.Ws)
-    if gen_config.Ws(i) == 0
+for i=1:numel(config.gen.Ws)
+    if config.gen.Ws(i) == 0
         n_samp = 1;
     else
-        n_samp = gen_config.num_samples;
+        n_samp = config.gen.num_samples;
     end
-    if gen_config.verbose
-      fprintf('Disorder strength %.1f \n',gen_config.Ws(i))
+    if config.gen.verbose
+      fprintf('Disorder strength %.1f \n',config.gen.Ws(i))
     end
     
 
         data.samp= cell(n_samp,1);
-        data.L = gen_config.L;
-        data.W = gen_config.Ws(i);
-        data.num_eigs = gen_config.num_vecs;
+        data.L = config.gen.L;
+        data.W = config.gen.Ws(i);
+        data.num_eigs = config.gen.num_vecs;
 
         for k=1:n_samp
-            if gen_config.verbose
+            if config.gen.verbose
                 fprintf('sample %u/%u\n',k,n_samp)
             end
         %% Build H
@@ -36,12 +36,12 @@ for i=1:numel(gen_config.Ws)
             data.samp{k} = data_temp;
         end
 
-        fname=[gen_config.savepath,'L-',num2str(data.L),...
-            '-W',num2str(data.W),'-N',num2str(gen_config.num_vecs),'-PBC.mat'];
+        fname=[config.gen.savepath,'L-',num2str(data.L),...
+            '-W',num2str(data.W),'-N',num2str(config.gen.num_vecs),'-PBC.mat'];
         save(fname,'-struct','data','-v7.3');
     end
     
-if gen_config.profile
+if config.gen.profile
     profile off
     profile viewer
 end
