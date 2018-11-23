@@ -1,4 +1,5 @@
-function x = TrX(p,sys,dim)
+function x = TrC(p,sys,dim)
+%#godegen
 
 % TRX   Partial trace
 % requires: nothing
@@ -8,7 +9,6 @@ function x = TrX(p,sys,dim)
 %    RHO = TrX(PSI,SYS,DIM) traces out the subsystems specified in
 %    vector SYS of state PSI (a state vector or densitry matrix) whose
 %    subsystem dimensions are specified by the vector DIM.
-
 
 %% Copyright (C) 2004-2009 Toby Cubitt
 %%
@@ -39,9 +39,10 @@ end
 
 
 % remove singleton dimensions
-  % matlab
+
 sys = setdiff(sys,find(dim == 1));
-dim = dim(find(dim ~= 1));
+dims_retain = dim~=1;
+dim = dim(dims_retain);
 
 
 % calculate systems, dimensions, etc.
@@ -52,7 +53,7 @@ keep(sys) = [];
 dimtrace = prod(dim(sys));
 dimkeep = length(p)/dimtrace;
 
-
+x = zeros(dimkeep,dimtrace);
 if any(size(p) == 1)
   % state vector
   if size(p,1) == 1

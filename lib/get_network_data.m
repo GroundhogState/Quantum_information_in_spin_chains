@@ -4,31 +4,35 @@ function network_data = get_network_data(data)
     kmax = numel(data.samp); 
 
     data.num_eigs = numel(data.samp{1}.sel);
+    %Parameters
     network_data.L = data.L;
     network_data.W = data.W;
     network_data.num_eigs = data.num_eigs;
     network_data.num_samples = length(data.samp);
-    network_data.entropy_VN=zeros(kmax,data.num_eigs,data.L);
-    network_data.energies = zeros(kmax,data.num_eigs);%%HACK FOR NOW
-
+    
+    %Major objects - imported
     network_data.laplacians = zeros(kmax,data.num_eigs,data.L,data.L);
     network_data.aleph = zeros(kmax,data.num_eigs,data.L,data.L);
+    
+    %Spectral stuff - imported
     network_data.lap_evals = zeros(kmax,data.num_eigs,data.L);
     network_data.entropies = zeros(kmax,data.num_eigs);
     network_data.traces = zeros(kmax,data.num_eigs);
     network_data.determinants = zeros(kmax,data.num_eigs);
-    network_data.Qs = zeros(kmax,data.num_eigs);
+    % Physical stuff - imported
+    network_data.entropy_VN=zeros(kmax,data.num_eigs,data.L);
+    network_data.energies = zeros(kmax,data.num_eigs);
+    % Graph stuff - imported
     network_data.degree_list = zeros(kmax,data.num_eigs,data.L);
     network_data.weight_list = zeros(kmax,data.num_eigs,data.L*(data.L-1)/2);
     network_data.frac_weight_list = zeros(kmax,data.num_eigs,data.L*(data.L-1)/2);
+    
+    %Generated 
     network_data.A.A = zeros(kmax,data.num_eigs,data.L,data.L);
     network_data.A.vecs=zeros(kmax,data.num_eigs,data.L,data.L);
     network_data.A.eigs=zeros(kmax,data.num_eigs,data.L);
-    network_data.A.ents=zeros(kmax,data.num_eigs);
-    network_data.A.hollow=zeros(kmax,data.num_eigs,data.L,data.L);
-    network_data.A.theta=zeros(kmax,data.num_eigs,data.L,data.L);
     network_data.node_centrality= zeros(kmax,data.num_eigs,data.L);
-    network_data.total_ent = zeros(kmax,data.num_eigs);
+
     for k=1:kmax        
         network_data.energies(k,:)=rescale(data.samp{k}.nrg(data.samp{k}.sel));
         L_list = data.samp{k}.graph_data.L_list;
@@ -58,12 +62,8 @@ function network_data = get_network_data(data)
                 network_data.degree_list(k,ii,:) = diag(Laplacian);
                 network_data.weight_list(k,ii,:) = weight_all(:);
                 network_data.frac_weight_list(k,ii,:) = weight_all(:)/sum(weight_all);
-                A_temp = squeeze(data.samp{k}.graph_data.A_list{ii}); %Returns 2*S_i on diagonal
-%                 A_temp = A_temp - diag(diag(A_temp));% zero diagonal
-%                 A_temp = A_temp - 0.5*diag(diag(A_temp));% S_i diagonal
-                % 2S_i diagonal
-                A_temp = A_temp - 2*diag(diag(A_temp));% -2S_i diagonal for contraction condition
-                % -2S_i diagonal
+                A_temp = squeeze(data.samp{k}.graph_data.A_list{ii}); 
+                A_temp = A_temp - 2*diag(diag(A_temp));
                 
                 network_data.A.A(k,ii,:,:) = A_temp;
                 hollow = A_temp - diag(diag(A_temp));
