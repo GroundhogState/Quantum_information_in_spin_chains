@@ -20,12 +20,15 @@ function network_data = get_network_data(data)
     network_data.Qs = zeros(kmax,data.num_eigs);
     network_data.degree_list = zeros(kmax,data.num_eigs,data.L);
     network_data.weight_list = zeros(kmax,data.num_eigs,data.L*(data.L-1)/2);
+    network_data.frac_weight_list = zeros(kmax,data.num_eigs,data.L*(data.L-1)/2);
     network_data.A.A = zeros(kmax,data.num_eigs,data.L,data.L);
     network_data.A.vecs=zeros(kmax,data.num_eigs,data.L,data.L);
     network_data.A.eigs=zeros(kmax,data.num_eigs,data.L);
     network_data.A.ents=zeros(kmax,data.num_eigs);
     network_data.A.hollow=zeros(kmax,data.num_eigs,data.L,data.L);
     network_data.A.theta=zeros(kmax,data.num_eigs,data.L,data.L);
+    network_data.node_centrality= zeros(kmax,data.num_eigs,data.L);
+    network_data.total_ent = zeros(kmax,data.num_eigs);
     for k=1:kmax        
         network_data.energies(k,:)=rescale(data.samp{k}.nrg(data.samp{k}.sel));
         L_list = data.samp{k}.graph_data.L_list;
@@ -54,16 +57,17 @@ function network_data = get_network_data(data)
                 network_data.Qs(k,ii) = max(evals_nz)/TraceL;
                 network_data.degree_list(k,ii,:) = diag(Laplacian);
                 network_data.weight_list(k,ii,:) = weight_all(:);
-        
+                network_data.frac_weight_list(k,ii,:) = weight_all(:)/sum(weight_all);
                 A_temp = squeeze(data.samp{k}.graph_data.A_list{ii}); %Returns 2*S_i on diagonal
 %                 A_temp = A_temp - diag(diag(A_temp));% zero diagonal
 %                 A_temp = A_temp - 0.5*diag(diag(A_temp));% S_i diagonal
                 % 2S_i diagonal
                 A_temp = A_temp - 2*diag(diag(A_temp));% -2S_i diagonal for contraction condition
                 % -2S_i diagonal
-                hollow = A_temp - diag(diag(A_temp));
-                network_data.A.A(k,ii,:,:) = A_temp;
                 
+                network_data.A.A(k,ii,:,:) = A_temp;
+                hollow = A_temp - diag(diag(A_temp));
+                network_data.degree_list(k,ii,:) = sum(hollow);
                 [network_data.A.vecs(k,ii,:,:), eigs_temp] = eigs(A_temp,network_data.L);
                 network_data.A.eigs(k,ii,:) = abs(diag(eigs_temp));
                 eigs_temp = eigs_temp(eigs_temp>0);
@@ -72,10 +76,19 @@ function network_data = get_network_data(data)
                 network_data.A.trcs(k,ii) = trace(A_temp)/(2*network_data.L);
                 network_data.A.diam(k,ii) = trace(expm(-A_temp))/network_data.L;
                 network_data.A.hollow(k,ii,:,:) = hollow;
-                network_data.A.nonlocality(k,ii) = sum(sum(hollow));
+                network_data.A.nonlocality(k,ii) = sum(weight_all(:));
                 network_data.A.eta(k,ii) = 2*trace(hollow*hollow)/(network_data.L*(network_data.L-1));
-                theta = A_temp - 2*diag(diag(A_temp));
-                network_data.A.theta(k,ii) = trace(theta*theta);
+
+
+                network_data.total_ent(k,ii) = sum(sum(A_temp));
+
+                delta = squeeze(network_data.degree_list(k,ii,:));
+                mu_temp =squeeze(hollow*delta)./delta;
+                norm = zeros(data.L,1);
+                for i=1:data.L
+                    norm(i) = sum(delta) - delta(i);
+                end
+                network_data.node_centrality(k,ii,:) = (data.L-1)*mu_temp./norm;
             end
         end 
 %         clear sample

@@ -39,13 +39,8 @@ end
 
 
 % remove singleton dimensions
-if exist('setdiff')
   % matlab
   sys = setdiff(sys,find(dim == 1));
-else
-  % octave
-  sys = complement(find(dim == 1),sys);
-end
 dim = dim(find(dim ~= 1));
 
 
