@@ -53,16 +53,28 @@ Toby's method actually looks exponentially faster - that's incredible! For a mom
 
 
 
-
-
-
-
-
-
-
-
-
-
+24 Nov
+	Ok. Continuing project tidying, from the ground up.
+	Main
+		Actually pretty good, just needs better integration of PDF analysis. 
+			Will get to when further down pipeline
+	gen_data
+		Does the heavy lifting - H gen and diagonalization, calls vec_to_graph
+		Would be nice to only diag to the EVs needed.
+			Now saves rescaled eigen-energies of the selected eigenvectors
+			Eigenvectors now specified in config
+	vec_to_graph	
+		Decided to keep in gen_data because simple interfacing with gen_data
+		Rebuilt trace loop because it was *horribly* inefficient last time. 
+			Previously had L*L(L-1)/2  calls to 2-body and L calls to 1-body from full dm		
+			Now has L*(L-1)/2 calls to 2-body from full dm and only L calls from 2-body to 1-body
+			May be some cool tricks to reduce calls from full dm, but higher priority is accelerating TrX
+			
+	get_network_data
+		Points at a stored .mat file and pulls various stats out of the A matrix. 
+		Needs a big cleanup!
+		Whew. Much cleaner & easier to read. Won't work with old data formats - that's ok, it's in erstwhile_somnambulist
+		And I won't generate new data until this trace is sped up. So... Let's get to that.
 
 
 

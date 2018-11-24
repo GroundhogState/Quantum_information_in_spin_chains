@@ -24,14 +24,12 @@ config.gen.savepath = '/home/jacob/Projects/ent_loc/dat/'; % office machine
 % % savepath = 'C:\Users\jaker\Documents\MATLAB\ent_loc\dat\'; %notebook
 % % savepath = '/home/j/Documents/MATLAB/ent_loc/dat/20181111-20L13/'; %Home machine
 
-
-
-config.gen.L = 12;              % System size
-config.gen.Ws = linspace(1,7,10); %Disorder values
-config.gen.bc = 'periodic';     % 'periodic' or 'open'
 config.gen.num_samples = 8;     % # of disorder realizations
+config.gen.L = 12;              % System size
 config.gen.verbose = true;          %Additional output (currently useless)
+config.gen.Ws = linspace(1,7,10); %Disorder values
 config.gen.profile = true;      % Runs profiler over the generation loop
+config.gen.bc = 'periodic';     % 'periodic' or 'open'
 
 % Now sampling from middle of spectrum
 config.gen.num_vecs = 10;            
@@ -43,7 +41,7 @@ config.viz.num_bins = 30;
 config.viz.scaling = false;
 
 %% Generate eigenstate data
-% gen_data(config.gen)
+% % gen_data(config.gen)
 
 
 %% Import & preprocess (doesn't cache full data as it's very memory demanding)
@@ -67,9 +65,18 @@ display_opts.savefig=false;
 display_opts.local = false;
 display_opts.global = true;
 net_data_sel = net_data([1,5]);
-config.viz.cutoff = 1e-10;
-
 display_network_data(net_data,config);
+
+% profile off
+% profile viewer
+
+%%
+% close all
+% display_opts.savefig = false;
+% display_network_data(net_data,display_opts)
+
+
+
 
 
 
