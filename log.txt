@@ -76,8 +76,15 @@ Toby's method actually looks exponentially faster - that's incredible! For a mom
 		Whew. Much cleaner & easier to read. Won't work with old data formats - that's ok, it's in erstwhile_somnambulist
 		And I won't generate new data until this trace is sped up. So... Let's get to that.
 
+	distribution_viz
+		Now considerably cleaner. Scaling is more sensible, and switchable on log and lin data
+			all data rescaled wrt config.viz.scale. Everything below a cutoff is ignored.
+			Then all data rescaled x->(x-cutoff)/scale for lin, x-> -(log(x)-log(scale))/log(cutoff) for log
+			
 
-
-
+	
+	OK, so it's clean. This might make fitting a bit better. But there's still a pressing need for this faster trace.
+		I don't have the time or brains to do it today. So I'll re-examine some fits.
+		
 
 
