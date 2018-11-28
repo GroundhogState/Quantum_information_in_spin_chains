@@ -1,8 +1,3 @@
-
-
-%%
-% For playing with spin chains. Uses QETLab for now, at least for the
-% partial trace and Pauli functions. 
 close all
 
 
@@ -25,37 +20,43 @@ close all
     
     % Try fast-trace
 %% Generate data
-% clear all
-% close all
-gen_config.savepath = '/home/jacob/Projects/ent_loc/dat/'; % office machine
+config.gen.savepath = '/home/jacob/Projects/ent_loc/dat/'; % office machine
 % % savepath = 'C:\Users\jaker\Documents\MATLAB\ent_loc\dat\'; %notebook
 % % savepath = '/home/j/Documents/MATLAB/ent_loc/dat/20181111-20L13/'; %Home machine
 
-gen_config.num_samples = 8;
-gen_config.num_vecs = 10;
-gen_config.L = 12;
-gen_config.verbose = true;
-gen_config.profile = true;
-gen_config.Ws = linspace(1,7,10);
 
-% profile on
-% % gen_data(gen_config)
-% profile off
-% profile viewer
 
+config.gen.L = 12;              % System size
+config.gen.Ws = linspace(1,7,10); %Disorder values
+config.gen.bc = 'periodic';     % 'periodic' or 'open'
+config.gen.num_samples = 8;     % # of disorder realizations
+config.gen.verbose = true;          %Additional output (currently useless)
+config.gen.profile = true;      % Runs profiler over the generation loop
+
+% Now sampling from middle of spectrum
+config.gen.num_vecs = 10;            
+config.gen.sel = (2^config.gen.L)/2-config.gen.num_vecs:(2^config.gen.L)/2+config.gen.num_vecs; 
+
+config.viz.local = false;
+config.viz.global = true;
+config.viz.num_bins = 30;
+config.viz.scaling = false;
+
+%% Generate eigenstate data
+% gen_data(config.gen)
 
 
 %% Import & preprocess (doesn't cache full data as it's very memory demanding)
 
-
-net_data = cell(numel(gen_config.Ws,1));
-for N=1:numel(gen_config.Ws)
-    fname = [gen_config.savepath,'L-',num2str(gen_config.L),'-W',num2str(gen_config.Ws(N)),...
-        '-N',num2str(gen_config.num_vecs),'-PBC.mat'];
-    data = load(fname);
-    net_data{N} = get_network_data(data);
-    clear data
-end
+% clear net_data;
+% net_data = cell(numel(config.gen.Ws,1));
+% for N=1:numel(config.gen.Ws)
+%     fname = [config.gen.savepath,'L-',num2str(config.gen.L),'-W',num2str(config.gen.Ws(N)),...
+%         '-N',num2str(config.gen.num_vecs),'-PBC.mat'];
+%     data = load(fname);
+%     net_data{N} = get_network_data(data);
+%     clear data
+% end
 
 
 %% Plot results
@@ -66,18 +67,9 @@ display_opts.savefig=false;
 display_opts.local = false;
 display_opts.global = true;
 net_data_sel = net_data([1,5]);
-display_network_data(net_data,display_opts);
+config.viz.cutoff = 1e-10;
 
-% profile off
-% profile viewer
-
-%%
-% close all
-% display_opts.savefig = false;
-% display_network_data(net_data,display_opts)
-
-
-
+display_network_data(net_data,config);
 
 
 

@@ -17,3 +17,67 @@ Anatomy of the program
 
 	display_network_data
 		OK, a bit of a mess. Let's clean up as we debug. Then push and go home.
+
+
+Tried writing a faster partial trace algorithm.
+Toby's method actually looks exponentially faster - that's incredible! For a moment I thought I'd won out - 
+    I wonder where my mistake was, and what led to that mistaken finding. Weird.
+    Well, maybe Toby's method really is optimal....
+    BUT.
+    A fit to log(T) gives y=-8+0.03*EXP(0.6*L).
+    So T~exp(exp(L)) OH MY GOSH
+    There has to be a better way than *doubly exponential*.
+    So for a 15*15 system, well, no data. But it took 1.16sec for a SINGLE trace from 14->2 systems.
+    But; Given the exponential dependence on L, there is an exponential gain in tracing over smaller systems.
+    The question is; how much can one save by storing subsystems? Or does it just cancel out?
+        hunch is that it helps. An exponential advantage called a polynomial number of times is a win...
+        So can we do it with polynomially many calls?
+    THERE MUST BE A FASTER WAY.
+    
+    The faster way seems to be... Not using MATLAB. This is past the prototyping stage: Now I need speed.
+    So compiling the partial trace in C appears to be the way to go. This I will get to very soon.
+    But I'm pretty hungover & tired so that might be too much exertion for today. So let's try two things.
+    1) Finish up the presentation of the results I have already.
+        Probably won't be 'completed' today.
+    2) Spin up another Hamiltonian to subject to identical analysis.
+
+    Plot goals.
+        i)      For all the 'spectrograms' I have, overlay profiles.
+        ii      Fits and scaling!
+        iii)    
+
+    Notes.
+        It looks like Aleph is the real object of interest. Laplacian came close.
+        There's no tangible reason for this yet. The spectral properties are just... Nicer.
+        And the definition is fairly natural. 
+
+
+
+24 Nov
+	Ok. Continuing project tidying, from the ground up.
+	Main
+		Actually pretty good, just needs better integration of PDF analysis. 
+			Will get to when further down pipeline
+	gen_data
+		Does the heavy lifting - H gen and diagonalization, calls vec_to_graph
+		Would be nice to only diag to the EVs needed.
+			Now saves rescaled eigen-energies of the selected eigenvectors
+			Eigenvectors now specified in config
+	vec_to_graph	
+		Decided to keep in gen_data because simple interfacing with gen_data
+		Rebuilt trace loop because it was *horribly* inefficient last time. 
+			Previously had L*L(L-1)/2  calls to 2-body and L calls to 1-body from full dm		
+			Now has L*(L-1)/2 calls to 2-body from full dm and only L calls from 2-body to 1-body
+			May be some cool tricks to reduce calls from full dm, but higher priority is accelerating TrX
+			
+	get_network_data
+		Points at a stored .mat file and pulls various stats out of the A matrix. 
+		Needs a big cleanup!
+		Whew. Much cleaner & easier to read. Won't work with old data formats - that's ok, it's in erstwhile_somnambulist
+		And I won't generate new data until this trace is sped up. So... Let's get to that.
+
+
+
+
+
+
