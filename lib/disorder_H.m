@@ -1,5 +1,5 @@
 function [H, h_list] = disorder_H(config)
-    h_list = config.gen.W*(-1+2*rand(L,1));
+    h_list = config.gen.W*(-1+2*rand(config.gen.L,1));
 % <<<<<<< HEAD
     H_onsite = 0.5*gen_onsite(config.gen.L,h_list);
 % =======

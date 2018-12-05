@@ -26,18 +26,16 @@ config.gen.savepath = '/home/jacob/Projects/ent_loc/dat/'; % office machine
 
 
 
+config.gen.L = 12;              % System size
+config.gen.Ws = linspace(0,5,20);%linspace(1,7,10); %Disorder values
+config.gen.bc = 'periodic';     % 'periodic' or 'open'
+config.gen.num_vecs = 50;       % at 12 sites, this takes about one minute   
+config.gen.num_samples = 10;     % # of disorder realizations
+config.gen.verbose = true;          %Additional output (currently useless)
+config.gen.save = true;
 
-%% Should take about 7-8 hours
-% config.gen.L = 12;              % System size
-% config.gen.Ws = linspace(0,5,20);%linspace(1,7,10); %Disorder values
-% config.gen.bc = 'periodic';     % 'periodic' or 'open'
-% % config.gen.num_vecs = 100;       % at 12 sites, this takes about one minute   
-% config.gen.num_samples = 10;     % # of disorder realizations
-% config.gen.verbose = true;          %Additional output (currently useless)
-% config.gen.save = true;
-% % Sample from the top, middle, and bottom of the spectrum
-% config.gen.sel = [1:200:4000];
-% config.gen.num_vecs = config.gen.sel;   
+% Sample from the top, middle, and bottom of the spectrum?
+
 
 config.gen.sel
 config.viz.local = false;

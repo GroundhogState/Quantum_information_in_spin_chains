@@ -87,4 +87,42 @@ Toby's method actually looks exponentially faster - that's incredible! For a mom
 		I don't have the time or brains to do it today. So I'll re-examine some fits.
 		
 
-
+05 Dec
+	Well... My missions to speed up the trace have turned out to be fruitless.
+	However, the change in rho_to_graph is a considerable speedup - i.e. calling singletons from pairs (and removing the redundant call...)
+	So for 12 sites, the budget is
+		GENERATING H
+		FullEig 	24 sec 
+		getInteraction	8 sec
+		TRACING
+		TrX		4.2 seconds
+		78 calls to TrX per vector
+	Manage to pull getInteraction down to some tens of milliseconds by using Sparse reps
+	Obviously, TrX will be called many times. But this is actually a manageable time - especially if left running over a weekend!
+	The rest... Maybe not much can be done. Let's see if reducing the number of eigenvectors brings the FullEig time down.
+	WOW. Down to 8 seconds (could be a fluke but I'm not gonna look that in the mouth).
+		So the total time will be
+		N_samples*N_disorders*(Generation+Num_eigs*tracing) 
+		~N_samples*N_disorders*(8*(Num_eigs+1)) 
+		So the total time will be
+	And for 13 sites
+		fullEig		45 sec (with the reduced-number call)
+		TrX		21 sec for single vector
+		N_samples*N_disorders*(Generation+Num_eigs*tracing) 
+		~N_samples*N_disorders*(21*Num_eigs+45)) 
+		91 calls to TrX per vector
+	And a 13-site only provides big wins in the weight distribution. Everything else basically comes down to a sample per vector.
+	What about 11 sites?
+		Oh my goodness, it only takes one second to generate and one second to trace out.
+		66 calls to TrX.
+			There's obviously room to exploit the exponential scaling of TrX with N... But what's the optimal way?
+			Complexity of algorithm trades off runtime. And in diminishing fashion; most savings made by calling TrX less on full matrix.
+	If the goal is to run over a weekend, I think that 12 sites is good. But can get the same number of samples at L=11 in 1/4 the time... So, both?
+	OH WAIT.
+		New trace algorithm:
+			Trace out one system (1). Find all the remaining reduced dms.
+			Trace out another system (2). Find the remaining dms.
+			Find rho_12.
+			The savings are apparently HUGE
+				Well, ok. A factor of 4. Still! 6 seconds for an eigenvector of 13 sites!
+			Makes 3 more calls to TrX but uses substantially less time - can you win further with more recursion?
