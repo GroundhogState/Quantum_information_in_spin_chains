@@ -10,7 +10,7 @@ function display_network_data(in_net_data,config)
         W_list = cellfun(@(x) x.prm.W, in_net_data);
         Nmax = numel(in_net_data);
         
-        config.viz.logent = false;
+
         lap_evals = cellfun(@(x) x.L.evals, in_net_data,'UniformOutput',false);
         config.viz.scaling = false;
         config.viz.log_scaling = false;
@@ -60,24 +60,8 @@ function display_network_data(in_net_data,config)
         
      
         config.viz.fid=8;
-        config.viz.logent = true;
-        aleph_det = cellfun(@(x) prod(x.A.evals,3), in_net_data,'UniformOutput',false);
-        distribution_viz(aleph_det,'A det',config); 
-        
-        config.viz.fid=9;
-        cent = cellfun(@(x) x.G.node_centrality, in_net_data,'UniformOutput',false);
-        distribution_viz(cent,'Centrality',config); 
-        
-        config.viz.fid=10;
-        config.viz.scaling = true;
-        config.viz.log_scaling = true;
-        config.viz.num_bins = 20;
-        config.viz.cutoff = 1e-10;
-        config.viz.scale = 24;
-        config.viz.log_cutoff = 1e-8;
-        config.viz.log_scale = 20;
-        TMI = cellfun(@(x) x.P.TMI, in_net_data,'UniformOutput',false);
-        distribution_viz(TMI,'TMI',config); 
+        aleph_trc = cellfun(@(x) prod(x.A.evals), in_net_data,'UniformOutput',false);
+        distribution_viz(aleph_trc,'A trace',config); 
         
     end  
 

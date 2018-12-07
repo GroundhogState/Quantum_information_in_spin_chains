@@ -24,8 +24,8 @@ function network_data = get_network_data(data)
     % Importing parameters
     network_data.prm.L = data.L;
     network_data.prm.W = data.W;
-    network_data.prm.num_eigs = numel(data.samp{1}.sel);
-    network_data.prm.num_samples = length(data.samp);    
+    network_data.prm.num_eigs = data.num_eigs;
+    network_data.prm.num_samples = data.num_samples;    
     
     % Setting up output
     % Laplacian properties
@@ -51,9 +51,9 @@ function network_data = get_network_data(data)
 
     
     for k=1:kmax        
-        nrg_full=data.samp{k}.nrg;
-        network_data.P.nrg(k,:) = nrg_full(data.samp{k}.sel);
-        A_list = data.samp{k}.graph_data.A_list;
+%         nrg_full=data.samp{k}.nrg;
+        network_data.P.nrg(k,:) = data.samp{k}.nrg;
+        A_list = data.samp{k}.A_list;
         for ii=1:network_data.prm.num_eigs
                 
                 % Aleph properties
@@ -75,7 +75,7 @@ function network_data = get_network_data(data)
                 end
                 
                 % Laplacian properties
-                network_data.L.Laplacian(k,ii,:,:) = A_temp - diag(D_temp);    
+                network_data.L.Laplacian(k,ii,:,:) = -(A_temp - diag(D_temp));    
                 [network_data.L.evecs(k,ii,:,:),v_temp] = eigs(network_data.L.Laplacian(k,ii),data.L);
                 network_data.L.evals(k,ii,:) = diag(v_temp);
 
@@ -85,7 +85,8 @@ function network_data = get_network_data(data)
                 network_data.G.node_centrality(k,ii,:) = norm.*mu_temp; %= sum(deg_i w_ij) / avg(d_j) for all i in Neighb(j)
 
                 % Physical properties
-                network_data.P.entropy_VN(k,ii,:) = diag(Aleph);
+                network_data.P.entropy_VN(k,ii,:) = 0.5*diag(Aleph);
+                network_data.P.TMI(k,ii,:) = sum(sum(Aleph));
         end % Loop over eigenvectors
     end% Loop over samples
     
