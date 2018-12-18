@@ -126,3 +126,26 @@ Toby's method actually looks exponentially faster - that's incredible! For a mom
 			The savings are apparently HUGE
 				Well, ok. A factor of 4. Still! 6 seconds for an eigenvector of 13 sites!
 			Makes 3 more calls to TrX but uses substantially less time - can you win further with more recursion?
+
+
+10 Dec
+	The run of 13 sites completed over the weekend. 
+	Profile didn't run, but 20 samples * 41 eigenvectors * 20 W values took ~2.5 days, about expected.
+	Smaller systems are much faster. So scaling down no problem. 
+	This week:
+		* Analyse known interesting objects. 
+			* This means fits where appropriate, & descriptions elsewhere.
+		* Report on this analysis in overleaf.
+		* Ensure project is as portable as possible
+			* Happily, L13 data is only 1GB total. Google Drive?
+		* Send this week if possible. Just has to be expository, nothing flashy. 
+	Overnight run: 50 samples * 20 disorders * 100 eigenvalues at L=11.
+			TrX time: 25997s (called 6628266 times!)
+			eig time: 796s
+			Total	  29389s = 8.16 hrs
+	Morning run of L-14
+			TrX time: 41s (called 108 times!)
+			eig time: 446s in gen_data		
+		Unsurprisingly, trace over L=13 subsystems takes most TrX time. Not much to do about eig time, sadly.	
+	Run of L=10
+		* 6400s (~2 hours) for 28xW, 50 sample, 100 eigenvector

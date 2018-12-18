@@ -32,12 +32,13 @@ function network_data = get_network_data(data)
     network_data.L.Laplacian = zeros(kmax,network_data.prm.num_eigs,data.L,data.L);
     network_data.L.evals = zeros(kmax,network_data.prm.num_eigs,data.L);
     network_data.L.evecs = zeros(kmax,network_data.prm.num_eigs,data.L,data.L);
+    network_data.L.trace = zeros(kmax,network_data.prm.num_eigs);
    
     % Aleph properties
     network_data.A.Aleph = zeros(kmax,network_data.prm.num_eigs,data.L,data.L);
     network_data.A.evals = zeros(kmax,network_data.prm.num_eigs,data.L);
     network_data.A.evecs = zeros(kmax,network_data.prm.num_eigs,data.L,data.L);
-    network_data.A.trace = zeros(kmax,network_data.prm.num_eigs,data.L);
+    network_data.A.trace = zeros(kmax,network_data.prm.num_eigs);
 %     network_data.
     
     % Graph properties
@@ -61,7 +62,7 @@ function network_data = get_network_data(data)
                 network_data.A.Aleph(k,ii,:,:) = Aleph;                               
                 [network_data.A.evecs(k,ii,:,:),val_temp] = eigs(Aleph,data.L);
                 network_data.A.evals(k,ii,:) = diag(val_temp);
-                network_data.A.trace(k,ii,:) = trace(Aleph); % = 2* total onsite entropy
+                network_data.A.trace(k,ii) = trace(Aleph); % = 2* total onsite entropy
                 
                 % Generate additional properties
                 A_temp = Aleph - diag(diag(Aleph));
@@ -78,6 +79,7 @@ function network_data = get_network_data(data)
                 network_data.L.Laplacian(k,ii,:,:) = -(A_temp - diag(D_temp));    
                 [network_data.L.evecs(k,ii,:,:),v_temp] = eigs(network_data.L.Laplacian(k,ii),data.L);
                 network_data.L.evals(k,ii,:) = diag(v_temp);
+                network_data.L.trace(k,ii) = trace(squeeze(network_data.L.Laplacian(k,ii,:,:)));
 
                 % Graph properties
                 network_data.G.degree_list(k,ii,:) = D_temp;

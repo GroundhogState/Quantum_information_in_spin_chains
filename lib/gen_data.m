@@ -32,22 +32,28 @@ for i=1:numel(config.gen.Ws)
         data.num_samples = config.gen.num_samples;
         data.sel = config.gen.sel;
         for k=1:n_samp
-            if config.gen.verbose
+            if config.gen.verbose>1
                 fprintf('--Sample %u/%u\n',k,n_samp)
             end
         %% Build H
             config.gen.W = config.gen.Ws(i);
-            fprintf('-- Generating H... ')
+            if config.gen.verbose>2
+                fprintf('-- Generating H... ')
+            end
             [H, data_temp.h_list] = disorder_H(config); 
-            fprintf(' Diagonalizing... ')
+            if config.gen.verbose>2
+                fprintf(' Diagonalizing... ')
+            end
             [vecs, nrg] = eigs(full(H),max(config.gen.sel));
-            fprintf(' Done\n')
+            if config.gen.verbose>2
+                fprintf(' Done\n')
+            end
             data_temp.nrg = rescale(diag(nrg));
             data_temp.nrg = data_temp.nrg(config.gen.sel);
             %% Select vectors & build state graph Laplacian
             data_temp.sel = config.gen.sel;
             data_temp.v_sel = vecs(:,config.gen.sel);
-            data_temp.A_list = v2g_rec(data_temp.v_sel);
+            data_temp.A_list = v2g_rec(data_temp.v_sel,config);
             data.samp{k} = data_temp;
             if config.gen.save
                 fprintf(' - Saving sample')
