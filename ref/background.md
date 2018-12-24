@@ -5,9 +5,10 @@ Systems exhibiting a many-body localized phase have been extensively studied in 
 
 
 A central theme in the mathematical study of graphs is the search for heuristics of when graphs can be exactly or approximately partitioned by, for example, deleting all sufficiently weak couplings and retrieving a disjoint union of graphs. This captures the idea of cluster formation in many-body physics, and the graph construction provides several insights.
-##Graph states
 
-###Construction of graphs
+## Graph states
+
+### Construction of graphs
 
 A *graph state* usually refers to a specific construction in quantum computing theory, where a state of several qubits is constructed from a given graph by applying CNOT gates between qubits where an edge is present between the corresponding nodes in the graph. This work begins with the reversal of th. While we currently lack a rigorous definition of an efficiently computable entanglement measure in large systems, and of large mixed states, the quantum mutual information captures both classical and quantum correlations and, as I will discuss further to the existing literature, provides rich detail into the structure of many-body states. The quantum mutual information of a system composing of elements $A$ and $B$ is defined by the sub-additivity of the von Neumann entropy, $\mathcal{I}_{AB} = \mathcal{S}_A + \mathcal{S}_B - \mathcal{S}_{AB}$ ,
 
@@ -15,7 +16,7 @@ Where $\mathcal{S}_{(B)}$ is the von Neumann entropy of the reduced density matr
 
 Given the mutual information between each subsystem of a many-body system, define
 $$
-\gimel_{ij} = S(\rho_i) + S(\rho_j) - S(\rho_{ij})
+W_{ij} = S(\rho_i) + S(\rho_j) - S(\rho_{ij})
 $$
 whose positive off-diagonal $i,j$th elements are the mutual information between subsystems $i$ and $j$. By the additive property of independent systems, the diagonal entries are zero. In the parlance of graph theory, one then obtains a \textit{weighted adjacency matrix}.
 
