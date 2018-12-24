@@ -42,6 +42,3 @@ This code makes use of
 
 ## Author
 **Jacob Ross** [GroundhogState](https://github.com/groundhogstate)
-
-## License
-TODO: Pick an open-source license
