@@ -41,7 +41,7 @@ $$
 
 Which is the discrete approximation of the entropy of a continuous probability density function, defined on a histogram of $N$ bins with widths $dx_i$.
 
-![](C:\Users\jaker\Documents\ent_loc\dat\ent_data\L13_dat\out\02_Weight_distribution.png)
+![](https://github.com/GroundhogState/ent_loc/tree/master/fig/02_Weight_distribution.png)
 
 ```
 The entropy (see main body) of the weight distribution (top left)
@@ -97,7 +97,7 @@ where $\daleth$ is the diagonal matrix whose $ii$th entry is the degree of node 
 
 ## Spectral distribution
 
-![lapspec](C:\Users\jaker\Documents\ent_loc\dat\ent_data\L13_dat\out\04_Laplacian_spectral_distribution.png)
+![lapspec](https://github.com/GroundhogState/ent_loc/tree/master/fig/04_Laplacian_spectral_distribution.png)
 
 ```
 Probability distributions of the eigenvalues of the Laplacian (upper & mid left),
@@ -112,7 +112,7 @@ Note the similarity to the degree distribution.
 
 ## Trace distribution
 
-![tracedist](C:\Users\jaker\Documents\ent_loc\dat\ent_data\L13_dat\out\05_Laplacian_trace_distribution.png)
+![tracedist](https://github.com/GroundhogState/ent_loc/tree/master/fig/05_Laplacian_trace_distribution.png)
 
 
 ```
@@ -124,7 +124,7 @@ Lighter colours are higher disorder strengths.
 
 ## Entropy distributions
 
-![text](C:\Users\jaker\Documents\ent_loc\dat\ent_data\L13_dat\out\03_VN_Entropy_distribution.png)
+![text](https://github.com/GroundhogState/ent_loc/tree/master/fig/03_VN_Entropy_distribution.png)
 
 Probability density of the single-site Von Neumann entropy (upper left),
 Density plot of the Von Neumann entropy distribution versus
@@ -138,7 +138,7 @@ Otherwise, more disordered.
 Define the matrix $\aleph$ by setting the diagonal elements to the von Neumann entropy of the corresponding spin. $\aleph$ has similar properties to $L$, but $\aleph$ displays richer and more distinct variability, displaying the transformation from a simple unimodal distribution to a varied spectrum with at least five tiers of structure which are not visible in other constructions. The log-spectrum of $\aleph$ also show three distinct regimes across the localization transition.
 
 ## Spectrum
-![alephspec](C:\Users\jaker\Documents\ent_loc\dat\ent_data\L13_dat\out\06_Aleph_spectral_distribution.png)
+![alephspec](https://github.com/GroundhogState/ent_loc/tree/master/fig/06_Aleph_spectral_distribution.png)
 ```
 Probability distributions of the eigenvalues of Aleph  (upper & mid left),
 the PDFs of the log of the eigenvalues (upper & mid right),
@@ -149,7 +149,7 @@ Lighter colours are higher disorder strengths.
 
 ## Trace
 
-![alephtr](C:\Users\jaker\Documents\ent_loc\dat\ent_data\L13_dat\out\07_Aleph_trace_distribution.png)
+![alephtr](https://github.com/GroundhogState/ent_loc/tree/master/fig/07_Aleph_trace_distribution.png)
 
 
 ```
