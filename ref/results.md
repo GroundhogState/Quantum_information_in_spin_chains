@@ -42,16 +42,11 @@ $$
 
 Which is the discrete approximation of the entropy of a continuous probability density function, defined on a histogram of $N$ bins with widths $dx_i$.
 
-![weight_distribution](/fig/02_Weight_distribution.png)
 
-```
-The entropy (see main body) of the weight distribution (top left)
-shown versus disorder strength.
-Log-probability distributions for the MI of spin pairs (lower left)
-and the base-10 logarithm of the MI of spin pairs. (right column),
-shown on linear (top row0 and logarithmic (middle row) scales.
+| ![weight_distribution](/fig/02_Weight_distribution.png) |
+|:--:|
+**Figure 1.** The entropy (see main body) of the weight distribution (top left) shown versus disorder strength. and the base-10 logarithm of the MI of spin pairs. (right column), Log-probability distributions for the MI of spin pairs(lower left) shown on linear (top row0 and logarithmic (middle row) scales. |
 
-```
 
 In the localized phase, the weight distribution is sharply peaked. In the localized phase, the distribution is visible broader, with many more edges at much lower strengths than the localized phase (note the negative log in the horizontal axis). CDF to be included in appendix.
 
@@ -63,16 +58,10 @@ In the localized phase, the weight distribution is sharply peaked. In the locali
 Define the *degree* of a node in a graph by the sum of the weights of all the edges connected to it, $\daleth_i = \sum_j \mathcal{\gimel}_{ij}$, i.e the sum of the $i$th row of the adjacency matrix (for undirected graphs, this is also the column sum).
 
 
-![degree_dist](/fig/01_Degree_distribution.png)
+|![degree_dist](/fig/01_Degree_distribution.png)|
+|:--:|
+**Figure 2** Probability distributions for the degree (left) and the base-10 logarithm of the degree (right),shown on linear (top row0 and logarithmic (middle row). Also, the entropy (in Jaynes' sense) of these distrutions (bottom row) shown versus disorder strength.|
 
-```
-Probability distributions for the degree (left)
-and the base-10 logarithm of the degree (right),
-shown on linear (top row0 and logarithmic (middle row).
-Also, the entropy (in Jaynes' sense) of these distrutions (bottom row)
- shown versus disorder strength
-
-```
 In the extended phase, most nodes are equally well connected, with some more strongly than the mode. In the extended phase, most degrees are quite weak, reflecting poorly-connected nodes, with a small probability of being more strongly connected. The log-log plot suggests a power-law scaling of the probability of finding a node with a given degree, which is characteristic of scale-free graphs. Notice that for small disorder strength past the onset of localization, the mode of the degree distribution actually increases, suggesting a strengthening of the overall mutual information integration (CLARIFY) in the system.  The degree distribution exhibits a much clearer distinction thann the weight distribution between the localized and extended phases in its density diagram. Moreover, the probability distributions themselves have markedly different shapes, but I propose they are parametrized by a single probability distribution.
 
 
@@ -98,69 +87,40 @@ where $\daleth$ is the diagonal matrix whose $ii$th entry is the degree of node 
 
 ## Spectral distribution
 
-![laplacian_spectrum](/fig/04_Laplacian_spectral_distribution.png)
-
-```
-Probability distributions of the eigenvalues of the Laplacian (upper & mid left),
-the PDFs of the log of the eigenvalues (upper & mid right),
-and the Shannon entropy (lower row) of the distributions versus disorder.
-Lighter colours are higher disorder strengths.
-What's up with lower right?!
-```
-
+|![laplacian_spectrum](/fig/04_Laplacian_spectral_distribution.png)|
+|:--:|
+Probability distributions of the eigenvalues of the Laplacian (upper & mid left), the PDFs of the log of the eigenvalues (upper & mid right), and the Shannon entropy (lower row) of the distributions versus disorder. Lighter colours are higher disorder strengths. What's up with lower right?!|
 
 Note the similarity to the degree distribution.
 
 ## Trace distribution
 
-![laplacian_trace](/fig/05_Laplacian_trace_distribution.png)
-
-
-```
-Probability distributions of the trace of the Laplacian (upper & mid left),
-the PDFs of the log of the trace (upper & mid right),
-and the Shannon entropy (lower row) of the distributions versus disorder.
-Lighter colours are higher disorder strengths.
-```
+|![laplacian_trace](/fig/05_Laplacian_trace_distribution.png)|
+|:--:|
+Probability distributions of the trace of the Laplacian (upper & mid left), the PDFs of the log of the trace (upper & mid right), and the Shannon entropy (lower row) of the distributions versus disorder. Lighter colours are higher disorder strengths.|
 
 # Properties of $\aleph$
 
 ## Entropy distributions
 
-![VN_entropy](/fig/03_VN_Entropy_distribution.png)
-```
-Probability density of the single-site Von Neumann entropy (upper left),
-Density plot of the Von Neumann entropy distribution versus
-disorder bandwidth (upper right),
-Logscale plot of the PDF of the Von Neumann entropy distribution (lower left),
-Shannon entropy of the PDF of the Von Neumann entropy (lower right)
-In the upper right, lighter colours are higher density.
-Otherwise, more disordered.
-```
+|![VN_entropy](/fig/03_VN_Entropy_distribution.png)|
+|:--:|
+Probability density of the single-site Von Neumann entropy (upper left), Density plot of the Von Neumann entropy distribution versus disorder bandwidth (upper right), Logscale plot of the PDF of the Von Neumann entropy distribution (lower left), Shannon entropy of the PDF of the Von Neumann entropy (lower right) In the upper right, lighter colours are higher density. Otherwise, more disordered.|
 
 Define the matrix $\aleph$ by setting the diagonal elements to the von Neumann entropy of the corresponding spin. $\aleph$ has similar properties to $L$, but $\aleph$ displays richer and more distinct variability, displaying the transformation from a simple unimodal distribution to a varied spectrum with at least five tiers of structure which are not visible in other constructions. The log-spectrum of $\aleph$ also show three distinct regimes across the localization transition.
 
 ## Spectrum
-![aleph_spectrum](/fig/06_Aleph_spectral_distribution.png)
-```
-Probability distributions of the eigenvalues of Aleph  (upper & mid left),
-the PDFs of the log of the eigenvalues (upper & mid right),
-and the Shannon entropy (lower row) of the distributions versus disorder.
-Lighter colours are higher disorder strengths.
-```
+
+|![aleph_spectrum](/fig/06_Aleph_spectral_distribution.png)|
+|:--:|
+Probability distributions of the eigenvalues of Aleph  (upper & mid left), the PDFs of the log of the eigenvalues (upper & mid right), and the Shannon entropy (lower row) of the distributions versus disorder. Lighter colours are higher disorder strengths.|
 
 
 ## Trace
 
-![aleph_trace](/fig/07_Aleph_trace_distribution.png)
-
-
-```
-Probability distributions of the trace of the Aleph (upper & mid left),
-the PDFs of the log of the trace (upper & mid right),
-and the Shannon entropy (lower row) of the distributions versus disorder.
-Lighter colours are higher disorder strengths.
-```
+|![aleph_trace](/fig/07_Aleph_trace_distribution.png)|
+|:--:|
+Probability distributions of the trace of the Aleph (upper & mid left), the PDFs of the log of the trace (upper & mid right), and the Shannon entropy (lower row) of the distributions versus disorder. Lighter colours are higher disorder strengths.|
 # ====
 
 # TODO
