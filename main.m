@@ -20,21 +20,21 @@ close all
     
     % Try fast-trace
 %% Generate data
-config.gen.savepath = '/home/jacob/Projects/ent_loc/dat/'; % office machine
-% % savepath = 'C:\Users\jaker\Documents\MATLAB\ent_loc\dat\'; %notebook
-% % savepath = '/home/j/Documents/MATLAB/ent_loc/dat/20181111-20L13/'; %Home machine
+% config.gen.savepath = '/home/jacob/Projects/ent_loc/dat/'; % office machine
+savepath = 'C:\Users\jaker\Documents\ent_loc\dat\'; %notebook
+% savepath = '/home/j/Documents/MATLAB/ent_loc/dat/20181111-20L13/'; %Home machine
 
 
 
-config.gen.L = 13;              % System size
-config.gen.Ws = linspace(1,8,10); %Disorder values
+config.gen.L = 4;              % System size
+config.gen.Ws = 6; %Disorder values
 config.gen.bc = 'periodic';     % 'periodic' or 'open'
-config.gen.num_samples = 8;     % # of disorder realizations
+config.gen.num_samples = 1;     % # of disorder realizations
 config.gen.verbose = true;          %Additional output (currently useless)
 config.gen.profile = true;      % Runs profiler over the generation loop
 
 % Now sampling from middle of spectrum
-config.gen.num_vecs = 15;            
+config.gen.num_vecs = 1;            
 config.gen.sel = (2^config.gen.L)/2-config.gen.num_vecs:(2^config.gen.L)/2+config.gen.num_vecs; 
 
 config.viz.local = false;
@@ -51,7 +51,6 @@ config.viz.scaling = false;
 clear net_data;
 net_data = cell(numel(config.gen.Ws,1));
 for N=1:numel(config.gen.Ws)
-    N
     fname = [config.gen.savepath,'L-',num2str(config.gen.L),'-W',num2str(config.gen.Ws(N)),...
         '-N',num2str(config.gen.num_vecs),'-PBC.mat'];
     data = load(fname);
