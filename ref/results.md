@@ -122,6 +122,8 @@ and the Shannon entropy (lower row) of the distributions versus disorder.
 Lighter colours are higher disorder strengths.
 ```
 
+# Properties of $\aleph$
+
 ## Entropy distributions
 
 ![text](https://github.com/GroundhogState/ent_loc/blob/master/fig/03_VN_Entropy_distribution.png)
@@ -133,12 +135,12 @@ Logscale plot of the PDF of the Von Neumann entropy distribution (lower left),
 Shannon entropy of the PDF of the Von Neumann entropy (lower right)
 In the upper right, lighter colours are higher density.
 Otherwise, more disordered.
-# Properties of $\aleph$
+
 
 Define the matrix $\aleph$ by setting the diagonal elements to the von Neumann entropy of the corresponding spin. $\aleph$ has similar properties to $L$, but $\aleph$ displays richer and more distinct variability, displaying the transformation from a simple unimodal distribution to a varied spectrum with at least five tiers of structure which are not visible in other constructions. The log-spectrum of $\aleph$ also show three distinct regimes across the localization transition.
 
 ## Spectrum
-![alephspec](https://github.com/GroundhogState/ent_loc/tree/master/fig/06_Aleph_spectral_distribution.png)
+![alephspec](https://github.com/GroundhogState/ent_loc/blob/master/fig/06_Aleph_spectral_distribution.png)
 ```
 Probability distributions of the eigenvalues of Aleph  (upper & mid left),
 the PDFs of the log of the eigenvalues (upper & mid right),
@@ -149,7 +151,7 @@ Lighter colours are higher disorder strengths.
 
 ## Trace
 
-![alephtr](https://github.com/GroundhogState/ent_loc/tree/master/fig/07_Aleph_trace_distribution.png)
+![alephtr](https://github.com/GroundhogState/ent_loc/blob/master/fig/07_Aleph_trace_distribution.png)
 
 
 ```
