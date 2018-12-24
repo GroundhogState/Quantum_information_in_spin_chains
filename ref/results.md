@@ -41,7 +41,7 @@ $$
 
 Which is the discrete approximation of the entropy of a continuous probability density function, defined on a histogram of $N$ bins with widths $dx_i$.
 
-![](https://github.com/GroundhogState/ent_loc/blob/master/fig/02_Weight_distribution.png)
+![](/fig/02_Weight_distribution.png)
 
 ```
 The entropy (see main body) of the weight distribution (top left)
@@ -62,7 +62,7 @@ In the localized phase, the weight distribution is sharply peaked. In the locali
 Define the *degree* of a node in a graph by the sum of the weights of all the edges connected to it, $\daleth_i = \sum_j \mathcal{\gimel}_{ij}$, i.e the sum of the $i$th row of the adjacency matrix (for undirected graphs, this is also the column sum).
 
 
-![alt text](https://github.com/GroundhogState/ent_loc/blob/master/fig/01_Degree_distribution.png)
+![degree_dist](/fig/01_Degree_distribution.png)
 
 ```
 Probability distributions for the degree (left)
@@ -97,7 +97,7 @@ where $\daleth$ is the diagonal matrix whose $ii$th entry is the degree of node 
 
 ## Spectral distribution
 
-![laplacian_spectrum](https://github.com/GroundhogState/ent_loc/blob/master/fig/04_Laplacian_spectral_distribution.png)
+![laplacian_spectrum](/fig/04_Laplacian_spectral_distribution.png)
 
 ```
 Probability distributions of the eigenvalues of the Laplacian (upper & mid left),
@@ -112,7 +112,7 @@ Note the similarity to the degree distribution.
 
 ## Trace distribution
 
-![laplacian_trace](https://github.com/GroundhogState/ent_loc/blob/master/fig/05_Laplacian_trace_distribution.png)
+![laplacian_trace](/fig/05_Laplacian_trace_distribution.png)
 
 
 ```
@@ -126,7 +126,7 @@ Lighter colours are higher disorder strengths.
 
 ## Entropy distributions
 
-![VN_entropy](https://github.com/GroundhogState/ent_loc/blob/master/fig/03_VN_Entropy_distribution.png)
+![VN_entropy](/fig/03_VN_Entropy_distribution.png)
 ```
 Probability density of the single-site Von Neumann entropy (upper left),
 Density plot of the Von Neumann entropy distribution versus
@@ -140,7 +140,7 @@ Otherwise, more disordered.
 Define the matrix $\aleph$ by setting the diagonal elements to the von Neumann entropy of the corresponding spin. $\aleph$ has similar properties to $L$, but $\aleph$ displays richer and more distinct variability, displaying the transformation from a simple unimodal distribution to a varied spectrum with at least five tiers of structure which are not visible in other constructions. The log-spectrum of $\aleph$ also show three distinct regimes across the localization transition.
 
 ## Spectrum
-![aleph_spectrum](https://github.com/GroundhogState/ent_loc/blob/master/fig/06_Aleph_spectral_distribution.png)
+![aleph_spectrum](/fig/06_Aleph_spectral_distribution.png)
 ```
 Probability distributions of the eigenvalues of Aleph  (upper & mid left),
 the PDFs of the log of the eigenvalues (upper & mid right),
@@ -151,7 +151,7 @@ Lighter colours are higher disorder strengths.
 
 ## Trace
 
-![aleph_trace](https://github.com/GroundhogState/ent_loc/blob/master/fig/07_Aleph_trace_distribution.png)
+![aleph_trace](/fig/07_Aleph_trace_distribution.png)
 
 
 ```
