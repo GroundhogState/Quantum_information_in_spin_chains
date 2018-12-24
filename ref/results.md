@@ -97,7 +97,7 @@ where $\daleth$ is the diagonal matrix whose $ii$th entry is the degree of node 
 
 ## Spectral distribution
 
-![lapspec](https://github.com/GroundhogState/ent_loc/tree/master/fig/04_Laplacian_spectral_distribution.png)
+![lapspec](https://github.com/GroundhogState/ent_loc/blob/master/fig/04_Laplacian_spectral_distribution.png)
 
 ```
 Probability distributions of the eigenvalues of the Laplacian (upper & mid left),
@@ -112,7 +112,7 @@ Note the similarity to the degree distribution.
 
 ## Trace distribution
 
-![tracedist](https://github.com/GroundhogState/ent_loc/tree/master/fig/05_Laplacian_trace_distribution.png)
+![tracedist](https://github.com/GroundhogState/ent_loc/blob/master/fig/05_Laplacian_trace_distribution.png)
 
 
 ```
@@ -124,7 +124,7 @@ Lighter colours are higher disorder strengths.
 
 ## Entropy distributions
 
-![text](https://github.com/GroundhogState/ent_loc/tree/master/fig/03_VN_Entropy_distribution.png)
+![text](https://github.com/GroundhogState/ent_loc/blob/master/fig/03_VN_Entropy_distribution.png)
 
 Probability density of the single-site Von Neumann entropy (upper left),
 Density plot of the Von Neumann entropy distribution versus
