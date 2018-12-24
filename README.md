@@ -8,7 +8,7 @@ For a primer on the physics background to this project, read the [background](re
 
 The findings of this project are reported in [results](ref/results.md).
 
-To use the code, see Usage. (link)
+To use the code, see **Usage**.
 
 ### Prerequisites
 
@@ -26,22 +26,22 @@ This code makes use of
 
 ## Usage
 
-TODO
 * Generating data
   * Data formatting
   * Importing Data
+  * Some test data can be retrieved from my [Google drive](https://drive.google.com/open?id=1AL4ht4CKF_xUYg2D3hfJzdQP8q6KcRUO), request for invite.
 *  Processing
 *  Presentation
 
 
+
 ### Algorithms
 
-TODO
 * Generating eigenstates
 * Trace graphs
 
 ## Author
-**Jacob Ross** [GroundhogState](https://github.com/groundhogstate)- *Initial concept & MATLAB prototype*
+**Jacob Ross** [GroundhogState](https://github.com/groundhogstate)
 
 ## License
 TODO: Pick an open-source license

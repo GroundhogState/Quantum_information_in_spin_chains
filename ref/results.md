@@ -97,7 +97,7 @@ where $\daleth$ is the diagonal matrix whose $ii$th entry is the degree of node 
 
 ## Spectral distribution
 
-![lapspec](https://github.com/GroundhogState/ent_loc/blob/master/fig/04_Laplacian_spectral_distribution.png)
+![laplacian_spectrum](https://github.com/GroundhogState/ent_loc/blob/master/fig/04_Laplacian_spectral_distribution.png)
 
 ```
 Probability distributions of the eigenvalues of the Laplacian (upper & mid left),
@@ -112,7 +112,7 @@ Note the similarity to the degree distribution.
 
 ## Trace distribution
 
-![tracedist](https://github.com/GroundhogState/ent_loc/blob/master/fig/05_Laplacian_trace_distribution.png)
+![laplacian_trace](https://github.com/GroundhogState/ent_loc/blob/master/fig/05_Laplacian_trace_distribution.png)
 
 
 ```
@@ -126,8 +126,8 @@ Lighter colours are higher disorder strengths.
 
 ## Entropy distributions
 
-![text](https://github.com/GroundhogState/ent_loc/blob/master/fig/03_VN_Entropy_distribution.png)
-
+![VN_entropy](https://github.com/GroundhogState/ent_loc/blob/master/fig/03_VN_Entropy_distribution.png)
+```
 Probability density of the single-site Von Neumann entropy (upper left),
 Density plot of the Von Neumann entropy distribution versus
 disorder bandwidth (upper right),
@@ -135,12 +135,12 @@ Logscale plot of the PDF of the Von Neumann entropy distribution (lower left),
 Shannon entropy of the PDF of the Von Neumann entropy (lower right)
 In the upper right, lighter colours are higher density.
 Otherwise, more disordered.
-
+```
 
 Define the matrix $\aleph$ by setting the diagonal elements to the von Neumann entropy of the corresponding spin. $\aleph$ has similar properties to $L$, but $\aleph$ displays richer and more distinct variability, displaying the transformation from a simple unimodal distribution to a varied spectrum with at least five tiers of structure which are not visible in other constructions. The log-spectrum of $\aleph$ also show three distinct regimes across the localization transition.
 
 ## Spectrum
-![alephspec](https://github.com/GroundhogState/ent_loc/blob/master/fig/06_Aleph_spectral_distribution.png)
+![aleph_spectrum](https://github.com/GroundhogState/ent_loc/blob/master/fig/06_Aleph_spectral_distribution.png)
 ```
 Probability distributions of the eigenvalues of Aleph  (upper & mid left),
 the PDFs of the log of the eigenvalues (upper & mid right),
@@ -151,7 +151,7 @@ Lighter colours are higher disorder strengths.
 
 ## Trace
 
-![alephtr](https://github.com/GroundhogState/ent_loc/blob/master/fig/07_Aleph_trace_distribution.png)
+![aleph_trace](https://github.com/GroundhogState/ent_loc/blob/master/fig/07_Aleph_trace_distribution.png)
 
 
 ```
@@ -160,7 +160,7 @@ the PDFs of the log of the trace (upper & mid right),
 and the Shannon entropy (lower row) of the distributions versus disorder.
 Lighter colours are higher disorder strengths.
 ```
-# =============================================================================
+# ====
 
 # TODO
 *  Centrality measures
@@ -171,7 +171,3 @@ Lighter colours are higher disorder strengths.
 *  Plot scale parameters vs W & guess functional form
 *  Pick a reference length & apply scaling transform
 *  Extend to bose hubbard model
-
-
-# Centrality
-One can phrase the question of centrality in other ways. For example, given a node of high degree, how likely is it to be connected to other nodes of high degree? Figure 3 shows the PDF and CDF of the weighted mean of neighbours. $\mu$ compares the mean of the degree of the neighbours of $i$ to the mean degree of all nodes other than $i$.  A value of $\mu_i=0$ shows that system $i$ is poorly connected, as either it has neighbours of low degree or it has only weak connections or both. A large $\mu_i$ indicates that the nodes connected strongly to system $i$ are also strongly connected relative to the mean, and so form a central cluster in the global system. For the localized phase, the distribution of $\mu$ peaks sharply at 1, showing that almost all nodes are equally central - the graph is nearly uniformly completely connected.
