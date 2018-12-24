@@ -1,4 +1,5 @@
 # Contents
+
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Contents](#contents)
@@ -13,7 +14,7 @@
 - [Properties of $\aleph$](#properties-of-aleph)
 	- [Spectrum](#spectrum)
 	- [Trace](#trace)
-- [=============================================================================](#)
+- [====](#)
 - [TODO](#todo)
 - [Centrality](#centrality)
 
