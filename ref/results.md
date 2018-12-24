@@ -62,7 +62,7 @@ In the localized phase, the weight distribution is sharply peaked. In the locali
 Define the *degree* of a node in a graph by the sum of the weights of all the edges connected to it, $\daleth_i = \sum_j \mathcal{\gimel}_{ij}$, i.e the sum of the $i$th row of the adjacency matrix (for undirected graphs, this is also the column sum).
 
 
-![alt text](C:\Users\jaker\Documents\ent_loc\dat\ent_data\L13_dat\out\01_Degree_distribution.png "Logo Title Text 1")
+![alt text](https://github.com/GroundhogState/ent_loc/blob/master/fig/01_Degree_distribution.png)
 
 ```
 Probability distributions for the degree (left)
