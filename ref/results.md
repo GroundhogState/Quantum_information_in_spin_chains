@@ -41,7 +41,7 @@ $$
 
 Which is the discrete approximation of the entropy of a continuous probability density function, defined on a histogram of $N$ bins with widths $dx_i$.
 
-![](https://github.com/GroundhogState/ent_loc/tree/master/fig/02_Weight_distribution.png)
+![](https://github.com/GroundhogState/ent_loc/blob/master/fig/02_Weight_distribution.png)
 
 ```
 The entropy (see main body) of the weight distribution (top left)
