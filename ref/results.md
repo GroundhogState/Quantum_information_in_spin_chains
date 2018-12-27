@@ -40,7 +40,7 @@ $$
 \Omega = - \sum_{i =1,\dots, N} p(x_i) \log p(x_i ) dx_i
 $$
 
-Which is the discrete approximation of the entropy of a continuous probability density function, defined on a histogram of $N$ bins with widths $dx_i$.
+Which is the discrete approximation of the entropy of a continuous probability density function, defined on a histogram of $N$ bins with widths $dx_i$. Note that the plots below vary in bin size. This just scales the entropy by a constant, so you can more or less ignore the vertical scales.
 
 
 | ![weight_distribution](/fig/02_Weight_distribution.png) |
@@ -87,7 +87,7 @@ where $\daleth$ is the diagonal matrix whose $ii$th entry is the degree of node 
 
 ## Spectral distribution
 
-|![laplacian_spectrum](/fig/04_Laplacian_spectral_distribution.png)|
+|![laplacian_spectrum](/fig/03_Laplacian_spectral_distribution.png)|
 |:--:|
 Probability distributions of the eigenvalues of the Laplacian (upper & mid left), the PDFs of the log of the eigenvalues (upper & mid right), and the Shannon entropy (lower row) of the distributions versus disorder. Lighter colours are higher disorder strengths. What's up with lower right?!|
 
@@ -95,19 +95,19 @@ Note the similarity to the degree distribution.
 
 ## Trace distribution
 
-|![laplacian_trace](/fig/05_Laplacian_trace_distribution.png)|
+|![laplacian_trace](/fig/04_Laplacian_trace_distribution.png)|
 |:--:|
 Probability distributions of the trace of the Laplacian (upper & mid left), the PDFs of the log of the trace (upper & mid right), and the Shannon entropy (lower row) of the distributions versus disorder. Lighter colours are higher disorder strengths.|
 
 # Properties of $\aleph$
 
-## Entropy distributions
+Define the matrix $\aleph$ by setting the diagonal elements to the von Neumann entropy of the corresponding spin. From this construction one can also retrieve the von Neumann entropy of any two-body density matrix. $\aleph$ has similar properties to $L$, but $\aleph$ displays richer and more distinct variability, displaying the transformation from a simple unimodal distribution to a varied spectrum with at least five tiers of structure which are not visible in other constructions. The log-spectrum of $\aleph$ also show three distinct regimes across the localization transition.
 
-|![VN_entropy](/fig/03_VN_Entropy_distribution.png)|
+## Entropy distributions
+|![VN_entropy](/fig/05_Single-site_entropy.png)|
 |:--:|
 Probability density of the single-site Von Neumann entropy (upper left), Density plot of the Von Neumann entropy distribution versus disorder bandwidth (upper right), Logscale plot of the PDF of the Von Neumann entropy distribution (lower left), Shannon entropy of the PDF of the Von Neumann entropy (lower right) In the upper right, lighter colours are higher density. Otherwise, more disordered.|
 
-Define the matrix $\aleph$ by setting the diagonal elements to the von Neumann entropy of the corresponding spin. $\aleph$ has similar properties to $L$, but $\aleph$ displays richer and more distinct variability, displaying the transformation from a simple unimodal distribution to a varied spectrum with at least five tiers of structure which are not visible in other constructions. The log-spectrum of $\aleph$ also show three distinct regimes across the localization transition.
 
 ## Spectrum
 
@@ -121,10 +121,21 @@ Probability distributions of the eigenvalues of Aleph  (upper & mid left), the P
 |![aleph_trace](/fig/07_Aleph_trace_distribution.png)|
 |:--:|
 Probability distributions of the trace of the Aleph (upper & mid left), the PDFs of the log of the trace (upper & mid right), and the Shannon entropy (lower row) of the distributions versus disorder. Lighter colours are higher disorder strengths.|
+
+## Missing information
+
+Observe that for a pure bipartite system, the sum of the reduced entropies minus the QMI must be zero. For multipartite systems,  the reduced entropies minus the pairwise QMI and the QMI between tuples of systems must be the entropy of the total system (zero for a pure state).
+
+Therefore define the 'missing' information as the difference $\sum_i S_i - \sum_{ij} I_{ij}$:
+|![aleph_trace](/fig/08_TMI.png)|
+|:--:|
+The greater the missing information, the more information is tied up in the higher-order correlations. For low disorder, the highly entangled eigenstates are 'missing' much more information than the localized ones, where long-distance correlations are reduced.|
+
 # ====
 
 # TODO
 *  Centrality measures
+*  Fielder vectors/partitions        
 *  replace images with web links
 *  Correlation lengths & graph linear algebra - length scales
 *  Scaling
@@ -132,3 +143,10 @@ Probability distributions of the trace of the Aleph (upper & mid left), the PDFs
 *  Plot scale parameters vs W & guess functional form
 *  Pick a reference length & apply scaling transform
 *  Extend to bose hubbard model
+* Plot distribution entropies vs W for various L on same plot
+* two-body reduced entropies
+* What is the interpretation of these spectra?
+* Area/Volume law
+* disorder Temperature?!
+* L-bits ~ decomposition into (approximate) union of subgraphs?
+* composition as (generalized) graph product
