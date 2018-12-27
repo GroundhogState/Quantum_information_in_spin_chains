@@ -1,0 +1,102 @@
+
+
+config.viz.outpath = fullfile([config.gen.savepath,'out/']);
+% % First, examine the graph structure:
+% % Weight distribution
+config.viz.weight.W_list = cellfun(@(x) x.prm.W, net_data);
+config.viz.weight.Nmax = numel(net_data);
+config.viz.weight.cutoff = 1e-15;
+config.viz.weight.scaling = true;
+config.viz.weight.log_scaling = false;
+config.viz.weight.num_bins = 28;
+config.viz.weight.win = [0,2];
+config.viz.weight.scale = 1;
+config.viz.weight.log_win = [-1,14];
+config.viz.weight.log_scale = 1;
+config.viz.weight.fid=1;
+config.viz.weight.fig_title = 'Weight distribution';
+
+% % Degree distribution
+config.viz.degree.W_list = cellfun(@(x) x.prm.W, net_data);
+config.viz.degree.Nmax = numel(net_data);
+config.viz.degree.cutoff = 1e-15;
+config.viz.degree.scaling = false;
+config.viz.degree.log_scaling = false;
+config.viz.degree.num_bins = 20;
+config.viz.degree.win = [0,3];
+config.viz.degree.scale = 1;
+config.viz.degree.log_win = [-log10(3),9];
+config.viz.degree.log_scale = 1;
+config.viz.degree.fid=2;
+config.viz.degree.fig_title='Degree distribution';
+
+% Measures of connectedness
+
+% % Algebraic properties: A vs L
+
+% Spectrum
+config.viz.A_spec.W_list = cellfun(@(x) x.prm.W, net_data);
+config.viz.A_spec.Nmax = numel(net_data);
+config.viz.A_spec.cutoff = 1e-15;
+config.viz.A_spec.scaling = false;
+config.viz.A_spec.log_scaling = false;
+config.viz.A_spec.num_bins = 20;
+config.viz.A_spec.win = [0,5];
+config.viz.A_spec.scale = 1;
+config.viz.A_spec.log_win = [-2,9];
+config.viz.A_spec.log_scale = 1;
+config.viz.A_spec.fid=11;
+config.viz.A_spec.fig_title='Aleph spectral distribution';
+
+
+config.viz.L_spec.W_list = cellfun(@(x) x.prm.W, net_data);
+config.viz.L_spec.Nmax = numel(net_data);
+config.viz.L_spec.cutoff = 1e-15;
+config.viz.L_spec.scaling = false;
+config.viz.L_spec.log_scaling = false;
+config.viz.L_spec.num_bins = 20;
+config.viz.L_spec.win = [0,0.21];
+config.viz.L_spec.scale = 1;
+config.viz.L_spec.log_win = [-log10(3),9];
+config.viz.L_spec.log_scale = 1;
+config.viz.L_spec.fid=12;
+config.viz.L_spec.fig_title='Laplacian spectral distribution';
+% Single eigenvalues?
+
+% % Trace
+config.viz.A_trace.W_list = cellfun(@(x) x.prm.W, net_data);
+config.viz.Nmax = numel(net_data);
+config.viz.cutoff = 1e-15;
+config.viz.scaling = false;
+config.viz.log_scaling = false;
+config.viz.num_bins = 20;
+config.viz.win = [0,26];
+config.viz.scale = 1;
+config.viz.log_win = [-1.5,0];
+config.viz.log_scale = 1;
+config.viz.fid=21;
+config.viz.fig_title='Aleph trace distribution';
+
+config.viz.W_list = cellfun(@(x) x.prm.W, net_data);
+config.viz.Nmax = numel(net_data);
+config.viz.cutoff = 1e-15;
+config.viz.scaling = false;
+config.viz.log_scaling = false;
+config.viz.num_bins = 20;
+config.viz.win = [0,26];
+config.viz.scale = 1;
+config.viz.log_win = [-1.5,0];
+config.viz.log_scale = 1;
+config.viz.fid=22;
+config.viz.fig_title='Laplacian trace distribution';
+% What's in the eigenvectors?
+
+% % 'Physical' stuff
+
+% VN entropy distribution
+config.viz.fig_title = 'VN Entropy distribution';
+config.viz.fid=31;
+config.viz.num_bins = 150;
+
+
+

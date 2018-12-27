@@ -107,7 +107,7 @@ Probability distributions of the trace of the Laplacian (upper & mid left), the 
 |:--:|
 Probability density of the single-site Von Neumann entropy (upper left), Density plot of the Von Neumann entropy distribution versus disorder bandwidth (upper right), Logscale plot of the PDF of the Von Neumann entropy distribution (lower left), Shannon entropy of the PDF of the Von Neumann entropy (lower right) In the upper right, lighter colours are higher density. Otherwise, more disordered.|
 
-Define the matrix $\aleph$ by setting the diagonal elements to the von Neumann entropy of the corresponding spin. $\aleph$ has similar properties to $L$, but $\aleph$ displays richer and more distinct variability, displaying the transformation from a simple unimodal distribution to a varied spectrum with at least five tiers of structure which are not visible in other constructions. The log-spectrum of $\aleph$ also show three distinct regimes across the localization transition.
+Define the matrix $\aleph$ by setting the diagonal elements to the von Neumann entropy of the corresponding spin. From this construction one can also retrieve the von Neumann entropy of any two-body density matrix. $\aleph$ has similar properties to $L$, but $\aleph$ displays richer and more distinct variability, displaying the transformation from a simple unimodal distribution to a varied spectrum with at least five tiers of structure which are not visible in other constructions. The log-spectrum of $\aleph$ also show three distinct regimes across the localization transition.
 
 ## Spectrum
 

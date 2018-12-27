@@ -50,7 +50,6 @@ for i=1:numel(config.gen.Ws)
             end
             data_temp.nrg = rescale(diag(nrg));
             data_temp.nrg = data_temp.nrg(config.gen.sel);
-            %% Select vectors & build state graph Laplacian
             data_temp.sel = config.gen.sel;
             data_temp.v_sel = vecs(:,config.gen.sel);
             data_temp.A_list = v2g_rec(data_temp.v_sel,config);

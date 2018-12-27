@@ -1,0 +1,113 @@
+% close all
+
+%% Generating data
+config.gen.L = 13;              % System size
+config.gen.bc = 'periodic';     % 'periodic' or 'open'
+config.gen.Ws = linspace(0,8,20);  %Disorder strengths
+config.gen.num_samples = 20;     % # of disorder realizations
+config.gen.sel = 4040:4080;
+config.gen.num_vecs = numel(config.gen.sel);
+config.gen.save = true;
+config.gen.savepath = '/home/jacob/Projects/ent_loc/dat/L13_dat/';
+% Sample from the middle of the spectrum
+
+%% CAREFUL, this can take a long time to execute.
+% Generate eigenstate data
+% % gen_data(config);
+
+%% Import & Process
+% % Visualize & analyze results
+
+config.gen.savepath = 'C:\Users\jaker\Documents\ent_loc\dat\ent_data\L10_dat\';
+[~,foldername,~] = fileparts(config.gen.savepath(1:end-1));
+% fwtext({'Starting graph import & process from %s',foldername})
+% net_data = import_network_data(config);
+fwtext({'
+agg_data{1}= system_proc(net_data,config);
+
+%%
+
+
+fwtext('Main complete');
+kmax = numel(agg_data);
+%%
+cm2 = colormap(magma(5));
+
+% plot_over_L('weights
+
+weight_entropy = cellfun(@(x) x.weights.entropy/x.weights.entropy(1), agg_data,'UniformOutput',false);
+sfigure(41);
+for k=1:kmax
+    plot(weight_entropy{k},'Color',cm2(k,:))
+    hold on
+end
+title('Weight entropy')
+legend('L=10','L=11','L=12','L=13')
+
+degree_entropy = cellfun(@(x) x.degree.entropy/x.degree.entropy(1), agg_data,'UniformOutput',false);
+sfigure(42);
+for k=1:kmax
+    plot(degree_entropy{k},'Color',cm2(k,:))
+    hold on
+end
+title('Degree entropy')
+legend('L=10','L=11','L=12','L=13')
+
+lap_spec_entropy = cellfun(@(x) x.lap_spec.entropy/x.lap_spec.entropy(1), agg_data,'UniformOutput',false);
+sfigure(43);
+for k=1:kmax
+    plot(lap_spec_entropy{k},'Color',cm2(k,:))
+    hold on
+end
+title('Lap spec entropy')
+legend('L=10','L=11','L=12','L=13')
+
+aleph_spec_entropy = cellfun(@(x) x.aleph_spec.entropy/x.aleph_spec.entropy(1), agg_data,'UniformOutput',false);
+sfigure(44);
+for k=1:kmax
+    plot(aleph_spec_entropy{k},'Color',cm2(k,:))
+    hold on
+end
+title('Aleph spec entropy')
+legend('L=10','L=11','L=12','L=13')
+
+lap_trace_entropy = cellfun(@(x) x.lap_trace.entropy/x.lap_trace.entropy(1), agg_data,'UniformOutput',false);
+sfigure(45);
+for k=1:kmax
+    plot(lap_trace_entropy{k},'Color',cm2(k,:))
+    hold on
+end
+title('Lap trace entropy')
+legend('L=10','L=11','L=12','L=13')
+
+aleph_trace_entropy = cellfun(@(x) x.aleph_trace.entropy/x.aleph_trace.entropy(1), agg_data,'UniformOutput',false);
+sfigure(46);
+for k=1:kmax
+    plot(aleph_trace_entropy{k},'Color',cm2(k,:))
+    hold on
+end
+title('Aleph trace entropy')
+legend('L=10','L=11','L=12','L=13')
+
+
+%% To DO
+% What is the interpretation of these spectra?
+% Sum of all weights ~ distance from locality ~ divergence from volume law?
+    % Compare Fielder vector with NN couplings - where does it suggest
+    % partition?
+    % Spectral properties of A, G.
+    % Higher-order degrees?
+        % D1 = total weight of links
+        % D2 = total weight of links to second neighbours
+        % Tr(exp(L))?!
+        
+
+% Temperature?! High energy density ~ localized eigengraph spectrum.
+% low-alpha ladder plot for Laplacian, combine L for many eigenstates of
+% what is the function sum(L_eval.*L_evec)?
+% Normalized Laplacian?
+% Remove TrX bottleneck...
+% Directions:
+%       L-bits ~ decomposition into (approximate) union of subgraphs?
+%           System decomposition as (generalized) graph product
+%       Majorization by spectrum?
