@@ -92,7 +92,7 @@ All these data are returned by `system_proc`, and used later to examine trends a
 `fid` : An integer handle specifying the figure object
 `fig_title` :  The caption of the figure displayed
 
-NB: The current implementation of hist_entropy depends on the bin sizes. This is to be expected I guess (consider a uniform density with two bins (low ent) versus 100 bins (high ent)). Further unit testing required. 
+NB: The current implementation of hist_entropy depends on the bin sizes. This is to be expected I guess (consider a uniform density with two bins (low ent) versus 100 bins (high ent)). Further unit testing required.
 
 #### Presentation
 
