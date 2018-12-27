@@ -35,6 +35,9 @@ end
 hold off
 title('PDFs')
 
+alphas = cellfun(@(x) x.Coefficients.Estimate(1), betafits);
+betas = cellfun(@(x) x.Coefficients.Estimate(2), betafits);
+
 
 subplot(3,2,2)
 for N=1:Nmax
@@ -62,8 +65,6 @@ title('CDF errors')
 xlabel('-log10(X)')
 
 subplot(3,2,4)
-alphas = cellfun(@(x) x.Coefficients.Estimate(1), betafits);
-betas = cellfun(@(x) x.Coefficients.Estimate(2), betafits);
 plot(config.gen.Ws,alphas./alphas(1));
 hold on
 plot(config.gen.Ws,betas./betas(1));
@@ -74,8 +75,8 @@ xlabel('Disorder strength')
 
 % Fitting the PDF parameters
 Ws = config.gen.Ws;
-weight_viz.alphas = alphas;
-weight_viz.betas = betas;
+weight_viz{N}.alphas = alphas;
+weight_viz{N}.betas = betas;
 
 
 subplot(3,2,5)

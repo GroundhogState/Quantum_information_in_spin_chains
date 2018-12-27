@@ -6,10 +6,10 @@ function H_int = get_interaction(L, bc)
     int_components = ['X', 'Y', 'Z'];
     eye_list = cell(L,1);
     for ii=1:L
-        eye_list{ii} = (eye(2));
+        eye_list{ii} = sparse(eye(2));
     end
 
-    H_int = (zeros(2^L));
+    H_int = sparse(zeros(2^L));
 
     if strcmp(bc,'open')
         for ii=L-1

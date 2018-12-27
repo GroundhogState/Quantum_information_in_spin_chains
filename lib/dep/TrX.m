@@ -41,8 +41,9 @@ end
 % remove singleton dimensions
   % matlab
 sys = setdiff(sys,find(dim == 1));
-dim = dim(find(dim ~= 1));
-
+dimsel = dim ~= 1;
+% dim = dim(find(dim ~= 1));
+dim = dim(dimsel);
 
 % calculate systems, dimensions, etc.
 n = length(dim);
