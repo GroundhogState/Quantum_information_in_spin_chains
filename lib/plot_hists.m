@@ -1,12 +1,13 @@
 function plot_hists(viz_data,config_viz,varargin)
 % Varargin should be a series of strings specifying which plots to display
-str_in = cellfun(@(x) ischar(x), varargin);
-kwargs = varargin(str_in);
+kwargs = config_viz.plots;
+str_in = cellfun(@(x) ischar(x), kwargs);
+kwargs = kwargs(str_in);
 if numel(kwargs)==0
     warning('No plots requested')
 else
     
-    num_plots = numel(varargin);
+    num_plots = numel(kwargs);
     num_rows = ceil(num_plots/2); % rounding up to even number
 
     Nmax = config_viz.Nmax;
@@ -54,6 +55,19 @@ else
         title('logscale PDF of \lambda')
         counter = counter + 1;
     end
+    
+        if any(strcmp('loglog',kwargs))
+        subplot(num_rows,2,counter)
+        for N = 1:Nmax
+            loglog(viz_data.hist_bins{N},viz_data.hist_counts{N},'-','Color',cm(N,:));
+            hold on
+        end
+%         set(gca,'Yscale','log')
+        xlabel('\Lambda')
+        ylabel('P(\lambda=\Lambda)')
+        title('loglog PDF')
+        counter = counter + 1;
+    end
        
     if any(strcmp('logXlogY',kwargs))
         subplot(num_rows,2,counter)
@@ -71,7 +85,8 @@ else
     if any(strcmp('linEnt',kwargs))
         subplot(num_rows,2,counter)
         for N=1:Nmax
-            plot(W_list(N),viz_data.entropy(N),'kx')
+            pn=plot(W_list(N),viz_data.entropy(N),'x');
+            pn.Color = cm(N,:);
             hold on
         end
         xlim([min(W_list),max(W_list)])
@@ -84,7 +99,8 @@ else
     if any(strcmp('logEnt',kwargs))
         subplot(num_rows,2,counter)
         for N=1:Nmax
-            plot(W_list(N),viz_data.log_entropy(N),'kx')
+            pn=plot(W_list(N),viz_data.log_entropy(N),'x');
+            pn.Color = cm(N,:);
             hold on
         end
         xlim([min(W_list),max(W_list)])
