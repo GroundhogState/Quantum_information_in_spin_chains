@@ -12,6 +12,6 @@ counts = counts(mask);
 binsizes = diff(bin_edges);
 binsizes = binsizes(mask);
 
-H = -sum(counts.*log10(counts).*binsizes);
+H = -sum(counts.*log10(counts.*binsizes));
 
 end
