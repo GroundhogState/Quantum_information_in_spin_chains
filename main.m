@@ -19,10 +19,10 @@ config.gen.savepath = '/home/jacob/Projects/ent_loc/dat/L13_dat/';
 %% Import
 % % Visualize & analyze results
 
-config.gen.savepath = 'C:\Users\jaker\Documents\ent_loc\dat\ent_data\L13_dat\';
+config.gen.savepath = 'C:\Users\jaker\Documents\Projects\ent_loc\dat\ent_data\L13_dat';
 [~,foldername,~] = fileparts(config.gen.savepath(1:end-1));
-% fwtext({'Starting graph import & process from %s',foldername})
-% net_data = import_network_data(config);
+fwtext({'Starting graph import & process from %s',foldername})
+net_data = import_network_data(config);
 
 
 %% Process

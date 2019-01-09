@@ -19,9 +19,9 @@ function A = rho_to_graph(rho)
                A_temp(ii,jj) =  Entropy(rho_red);
             end
             if ii==L
-                ent_list(ii) = Entropy(TrC(rho_red,1,[2,2]));
+                ent_list(ii) = Entropy(TrX(rho_red,1,[2,2]));
             else
-                ent_list(ii) = Entropy(TrC(rho_red,2,[2,2]));
+                ent_list(ii) = Entropy(TrX(rho_red,2,[2,2]));
             end
         end
 

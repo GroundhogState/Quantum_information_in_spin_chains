@@ -120,4 +120,17 @@ function config = analysis_config(config)
     TMI.fig_title='TMI';
     TMI.plots = {'linXlinY','linEnt'};
     config.viz.TMI = TMI;
+    
+    cent = config.viz;
+    cent.scaling = false;
+    cent.log_scaling = false;
+    cent.num_bins = 100;
+    cent.win = [0,30];
+    cent.scale = 2;
+    cent.log_win = [-2,2];
+    cent.log_scale = 1;
+    cent.fid=41;
+    cent.fig_title='Centrality';
+    cent.plots = {'linXlinY','linXlogY','logXlinY','logXlogY','linEnt'};
+    config.viz.cent = cent;
 end

@@ -89,6 +89,7 @@ function network_data = get_network_data(data)
                 % Physical properties
                 network_data.P.entropy_VN(k,ii,:) = 0.5*diag(Aleph);
                 network_data.P.TMI(k,ii,:) = sum(sum(Aleph));
+                
         end % Loop over eigenvectors
     end% Loop over samples
     

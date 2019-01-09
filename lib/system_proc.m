@@ -71,6 +71,14 @@ if config.viz.save
     saveas(gcf,fullfile([config.viz.outpath,config.viz.TMI.fig_title,'.png']))
 end
 
+% Centrality
+cent_dist = cellfun(@(x) x.G.node_centrality, net_data,'UniformOutput',false);
+proc_data.cent = distribution_viz(cent_dist,config.viz.cent);
+plot_hists(proc_data.cent,config.viz.cent)
+if config.viz.save
+    saveas(gcf,fullfile([config.viz.outpath,config.viz.cent.fig_title,'.png']))
+end
+
 fwtext('Done!')
 
 end

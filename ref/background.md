@@ -5,24 +5,3 @@ Systems exhibiting a many-body localized phase have been extensively studied in 
 
 
 A central theme in the mathematical study of graphs is the search for heuristics of when graphs can be exactly or approximately partitioned by, for example, deleting all sufficiently weak couplings and retrieving a disjoint union of graphs. This captures the idea of cluster formation in many-body physics, and the graph construction provides several insights.
-
-## Graph states
-
-### Construction of graphs
-
-A *graph state* usually refers to a specific construction in quantum computing theory, where a state of several qubits is constructed from a given graph by applying CNOT gates between qubits where an edge is present between the corresponding nodes in the graph. This work begins with the reversal of th. While we currently lack a rigorous definition of an efficiently computable entanglement measure in large systems, and of large mixed states, the quantum mutual information captures both classical and quantum correlations and, as I will discuss further to the existing literature, provides rich detail into the structure of many-body states. The quantum mutual information of a system composing of elements $A$ and $B$ is defined by the sub-additivity of the von Neumann entropy, $\mathcal{I}_{AB} = \mathcal{S}_A + \mathcal{S}_B - \mathcal{S}_{AB}$ ,
-
-Where $\mathcal{S}_{(B)}$ is the von Neumann entropy of the reduced density matrix of subsystem A (B), and $\mathcal{S}_{AB}$ is the von Neumann entropy of the complete system. The QMI is not an entanglement measure but it does have the advantage of being completely basis independent, and instead provides a bound on the degree of possible correlation observable between two systems.
-
-Given the mutual information between each subsystem of a many-body system, define
-$$
-W_{ij} = S(\rho_i) + S(\rho_j) - S(\rho_{ij})
-$$
-whose positive off-diagonal $i,j$th elements are the mutual information between subsystems $i$ and $j$. By the additive property of independent systems, the diagonal entries are zero. In the parlance of graph theory, one then obtains a \textit{weighted adjacency matrix}.
-
-I apply this construction to the Pal-Huse model, a variation of the Heisenberg spin chain. The model is given by the Hamiltonian
-
-$$
-\mathcal{H} = J \sum_{i,j} \hat{\vec{S}}_i\hat{\vec{S}}_j + W\sum_i h_i \hat{S^z}_i
-$$
-Where J is the coupling strength between nearest neighbours (set to 1 in this work to fix an energy scale), and W is the scaling parameter for the on-site transverse field whose local values are given by the $h_i$, randomly drawn from the interval $[-1,1]$. The MBL transition is generally characterized by a region of transition between the extended and localized phases between $W\approx 1.5$ and $W\approx 4$. For various values of the disorder, I generate 8 disorder realizations and sample 21 eigenstates from the middle of the spectrum. For each of these eigenstates I compute the mutual information network by taking the repeated partial traces of the state density matrix. I use periodic boundary conditions on a chain of 12 spins.

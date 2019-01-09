@@ -6,7 +6,7 @@ Concepts from quantum information theory are used to reverse the conventional de
 
 For a primer on the physics background to this project, read the [background](ref/background.md).
 
-The findings of this project are reported in [results](ref/results.md).
+The findings of this project are reported in [results](ref/results.md) (also in [HTML](ref/results.html).)
 
 To use the code, see **Usage**.
 
