@@ -41,9 +41,8 @@ end
 % remove singleton dimensions
   % matlab
 sys = setdiff(sys,find(dim == 1));
-dimsel = dim ~= 1;
-% dim = dim(find(dim ~= 1));
-dim = dim(dimsel);
+dim = dim(find(dim ~= 1));
+
 
 % calculate systems, dimensions, etc.
 n = length(dim);
@@ -75,8 +74,7 @@ else
   % multi-indices for kept subsystems and third index is a flattened index
   % for traced subsystems, then sum third index over "diagonal" entries
   perm = n+1-[keep(end:-1:1),keep(end:-1:1)-n,sys,sys-n];
-%   x = reshape(permute(reshape(p,rdim),perm),[dimkeep,dimkeep,dimtrace^2]);
-    x = reshape(permute(reshape(p,[rdim,rdim]),perm),[dimkeep,dimkeep,dimtrace^2]);
+  x = reshape(permute(reshape(p,[rdim,rdim]),perm),[dimkeep,dimkeep,dimtrace^2]);
   x = sum(x(:,:,1:dimtrace+1:dimtrace^2),3);
 
 end

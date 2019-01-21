@@ -2,6 +2,10 @@ function data=gen_data(config)
 
 % TODO: Modify generation so each graph is saved?
 %   goal: Make the code 'run' like an experiment so I can leave it idling 
+%   Expected problem: Load times will increase with more samples
+%   Solution: Create single files for each run...
+
+% Method one: If file already exists, load it; append a new cell, save.
 
 % Returns
 %   Struct with single field, samp, which is a cell array of structs with
@@ -56,18 +60,27 @@ for i=1:numel(config.gen.Ws)
             data_temp.sel = config.gen.sel;
             data_temp.v_sel = vecs(:,config.gen.sel);
             data_temp.A_list = v2g_rec(data_temp.v_sel,config);
-            data.samp{k} = data_temp;
-        end
-        if config.gen.save
-            if ~exist(config.gen.savepath,'dir')
-                mkdir(config.gen.savepath)
+%             data.samp{k} = data_temp;
+            if config.gen.save
+                if ~exist(config.gen.savepath,'dir')
+                    mkdir(config.gen.savepath)
+                end
+                fprintf(' - Saving output')
+                fname=[config.gen.savepath,'L',num2str(data.L),...
+                    'W',num2str(data.W),'PBC.mat'];
+                if exist(fname,'file')     
+                    dat_old = load(fname)
+                    num_samples = numel(dat_old.samp);
+                    offset = ~isempty(dat_old.samp{1});
+                    dat_old.samp{num_samples+offset} = data_temp;
+                    data = dat_old
+                else
+                    data.samp{1} = data_temp;
+                end
+                save(fname,'-struct','data','-v7.3');
             end
-            fprintf(' - Saving output')
-            fname=[config.gen.savepath,'L-',num2str(data.L),...
-                '-W',num2str(data.W),'-PBC.mat'];
-            dat_old = load(fname);
-            save(fname,'-struct','data','-v7.3');
         end
+
         fprintf('\n')
 
 end

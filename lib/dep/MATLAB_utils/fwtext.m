@@ -11,7 +11,7 @@ function fwtext(args)
     end
     msg_out = sprintf(msg,vals);
     msg_len=length(msg_out);
-    blank = '============================================================\n';
+    blank = '\n============================================================\n';
     width = length(blank);
     
     if mod(msg_len,2) ==0
