@@ -9,13 +9,13 @@ clear all
 % 
 
 %% Generating data
-config.gen.L = 13;              % System size
+config.gen.L = 10;              % System size
 config.gen.bc = 'periodic';     % 'periodic' or 'open'
-config.gen.Ws = 1:10;  %Disorder strengths
+config.gen.Ws = 1:2;  %Disorder strengths
 config.gen.num_samples = 2;     % # of disorder realizations
-config.gen.sel = 4075:4125;
+% config.gen.sel = 4075:4125;
 % config.gen.E_bounds = ?
-config.gen.num_vecs = numel(config.gen.sel);
+config.gen.num_vecs = 3;
 config.gen.save = true;
 savepath = 'C:\Users\jaker\Documents\Projects\ent_loc\atomdat\';
 config.gen.savepath = fullfile(savepath,sprintf('L=%d',config.gen.L));
