@@ -10,7 +10,7 @@ else
     num_plots = numel(kwargs);
     num_rows = ceil(num_plots/2); % rounding up to even number
 
-    Nmax = config_viz.Nmax;
+    Nmax = numel(viz_data.dat);
     W_list = config_viz.W_list;
     cm = colormap(plasma(Nmax));
     sfigure(config_viz.fid); 

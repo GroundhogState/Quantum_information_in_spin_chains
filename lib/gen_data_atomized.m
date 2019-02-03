@@ -36,7 +36,7 @@ if config.gen.freerun
 else
     for k=1:config.gen.num_samples
 
-        if config.gen.verbose>1
+        if config.verbose>1
             fprintf('--Sample %u/%u\n',k,config.gen.num_samples)
         end
         for i=1:numel(config.gen.Ws)
@@ -51,20 +51,20 @@ end
 function data = data_gen_core(config,W)
 
             config.gen.W = W;
-            if config.gen.verbose
+            if config.verbose
                 fprintf('\n=Disorder strength %.1f  \n',config.gen.W)
             end
 
         %% Build H
-            if config.gen.verbose>2
+            if config.verbose>2
                 fprintf('-- Generating H... ')
             end
             [H, h_list] = disorder_H(config.gen); 
-            if config.gen.verbose>2
+            if config.verbose>2
                 fprintf(' Diagonalizing... ')
             end
             [vecs, nrg] = eigs(full(H),config.gen.num_vecs,'smallestabs');
-            if config.gen.verbose>2
+            if config.verbose>2
                 fprintf(' Done\n')
             end
             % The eigenvalues are returned in ascending absolute value
@@ -74,7 +74,7 @@ function data = data_gen_core(config,W)
 
             % Loop over & save generated eigenvectors
             for eig_idx = 1:config.gen.num_vecs
-                    if config.gen.verbose > 2
+                    if config.verbose > 2
                         fprintf(' - Producing graph for vector %d/%d',eig_idx, config.gen.num_vecs)
                     end
                data = [];
@@ -90,7 +90,9 @@ function data = data_gen_core(config,W)
                     if ~exist(savedir,'dir')
                         mkdir(savedir)
                     end
-                    fprintf(' - Saving output\n')
+                    if config.verbose>2
+                        fprintf(' - Saving output\n')
+                    end
                     timestamp = 1e3*posixtime(datetime);
                     fname=fullfile(savedir,sprintf('ent_loc_%.f.mat',timestamp));
                     save(fname,'-struct','data','-v7.3');

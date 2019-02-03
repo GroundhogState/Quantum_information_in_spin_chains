@@ -25,7 +25,7 @@ function viz_data = distribution_viz(input,config_viz)
         viz_data.log_entropy=zeros(Nmax,1);
         for N = 1:Nmax
             % Compile the data into a single list
-            dat_temp = squeeze(input{N}(:));
+            dat_temp = abs(input{N}{:});
             % Remove anything too close to limit of machine precision
             dat_temp = dat_temp(dat_temp>config_viz.cutoff); 
             viz_data.dat{N} = dat_temp;

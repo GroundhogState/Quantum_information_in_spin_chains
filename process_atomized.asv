@@ -5,11 +5,27 @@ if ~exist(fullfile([config.gen.savepath,'out/']),'dir')
 end
 
 
+
+% % % Degree distribution
+
+% config.viz.fields = {'G','weight_list'};
+% proc_data.weight_list = viz_field(net_data,config);
+% 
+% config.viz.fields = {'G','degree_list'};
+% proc_data.degree_list = viz_field(net_data,config);
+% 
+% config.viz.fields = {'G','node_centrality'};
+% proc_data.cent_list = viz_field(net_data,config);
+% % % Measures of connectedness
+
+% % % % Algebraic properties: A vs L
+
 config.viz.fields = {'A','evals'};
 proc_data.A_evals = viz_field(net_data,config);
 
 config.viz.fields = {'A','trace'};
 proc_data.A_trace = viz_field(net_data,config);
+% 
 
 config.viz.fields = {'L','evals'};
 proc_data.L_evals = viz_field(net_data,config);

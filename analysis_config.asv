@@ -17,7 +17,7 @@ function config = analysis_config(config)
     config.viz.G.weight_list = weight;
 
     % % Degree distribution
-    degree_list = config.viz;
+    degree = config.viz;
     degree_list.scaling = false;
     degree_list.log_scaling = false;
     degree_list.num_bins = 100;
@@ -45,21 +45,7 @@ function config = analysis_config(config)
     A_spec.fid=11;
     A_spec.fig_title='Aleph_spectral_distribution';
     A_spec.plots = {'linXlinY','linXlogY','logXlogY','linEnt','logEnt'};
-    config.viz.A.evals = A_spec;
-    
-        % % Trace
-    A_trace = config.viz;
-    A_trace.scaling = false;
-    A_trace.log_scaling = false;
-    A_trace.num_bins = 50;
-    A_trace.win = [-1,28];
-    A_trace.scale = 1;
-    A_trace.log_win = [-1.5,0.5];
-    A_trace.log_scale = 1;
-    A_trace.fid=21;
-    A_trace.fig_title='Aleph_trace_distribution';
-    A_trace.plots = {'linXlinY','logXlogY','linEnt','logEnt'};
-    config.viz.A.trace = A_trace;
+    config.viz.A.A_spec = A_spec;
 
 
     L_spec = config.viz;
@@ -73,8 +59,22 @@ function config = analysis_config(config)
     L_spec.fid=12;
     L_spec.fig_title='Laplacian_spectral_distribution';
     L_spec.plots = {'linXlinY','linXlogY','logXlogY','linEnt'};
-    config.viz.L.evals = L_spec;
+    config.viz.L.L_spec = L_spec;
     % Single eigenvalues?
+
+    % % Trace
+    A_trace = config.viz;
+    A_trace.scaling = false;
+    A_trace.log_scaling = false;
+    A_trace.num_bins = 50;
+    A_trace.win = [-1,28];
+    A_trace.scale = 1;
+    A_trace.log_win = [-1.5,0.5];
+    A_trace.log_scale = 1;
+    A_trace.fid=21;
+    A_trace.fig_title='Aleph_trace_distribution';
+    A_trace.plots = {'linXlinY','logXlogY','linEnt','logEnt'};
+    config.viz.A.A_trace = A_trace;
 
     L_trace = config.viz;
     L_trace.scaling = false;
@@ -87,7 +87,7 @@ function config = analysis_config(config)
     L_trace.fid=22;
     L_trace.fig_title='Laplacian_trace_distribution';
     L_trace.plots = {'linXlinY','logXlogY','linEnt','logEnt'};
-    config.viz.L.trace = L_trace;
+    config.viz.L_trace = L_trace;
 
     % What's in the eigenvectors?
 
@@ -105,7 +105,7 @@ function config = analysis_config(config)
     VN_ent.fid=3;
     VN_ent.fig_title='Single-site_entropy';
     VN_ent.plots = {'linXlinY','linXlogY','logXlogY','linEnt'};
-    config.viz.P.entropy_VN = VN_ent;
+    config.viz.VN_ent = VN_ent;
     
     % TMI
     TMI = config.viz;
@@ -119,7 +119,7 @@ function config = analysis_config(config)
     TMI.fid=31;
     TMI.fig_title='TMI';
     TMI.plots = {'linXlinY','linEnt'};
-    config.viz.P.TMI = TMI;
+    config.viz.TMI = TMI;
     
     cent = config.viz;
     cent.scaling = false;
@@ -132,5 +132,5 @@ function config = analysis_config(config)
     cent.fid=41;
     cent.fig_title='Centrality';
     cent.plots = {'linXlinY','linXlogY','logXlinY','logXlogY','linEnt'};
-    config.viz.G.node_centrality = cent;
+    config.viz.cent = cent;
 end

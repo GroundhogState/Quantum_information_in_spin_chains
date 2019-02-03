@@ -12,9 +12,11 @@ for dir_idx = 1:num_dirs
     files = dir(fullfile(datapath,subdir,'*.mat'));
     num_files = size(files,1);
     dir_data = cell(numel(subdir,1));    
-    fprintf('\n Importing %6.f files:\n000000',num_files)
+    fprintf('\n Importing %6.f files from dir %u/%u:\n000000',num_files,dir_idx,num_dirs)
     for N=1:num_files
-        fprintf('\b\b\b\b\b\b%06.f',N)
+        if mod(N,100) ==0
+            fprintf('\b\b\b\b\b\b%06.f',N)
+        end
         fname = files(N).name;
         fname = fullfile(datapath,subdir,fname);
         data = load(fname);
