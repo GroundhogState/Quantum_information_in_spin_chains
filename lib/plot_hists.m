@@ -10,8 +10,11 @@ else
     num_plots = numel(kwargs);
     num_rows = ceil(num_plots/2); % rounding up to even number
 
-    Nmax = numel(viz_data.dat);
     W_list = config_viz.W_list;
+    [~,rank] = sort(W_list);%,1,length(W_list));
+    rank = arrayfun(@(x) find(rank==x), 1:length(rank));
+%     W_scaled = W_list(W_scaled);
+    Nmax = numel(config_viz.W_list);
     cm = colormap(plasma(Nmax));
     sfigure(config_viz.fid); 
     set(gcf,'color','w');
@@ -20,7 +23,7 @@ else
     if any(strcmp('linXlinY',kwargs))
         subplot(num_rows,2,counter)
         for N = 1:Nmax
-            plot(viz_data.hist_bins{N},viz_data.hist_counts{N},'-','Color',cm(N,:));
+            plot(viz_data.hist_bins{N},viz_data.hist_counts{N},'-','Color',cm(rank(N),:));
             hold on
         end
         hold off
@@ -33,7 +36,7 @@ else
     if any(strcmp('logXlinY',kwargs))
         subplot(num_rows,2,counter)
         for N = 1:Nmax
-            p2 = plot(viz_data.log_hist_bins{N},viz_data.log_hist_counts{N},'-','Color',cm(N,:));
+            p2 = plot(viz_data.log_hist_bins{N},viz_data.log_hist_counts{N},'-','Color',cm(rank(N),:));
         %     p2.Color(4) = 0.8;
             hold on
         end
@@ -46,7 +49,7 @@ else
     if any(strcmp('linXlogY',kwargs))
         subplot(num_rows,2,counter)
         for N = 1:Nmax
-            plot(viz_data.hist_bins{N},viz_data.hist_counts{N},'-','Color',cm(N,:));
+            plot(viz_data.hist_bins{N},viz_data.hist_counts{N},'-','Color',cm(rank(N),:));
             hold on
         end
         set(gca,'Yscale','log')
@@ -56,10 +59,10 @@ else
         counter = counter + 1;
     end
     
-        if any(strcmp('loglog',kwargs))
+    if any(strcmp('loglog',kwargs))
         subplot(num_rows,2,counter)
         for N = 1:Nmax
-            loglog(viz_data.hist_bins{N},viz_data.hist_counts{N},'-','Color',cm(N,:));
+            loglog(viz_data.hist_bins{N},viz_data.hist_counts{N},'-','Color',cm(rank(N),:));
             hold on
         end
 %         set(gca,'Yscale','log')
@@ -72,7 +75,7 @@ else
     if any(strcmp('logXlogY',kwargs))
         subplot(num_rows,2,counter)
         for N = 1:Nmax
-            plot(viz_data.log_hist_bins{N},viz_data.log_hist_counts{N},'-','Color',cm(N,:));
+            plot(viz_data.log_hist_bins{N},viz_data.log_hist_counts{N},'-','Color',cm(rank(N),:));
             hold on
         end
         set(gca,'Yscale','log')
@@ -86,7 +89,7 @@ else
         subplot(num_rows,2,counter)
         for N=1:Nmax
             pn=plot(W_list(N),viz_data.entropy(N),'x');
-            pn.Color = cm(N,:);
+            pn.Color = cm(rank(N),:);
             hold on
         end
         xlim([min(W_list),max(W_list)])
@@ -100,7 +103,7 @@ else
         subplot(num_rows,2,counter)
         for N=1:Nmax
             pn=plot(W_list(N),viz_data.log_entropy(N),'x');
-            pn.Color = cm(N,:);
+            pn.Color = cm(rank(N),:);
             hold on
         end
         xlim([min(W_list),max(W_list)])
@@ -110,7 +113,7 @@ else
         counter = counter + 1;
     end
     
-    suptitle(config_viz.fig_title)
+    suptitle(config_viz.fig_title);
 end
 
     %TODO: Add spectrograms. Whatever other plots.

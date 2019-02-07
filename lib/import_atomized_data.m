@@ -1,7 +1,7 @@
 function import_data = import_atomized_data(config)
 % A wrapper for get_network_data
 %   TODO: Safety checks
-
+fwtext('hi')
 datapath = config.gen.savepath;
 subdirs = dir(fullfile(config.gen.savepath,'W=*'));
 num_dirs = numel(subdirs);
@@ -10,7 +10,11 @@ import_data.net_data = cell(num_dirs,1);
 for dir_idx = 1:num_dirs
     subdir = subdirs(dir_idx).name;
     files = dir(fullfile(datapath,subdir,'*.mat'));
-    num_files = size(files,1);
+    if ~isnan(config.imp.num_files)
+        num_files = config.imp.num_files;
+    else
+        num_files = size(files,1);
+    end
     dir_data = cell(numel(subdir,1));    
     fprintf('\n Importing %6.f files from dir %u/%u:\n000000',num_files,dir_idx,num_dirs)
     for N=1:num_files
@@ -83,39 +87,48 @@ function network_data = get_atomized_data(data)
             % Aleph properties
             Aleph_UD = data.A;
             % Produces Aleph with -2*onsite entropy along diagonal
-            Aleph = Aleph_UD + Aleph_UD - 3*diag(diag(Aleph_UD));
+            Aleph = Aleph_UD - 2*diag(diag(Aleph_UD));
             
+%             network_data.A.unif_projection = sum(sum(Aleph_UD));
             network_data.A.Aleph = Aleph;                               
             [network_data.A.evecs,val_temp] = eigs(Aleph,data.L);
             network_data.A.evals = diag(val_temp);
-            network_data.A.trace = trace(Aleph); % = 2* total onsite entropy
+            network_data.A.trace = trace(Aleph); % = total correlations
 
             % Generate additional properties
             A_temp = Aleph - diag(diag(Aleph));
-            D_temp = sum(A_temp)';  
-            mask = triu(ones(network_data.prm.L),1)==1;
-            weight_all = A_temp(mask);
-            mu_temp =A_temp*D_temp./D_temp; % Weighted sum of (normalized) neighbour degrees
-            norm = zeros(data.L,1);
-            for i=1:data.L
-                norm(i) = sum(D_temp) - D_temp(i); %Average of neighbour degrees
-            end
 
             % Laplacian properties
-            network_data.L.Laplacian = -(A_temp - diag(D_temp));    
+            Lap_offdiag = A_temp + A_temp';
+            Lap_diag = sum(Lap_offdiag);
+            network_data.L.Laplacian = diag(Lap_diag)-Lap_offdiag;    
             [network_data.L.evecs,v_temp] = eigs(network_data.L.Laplacian,data.L);
             network_data.L.evals = diag(v_temp);
             network_data.L.trace = trace(squeeze(network_data.L.Laplacian));
 
             % Graph properties
+            D_temp = sum(Lap_offdiag)';
+            mu_temp =Lap_offdiag*D_temp./D_temp; % Weighted sum of (normalized) neighbour degrees
+            norm = zeros(data.L,1);
+            for i=1:data.L
+                norm(i) = sum(D_temp) - D_temp(i); %Average of neighbour degrees
+            end
             network_data.G.degree_list = D_temp;
-            network_data.G.weight_list = weight_all;
-            network_data.G.node_centrality = norm.*mu_temp; %= sum(deg_i w_ij) / avg(d_j) for all i in Neighb(j)
+            network_data.G.weight_list = A_temp;
+            network_data.G.node_centrality = mu_temp./(norm); %= sum(deg_i w_ij) / avg(d_j) for all i in Neighb(j)
 
             % Physical properties
-            network_data.P.entropy_VN = 0.5*diag(Aleph);
+            network_data.P.entropy_VN = abs(diag(Aleph));
             network_data.P.TMI = sum(sum(Aleph));
-
+        
+            inf_grid = Lap_diag + Lap_offdiag;
+            % QMI decay
+            QMI_grid = zeros(data.L);
+            for ii = 1:data.L
+                QMI_grid(ii,:) = circshift(Lap_offdiag(ii,:),-ii+1);
+            end
+            QMI_grid(:,1) = network_data.P.entropy_VN;
+            network_data.P.QMI_grid = QMI_grid;
 %         end % Loop over eigenvectors
 %     end% Loop over samples
     

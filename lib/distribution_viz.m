@@ -25,9 +25,11 @@ function viz_data = distribution_viz(input,config_viz)
         viz_data.log_entropy=zeros(Nmax,1);
         for N = 1:Nmax
             % Compile the data into a single list
-            dat_temp = abs(input{N}{:});
+            dat_temp = real(input{N}{:});
             % Remove anything too close to limit of machine precision
-            dat_temp = dat_temp(dat_temp>config_viz.cutoff); 
+            if config_viz.pos_def %eliminate spurious negative elts
+                dat_temp = dat_temp(dat_temp>config_viz.cutoff); 
+            end
             viz_data.dat{N} = dat_temp;
             if config_viz.scaling
                 viz_data.dat{N}=viz_data.dat{N}/config_viz.scale;
@@ -35,20 +37,24 @@ function viz_data = distribution_viz(input,config_viz)
             viz_data.hist_win{N} = linspace(min(config_viz.win),max(config_viz.win),config_viz.num_bins);
             viz_data.hist_bins{N} =0.5*(viz_data.hist_win{N}(2:end)+viz_data.hist_win{N}(1:end-1));           
             viz_data.hist_counts{N} = histcounts(viz_data.dat{N},viz_data.hist_win{N},'Normalization','pdf');
-
-            viz_data.log_dat{N} =-log10(dat_temp);
-            if config_viz.log_scaling
-                viz_data.log_dat{N} = -viz_data.log_dat{N/config_viz.log_scale};
-            end
-            viz_data.log_hist_win{N} = linspace(min(config_viz.log_win),max(config_viz.log_win),config_viz.num_bins);
-            viz_data.log_hist_bins{N} =0.5*(viz_data.log_hist_win{N}(2:end)+viz_data.log_hist_win{N}(1:end-1));
-            viz_data.log_hist_counts{N} = histcounts(viz_data.log_dat{N},viz_data.log_hist_win{N},'Normalization','pdf');
-
+            
             nz_counts = viz_data.hist_counts{N}(viz_data.hist_counts{N}>0);
             viz_data.entropy(N) = hist_entropy(nz_counts,viz_data.hist_win{N});
+            
+            if any(strcmp(config_viz.plots, 'logXlogY')) || any(strcmp(config_viz.plots, 'logXlinY'))%'logXlinY'
+                viz_data.log_dat{N} =-log10(dat_temp);
+                if config_viz.log_scaling
+                    viz_data.log_dat{N} = -viz_data.log_dat{N/config_viz.log_scale};
+                end
+                viz_data.log_hist_win{N} = linspace(min(config_viz.log_win),max(config_viz.log_win),config_viz.num_bins);
+                viz_data.log_hist_bins{N} =0.5*(viz_data.log_hist_win{N}(2:end)+viz_data.log_hist_win{N}(1:end-1));
+                viz_data.log_hist_counts{N} = histcounts(viz_data.log_dat{N},viz_data.log_hist_win{N},'Normalization','pdf');
+            
+                log_nz_counts = viz_data.log_hist_counts{N}(viz_data.log_hist_counts{N}>0);
+                viz_data.log_entropy(N) = hist_entropy(log_nz_counts,viz_data.log_hist_win{N});
+            
+            end
 
-            log_nz_counts = viz_data.log_hist_counts{N}(viz_data.log_hist_counts{N}>0);
-            viz_data.log_entropy(N) = hist_entropy(log_nz_counts,viz_data.log_hist_win{N});
         end
         
 

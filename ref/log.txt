@@ -3,11 +3,11 @@ Debugging?
 	What happened? Was L wrong, or the analysis? Go through and ensure trust in all stages.
 
 Anatomy of the program
-   main	
+   main
    Generating data
       gen_data.m
          disorder_H
-            inputs: System length & disorder strength OK 
+            inputs: System length & disorder strength OK
             outputs: Hamiltonian: Looks fine... Nice diagonal structure from the tensor prod
          vec_to_graph
 	    Suspicious! Diagonal of A looks super wrong. First elt always zero?!
@@ -20,7 +20,7 @@ Anatomy of the program
 
 
 Tried writing a faster partial trace algorithm.
-Toby's method actually looks exponentially faster - that's incredible! For a moment I thought I'd won out - 
+Toby's method actually looks exponentially faster - that's incredible! For a moment I thought I'd won out -
     I wonder where my mistake was, and what led to that mistaken finding. Weird.
     Well, maybe Toby's method really is optimal....
     BUT.
@@ -33,7 +33,7 @@ Toby's method actually looks exponentially faster - that's incredible! For a mom
         hunch is that it helps. An exponential advantage called a polynomial number of times is a win...
         So can we do it with polynomially many calls?
     THERE MUST BE A FASTER WAY.
-    
+
     The faster way seems to be... Not using MATLAB. This is past the prototyping stage: Now I need speed.
     So compiling the partial trace in C appears to be the way to go. This I will get to very soon.
     But I'm pretty hungover & tired so that might be too much exertion for today. So let's try two things.
@@ -44,34 +44,34 @@ Toby's method actually looks exponentially faster - that's incredible! For a mom
     Plot goals.
         i)      For all the 'spectrograms' I have, overlay profiles.
         ii      Fits and scaling!
-        iii)    
+        iii)
 
     Notes.
         It looks like Aleph is the real object of interest. Laplacian came close.
         There's no tangible reason for this yet. The spectral properties are just... Nicer.
-        And the definition is fairly natural. 
+        And the definition is fairly natural.
 
 
 
 24 Nov
 	Ok. Continuing project tidying, from the ground up.
 	Main
-		Actually pretty good, just needs better integration of PDF analysis. 
+		Actually pretty good, just needs better integration of PDF analysis.
 			Will get to when further down pipeline
 	gen_data
 		Does the heavy lifting - H gen and diagonalization, calls vec_to_graph
 		Would be nice to only diag to the EVs needed.
 			Now saves rescaled eigen-energies of the selected eigenvectors
 			Eigenvectors now specified in config
-	vec_to_graph	
+	vec_to_graph
 		Decided to keep in gen_data because simple interfacing with gen_data
-		Rebuilt trace loop because it was *horribly* inefficient last time. 
-			Previously had L*L(L-1)/2  calls to 2-body and L calls to 1-body from full dm		
+		Rebuilt trace loop because it was *horribly* inefficient last time.
+			Previously had L*L(L-1)/2  calls to 2-body and L calls to 1-body from full dm
 			Now has L*(L-1)/2 calls to 2-body from full dm and only L calls from 2-body to 1-body
 			May be some cool tricks to reduce calls from full dm, but higher priority is accelerating TrX
-			
+
 	get_network_data
-		Points at a stored .mat file and pulls various stats out of the A matrix. 
+		Points at a stored .mat file and pulls various stats out of the A matrix.
 		Needs a big cleanup!
 		Whew. Much cleaner & easier to read. Won't work with old data formats - that's ok, it's in erstwhile_somnambulist
 		And I won't generate new data until this trace is sped up. So... Let's get to that.
@@ -80,19 +80,19 @@ Toby's method actually looks exponentially faster - that's incredible! For a mom
 		Now considerably cleaner. Scaling is more sensible, and switchable on log and lin data
 			all data rescaled wrt config.viz.scale. Everything below a cutoff is ignored.
 			Then all data rescaled x->(x-cutoff)/scale for lin, x-> -(log(x)-log(scale))/log(cutoff) for log
-			
 
-	
+
+
 	OK, so it's clean. This might make fitting a bit better. But there's still a pressing need for this faster trace.
 		I don't have the time or brains to do it today. So I'll re-examine some fits.
-		
+
 
 05 Dec
 	Well... My missions to speed up the trace have turned out to be fruitless.
 	However, the change in rho_to_graph is a considerable speedup - i.e. calling singletons from pairs (and removing the redundant call...)
 	So for 12 sites, the budget is
 		GENERATING H
-		FullEig 	24 sec 
+		FullEig 	24 sec
 		getInteraction	8 sec
 		TRACING
 		TrX		4.2 seconds
@@ -102,14 +102,14 @@ Toby's method actually looks exponentially faster - that's incredible! For a mom
 	The rest... Maybe not much can be done. Let's see if reducing the number of eigenvectors brings the FullEig time down.
 	WOW. Down to 8 seconds (could be a fluke but I'm not gonna look that in the mouth).
 		So the total time will be
-		N_samples*N_disorders*(Generation+Num_eigs*tracing) 
-		~N_samples*N_disorders*(8*(Num_eigs+1)) 
+		N_samples*N_disorders*(Generation+Num_eigs*tracing)
+		~N_samples*N_disorders*(8*(Num_eigs+1))
 		So the total time will be
 	And for 13 sites
 		fullEig		45 sec (with the reduced-number call)
 		TrX		21 sec for single vector
-		N_samples*N_disorders*(Generation+Num_eigs*tracing) 
-		~N_samples*N_disorders*(21*Num_eigs+45)) 
+		N_samples*N_disorders*(Generation+Num_eigs*tracing)
+		~N_samples*N_disorders*(21*Num_eigs+45))
 		91 calls to TrX per vector
 	And a 13-site only provides big wins in the weight distribution. Everything else basically comes down to a sample per vector.
 	What about 11 sites?
@@ -129,23 +129,42 @@ Toby's method actually looks exponentially faster - that's incredible! For a mom
 
 
 10 Dec
-	The run of 13 sites completed over the weekend. 
+	The run of 13 sites completed over the weekend.
 	Profile didn't run, but 20 samples * 41 eigenvectors * 20 W values took ~2.5 days, about expected.
-	Smaller systems are much faster. So scaling down no problem. 
+	Smaller systems are much faster. So scaling down no problem.
 	This week:
-		* Analyse known interesting objects. 
+		* Analyse known interesting objects.
 			* This means fits where appropriate, & descriptions elsewhere.
 		* Report on this analysis in overleaf.
 		* Ensure project is as portable as possible
 			* Happily, L13 data is only 1GB total. Google Drive?
-		* Send this week if possible. Just has to be expository, nothing flashy. 
+		* Send this week if possible. Just has to be expository, nothing flashy.
 	Overnight run: 50 samples * 20 disorders * 100 eigenvalues at L=11.
 			TrX time: 25997s (called 6628266 times!)
 			eig time: 796s
 			Total	  29389s = 8.16 hrs
 	Morning run of L-14
 			TrX time: 41s (called 108 times!)
-			eig time: 446s in gen_data		
-		Unsurprisingly, trace over L=13 subsystems takes most TrX time. Not much to do about eig time, sadly.	
+			eig time: 446s in gen_data
+		Unsurprisingly, trace over L=13 subsystems takes most TrX time. Not much to do about eig time, sadly.
 	Run of L=10
 		* 6400s (~2 hours) for 28xW, 50 sample, 100 eigenvector
+
+04 February
+
+Made several significant improvements...
+* Now genuinely sampling from middle of spectrum, thanks to the eigs() generating smallest absolute values (and spectrum symmetric about zero).
+* Implemented recursive partial trace - now WAY faster, have up to a thousand samples for some Ls.
+* Abstracted much of the post-processing
+* Aleph now somehow more natural; VNE on diagonal, QMI on upper diagonal, so in higher-N it will be the 'bottom corner' of a polytope... Quite pretty
+	* Has much nicer spectrum (but then again, have orders of magnitude more samples); seems to more naturally produce Total correlations
+		* Total Corr = -sum(Tr(rho_i))=-Tr(Aleph); 3+ body corr = -sum(Aleph)? Maybe a constant factor. Either way; nicer.
+* Goals for this section:
+ 	* Plot QMI vs distance; examine profiles
+* Replace figs in notes, amend & send soon. Then this is actually done, and we can move on to KBH.
+* KBH Goals
+	* Generate H
+	* Find fast correlator (maybe just vector arithmetic really)
+	* QMI in Fock space?
+	* Compare posn and momentum
+	* 
