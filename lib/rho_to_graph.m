@@ -11,33 +11,10 @@ function A = rho_to_graph(rho)
 %         A_temp = zeros(L);
 %         systems = 1:L;
         
-        A = rho_reduce(rho, dims,num_sys);
-
-%         for ii=1:L 
-%             for jj = ii+1:L
-%                trace_pair = systems;
-%                trace_pair(ii) =[];
-%                trace_pair(jj-1) = [];
-%                rho_red = TrX(rho,trace_pair,dims);
-%                A_temp(ii,jj) =  Entropy(rho_red);
-%             end
-%             if ii==L
-%                 ent_list(ii) = Entropy(TrX(rho_red,1,[2,2]));
-%             else
-%                 ent_list(ii) = Entropy(TrX(rho_red,2,[2,2]));
-%             end
-%         end
-% 
-%         A_temp = abs(A_temp + A_temp');
-%         for ii=1:L
-%             for jj=1:L
-%             A(ii,jj) = abs(ent_list(ii)) + abs(ent_list(jj)) - A_temp(ii,jj);  
-%             end
-%         end
-
+        A = ent_reduce(rho, dims,num_sys);
 end
 
-function A = rho_reduce(rho,dims,num_sys)
+function A = ent_reduce(rho,dims,num_sys)
 % In this version: Try to optimize second stage (loop over subsystems)
   % Accepts a many-body density matrix, a list of dimensions of its subsystems,
   % and the length L of the total initial system
@@ -57,7 +34,7 @@ function A = rho_reduce(rho,dims,num_sys)
     % Obtain all pairs involving the first system but not the second
     A(num_sys-N+1,num_sys-N+3:end) = cleave_trace(TrX(rho,2,dims),dims([1,3:end]));
     % Call the next recursion and use it to fill out the Delta array
-    A(2:end,2:end) = rho_reduce(TrX(rho,1,dims),dims(2:end),N-1);
+    A(2:end,2:end) = ent_reduce(TrX(rho,1,dims),dims(2:end),N-1);
   end
 end
 
