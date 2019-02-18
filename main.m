@@ -13,14 +13,14 @@ close all
 
 %% Generating data
 config.gen.L = 9;              % System size
-config.gen.bc = 'periodic';     % 'periodic' or 'open'
-config.gen.Ws = 11:13;  %Disorder strengths
-config.gen.num_samples = 1000;     % # of disorder realizations
+config.gen.bc = 'open';     % 'periodic' or 'open'
+config.gen.Ws = 1:10;  %Disorder strengths
+config.gen.num_samples = 300;     % # of disorder realizations
 % config.gen.sel = 4075:4125;
 % config.gen.E_bounds = ?
 config.gen.num_vecs = 15;
 config.gen.save = true;
-savepath = 'C:\Users\jaker\Documents\Projects\ent_loc\atomdat\';
+savepath = 'C:\Users\jaker\Documents\Projects\ent_loc\atomdat\open';
 config.gen.savepath = fullfile(savepath,sprintf('L=%d',config.gen.L));
 config.verbose = 1;
 config.gen.freerun = true;
@@ -36,7 +36,7 @@ config.gen.freerun = true;
 % % Visualize & analyze results
 
 % config.gen.savepath = 'C:\Users\jaker\Documents\Projects\ent_loc\dat\ent_data\L13_dat';
-config.imp.num_files = NaN;
+config.imp.num_files = 100;
 [~,foldername,~] = fileparts(config.gen.savepath);
 fwtext({'Starting graph import & process from %s',foldername})
 import_data = import_atomized_data(config);

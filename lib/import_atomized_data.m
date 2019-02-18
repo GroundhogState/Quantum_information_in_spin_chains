@@ -57,6 +57,7 @@ function network_data = get_atomized_data(data)
     % Importing parameters
     network_data.prm.L = data.L;
     network_data.prm.W = data.W;
+    network_data.prm.h_list = data.h_list;
     
 %     % Setting up output
 %     % Laplacian properties
