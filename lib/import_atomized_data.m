@@ -1,7 +1,6 @@
 function import_data = import_atomized_data(config)
 % A wrapper for get_network_data
 %   TODO: Safety checks
-fwtext('hi')
 datapath = config.gen.savepath;
 subdirs = dir(fullfile(config.gen.savepath,'W=*'));
 num_dirs = numel(subdirs);

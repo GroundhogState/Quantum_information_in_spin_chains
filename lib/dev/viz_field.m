@@ -6,7 +6,6 @@ for nW = 1:num_Ws
 end
 
 config_viz = rec_getfield(config.viz,config.viz.fields);
-% config_viz.W_list = data.W;
 
 proc_data = distribution_viz(data_dist,config_viz);
 
