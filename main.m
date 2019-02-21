@@ -16,8 +16,6 @@ config.gen.L = 9;              % System size
 config.gen.bc = 'open';     % 'periodic' or 'open'
 config.gen.Ws = 1:10;  %Disorder strengths
 config.gen.num_samples = 300;     % # of disorder realizations
-% config.gen.sel = 4075:4125;
-% config.gen.E_bounds = ?
 config.gen.num_vecs = 15;
 config.gen.save = true;
 savepath = 'C:\Users\jaker\Documents\Projects\ent_loc\atomdat\open';
@@ -28,10 +26,9 @@ config.gen.freerun = true;
 
 %% CAREFUL, this can take a long time to execute.
 % Generate eigenstate data
-% % profile on
+
 % gen_data_atomized(config);
-% profile off
-% profile viewer
+
 %% Import
 % % Visualize & analyze results
 

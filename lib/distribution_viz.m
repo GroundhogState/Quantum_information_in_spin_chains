@@ -26,6 +26,7 @@ function viz_data = distribution_viz(input,config_viz)
         for N = 1:Nmax
             % Compile the data into a single list
             dat_temp = real(input{N}{:});
+            dat_temp = dat_temp(:);
             % Remove anything too close to limit of machine precision
             if config_viz.pos_def %eliminate spurious negative elts
                 dat_temp = dat_temp(dat_temp>config_viz.cutoff); 
