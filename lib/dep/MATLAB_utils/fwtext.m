@@ -23,5 +23,5 @@ function fwtext(args)
         msg1 = width/2 + (msg_len+1)/2;
         blank(msg0:msg1+1) = [' ',msg_out,' '];
     end
-    fprintf(blank,vals);
+    disp(sprintf(blank,vals));
 end

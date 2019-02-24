@@ -4,9 +4,6 @@ close all
 % TODO: Test data appending function in save
 % TODO: Reformat saveing: L/W/(eps, h_list, G)
 
-
-
-
 % NB:
 % L=9 has 15 eigenvectors per realization
 % Larger lengths have 26 up to W=10, but 15 from W=10 up
@@ -51,7 +48,7 @@ config.viz.cutoff = 1e-13;
 config.viz.save = true;
 
 config = analysis_config(config);
-process_atomized(import_data,config);
+process_atomized(import_data,config.viz);
 % 
 fwtext('Main complete');
 % profile off

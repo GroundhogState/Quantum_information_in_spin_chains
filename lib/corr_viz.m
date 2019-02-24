@@ -1,4 +1,5 @@
-function proc_data = viz_field(data, config)
+function proc_data = corr_viz(data,config)
+
 num_Ws = numel(data);
 data_dist = cell(num_Ws,1);
 for nW = 1:num_Ws 
@@ -7,11 +8,11 @@ end
 
 config_viz = rec_getfield(config.viz,config.viz.fields);
 config_viz.W_list = config.viz.W_list;
-proc_data = distribution_viz(data_dist,config_viz);
+proc_data = corr_proc(data_dist,config_viz);
 
-if config.viz.show_plots
-    plot_hists(proc_data,config_viz);
-end
+% if config.viz.show_plots
+    plot_corrs(proc_data,config_viz);
+% end
 
 if config.viz.save
     if ~exist(fullfile(config.viz.savepath),'dir')
@@ -20,5 +21,6 @@ if config.viz.save
     saveas(gcf,[fullfile(config.viz.savepath,config_viz.fig_filename),'.png']);
 end
 
-end
 
+
+end

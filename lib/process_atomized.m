@@ -1,86 +1,40 @@
-function proc_data = process_atomized(net_data,config)
+function proc_data = process_atomized(data,config)
 
-if ~exist(fullfile([config.gen.savepath,'out/']),'dir')
-    mkdir(fullfile([config.gen.savepath,'out/']))
-end
 
-num_Ws = numel(net_data);
-for nW = 1:num_Ws
-    weight_dist{nW} = cellfun(@(x) x.G.weight_list, net_data{nW},'UniformOutput',false);
-end
-proc_data.weights = distribution_viz(weight_dist,config.viz.weight);
-plot_hists(proc_data.weights,config.viz.weight)
-if config.viz.save
-    saveas(gcf,fullfile([config.viz.outpath,config.viz.weight.fig_title,'.png']))
-end
+net_data = data.net_data;
 
-% % Degree distribution
-degree_dist = cellfun(@(x) x.G.degree_list, net_data,'UniformOutput',false);
-proc_data.degree =distribution_viz(degree_dist,config.viz.degree);
-plot_hists(proc_data.degree,config.viz.degree)
-if config.viz.save
-    saveas(gcf,fullfile([config.viz.outpath,config.viz.degree.fig_title,'.png']))
-end
 
-% Measures of connectedness
+% % 
+config.viz.fields = {'G','weight_list'};
+proc_data.cent = viz_field(net_data,config);
 
-% % Algebraic properties: A vs L
+config.viz.fields = {'G','degree_list'};
+proc_data.cent = viz_field(net_data,config);
 
-% Spectrum
-aleph_spec_dist = cellfun(@(x) x.A.evals, net_data,'UniformOutput',false);
-proc_data.A_spec=distribution_viz(aleph_spec_dist,config.viz.A_spec);
-plot_hists(proc_data.A_spec,config.viz.A_spec)
-if config.viz.save
-        saveas(gcf,fullfile([config.viz.outpath,config.viz.A_spec.fig_title,'.png']))
-end
+config.viz.fields = {'G','node_centrality'};
+proc_data.cent = viz_field(net_data,config);
 
-lap_spec_dist = cellfun(@(x) x.L.evals, net_data,'UniformOutput',false);
-proc_data.L_spec=distribution_viz(lap_spec_dist,config.viz.L_spec);
-plot_hists(proc_data.L_spec,config.viz.L_spec)
-if config.viz.save
-    saveas(gcf,fullfile([config.viz.outpath,config.viz.L_spec.fig_title,'.png']))
-end
+% config.viz.fields = {'A','evals'};
+% proc_data.A_evals = viz_field(net_data,config);
 
-    % Single eigenvalues?
+config.viz.fields = {'A','trace'};
+proc_data.A_trace = viz_field(net_data,config);
 
-% % Trace
-aleph_trace_dist = cellfun(@(x) x.A.trace, net_data,'UniformOutput',false);
-proc_data.A_trace=distribution_viz(aleph_trace_dist,config.viz.A_trace);
-plot_hists(proc_data.A_trace,config.viz.A_trace)
-if config.viz.save
-    saveas(gcf,fullfile([config.viz.outpath,config.viz.A_trace.fig_title,'.png']))
-end
+config.viz.fields = {'L','evals'};
+proc_data.L_evals = viz_field(net_data,config);
 
-lap_trace_dist = cellfun(@(x) x.L.trace, net_data,'UniformOutput',false);
-proc_data.L_trace=distribution_viz(lap_trace_dist,config.viz.L_trace);
-plot_hists(proc_data.L_trace,config.viz.L_trace)
-if config.viz.save
-    saveas(gcf,fullfile([config.viz.outpath,config.viz.L_trace.fig_title,'.png']))
-end
+% config.viz.fields = {'L','trace'};
+% proc_data.L_trace = viz_field(net_data,config);
+% 
+config.viz.fields = {'P','entropy_VN'};
+proc_data.entropy_VN = viz_field(net_data,config);
 
-% % 'Physical' stuff
-% VN entropy distribution
-ent_dist = cellfun(@(x) x.P.entropy_VN, net_data,'UniformOutput',false);
-proc_data.VN_entropy = distribution_viz(ent_dist,config.viz.VN_ent);
-plot_hists(proc_data.VN_entropy,config.viz.VN_ent)
-if config.viz.save
-    saveas(gcf,fullfile([config.viz.outpath,config.viz.VN_ent.fig_title,'.png']))
-end
+config.viz.fields = {'P','TMI'};
+proc_data.TMI = viz_field(net_data,config);
 
-TMI_dist = cellfun(@(x) x.P.TMI, net_data,'UniformOutput',false);
-proc_data.TMI = distribution_viz(TMI_dist,config.viz.TMI);
-plot_hists(proc_data.TMI,config.viz.TMI)
-if config.viz.save
-    saveas(gcf,fullfile([config.viz.outpath,config.viz.TMI.fig_title,'.png']))
-end
+% % config.viz.fields = {'A','unif_projection'};
+% % proc_data.TMI = viz_field(net_data,config);
 
-% Centrality
-cent_dist = cellfun(@(x) x.G.node_centrality, net_data,'UniformOutput',false);
-proc_data.cent = distribution_viz(cent_dist,config.viz.cent);
-plot_hists(proc_data.cent,config.viz.cent)
-if config.viz.save
-    saveas(gcf,fullfile([config.viz.outpath,config.viz.cent.fig_title,'.png']))
-end
 
 fwtext('Done!')
 
