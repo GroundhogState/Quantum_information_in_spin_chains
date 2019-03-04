@@ -1,40 +1,48 @@
 function proc_data = process_atomized(data,config)
 
 
-net_data = data.net_data;
+all_fields = fields(config.viz.G);
+proc_data = [];
+for ii=1:numel(all_fields)
+    config.viz.fields = {'G',all_fields{ii}};
+    proc_data.data.G{ii} = viz_field(data.net_data,config);
+    proc_data.conf.G{ii} = config;
+end
 
+all_fields = fields(config.viz.P);
+proc_data = [];
+for ii=1:numel(all_fields)
+    config.viz.fields = {'P',all_fields{ii}};
+    proc_data.data.P{ii} = viz_field(data.net_data,config);
+    proc_data.conf.P{ii} = config;
+end
 
-% % 
-config.viz.fields = {'G','weight_list'};
-proc_data.cent = viz_field(net_data,config);
+all_fields = fields(config.viz.L);
+proc_data = [];
+for ii=1:numel(all_fields)
+    config.viz.fields = {'L',all_fields{ii}};
+    proc_data.data.L{ii} = viz_field(data.net_data,config);
+    proc_data.conf.L{ii} = config;
+end
 
-config.viz.fields = {'G','degree_list'};
-proc_data.cent = viz_field(net_data,config);
+all_fields = fields(config.viz.A);
+proc_data = [];
+for ii=1:numel(all_fields)
+    config.viz.fields = {'A',all_fields{ii}};
+    proc_data.data.A{ii} = viz_field(data.net_data,config);
+    proc_data.conf.A{ii} = config;
+end
 
-config.viz.fields = {'G','node_centrality'};
-proc_data.cent = viz_field(net_data,config);
-
-% config.viz.fields = {'A','evals'};
-% proc_data.A_evals = viz_field(net_data,config);
-
-config.viz.fields = {'A','trace'};
-proc_data.A_trace = viz_field(net_data,config);
-
-config.viz.fields = {'L','evals'};
-proc_data.L_evals = viz_field(net_data,config);
-
-% config.viz.fields = {'L','trace'};
-% proc_data.L_trace = viz_field(net_data,config);
-% 
-config.viz.fields = {'P','entropy_VN'};
-proc_data.entropy_VN = viz_field(net_data,config);
-
-config.viz.fields = {'P','TMI'};
-proc_data.TMI = viz_field(net_data,config);
-
-% % config.viz.fields = {'A','unif_projection'};
-% % proc_data.TMI = viz_field(net_data,config);
-
+%Save the output%
+if config.viz.save 
+    fprintf(' - Saving process output\n')
+    if ~exist(config.viz.savepath,'dir')
+        mkdir(config.viz.savepath)
+    end
+%         timestamp = posixtime(datetime)*1e3;
+    filename = sprintf('dyn_dat_L_%u',config.gen.L);
+    save(fullfile(config.viz.savepath,filename),'-struct','proc_data','-v7.3');
+end
 
 fwtext('Done!')
 

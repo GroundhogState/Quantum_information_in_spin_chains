@@ -4,14 +4,14 @@ function proc_data = dyn_process(import_data,config)
     proc_data = [];
     for ii=1:numel(all_fields)
         config.viz.fields = {'G',all_fields{ii}};
-        proc_data.data{ii} = viz_field(import_data.net_data,config);
-        proc_data.conf = config;
+        proc_data.data.G{ii} = viz_field(import_data.net_data,config);
+        proc_data.conf.G{ii} = config;
     end
 
     for ii=1:numel(cross_fields)
         config.viz.fields = {'X',cross_fields{ii}};
-        proc_data.data{ii} = corr_viz(import_data.net_data,config);
-        proc_data.conf = config;
+        proc_data.data.X{ii} = corr_viz(import_data.net_data,config);
+        proc_data.conf.X{ii} = config;
     end
 
     %Save the output%

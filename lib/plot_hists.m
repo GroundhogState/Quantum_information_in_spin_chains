@@ -10,9 +10,10 @@ else
     num_plots = numel(kwargs);
     num_rows = ceil(num_plots/2); % rounding up to even number
 
-    W_list = config_viz.W_list;
-    [~,rank] = sort(W_list);%,1,length(W_list));
-    rank = arrayfun(@(x) find(rank==x), 1:length(rank));
+%     W_list = config_viz.W_list;
+    W_list = viz_data.W_list;
+    [~,idxs] = sort(W_list);%,1,length(W_list));
+    rank = arrayfun(@(x) find(idxs==x), 1:length(idxs));
 %     W_scaled = W_list(W_scaled);
     Nmax = numel(config_viz.W_list);
     cm = colormap(plasma(Nmax));
@@ -72,6 +73,35 @@ else
         counter = counter + 1;
     end
        
+     if any(strcmp('logEnt',kwargs))
+        subplot(num_rows,2,counter)
+        for N=1:Nmax
+            pn=plot(W_list(N),viz_data.log_entropy(N),'x');
+            pn.Color = cm(rank(N),:);
+            hold on
+        end
+        xlim([min(W_list),max(W_list)])
+        title('Entropy of log distribution')
+        xlabel('Disorder')
+        ylabel('Entropy')
+        counter = counter + 1;
+    end
+    
+    if any(strcmp('SJ_div',kwargs))
+        subplot(num_rows,2,counter)
+        for N=1:Nmax-1
+            Ws=[W_list(idxs(N)),W_list(idxs(N+1))];
+            pn=plot(mean(Ws),viz_data.SJ_increment(N+1),'x');
+            pn.Color = cm(N,:);
+            hold on
+        end
+        xlim([min(W_list),max(W_list)])
+        title('Incremental Shannon-Jensen distance')
+        xlabel('Avg Disorder')
+        ylabel('SJ distance')
+        counter = counter + 1;
+    end
+    
     if any(strcmp('logXlogY',kwargs))
         subplot(num_rows,2,counter)
         for N = 1:Nmax
@@ -98,18 +128,18 @@ else
         ylabel('Entropy')
         counter = counter + 1;
     end
-
-    if any(strcmp('logEnt',kwargs))
+    
+    if any(strcmp('SJ_tot',kwargs))
         subplot(num_rows,2,counter)
         for N=1:Nmax
-            pn=plot(W_list(N),viz_data.log_entropy(N),'x');
+            pn=plot(W_list(N),viz_data.SJ_integrated(N),'x');
             pn.Color = cm(rank(N),:);
             hold on
         end
         xlim([min(W_list),max(W_list)])
-        title('Entropy of log distribution')
+        title('Cumulative Shannon-Jensen divergence')
         xlabel('Disorder')
-        ylabel('Entropy')
+        ylabel('SJ distance')
         counter = counter + 1;
     end
     
@@ -119,3 +149,4 @@ end
     %TODO: Add spectrograms. Whatever other plots.
 
 end
+

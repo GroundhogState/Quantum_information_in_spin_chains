@@ -20,10 +20,16 @@ function viz_data = distribution_viz(input,config_viz)
 %          unit interval.
 %       
         Nmax = numel(input);
+        W_list = config_viz.W_list;
+        [~,idxs] = sort(W_list);%,1,length(W_list));
+        viz_data.W_list = W_list;
         viz_data.dat = cell(Nmax,1);     
         viz_data.entropy=zeros(Nmax,1);
         viz_data.log_entropy=zeros(Nmax,1);
+        viz_data.SJ_increment = zeros(Nmax,1);
+        viz_data.SJ_integrated = zeros(Nmax,1);
         for N = 1:Nmax
+%             NN = idxs(N);
             % Compile the data into a single list
             dat_temp = real(input{N}{:});
             dat_temp = dat_temp(:);
@@ -55,9 +61,27 @@ function viz_data = distribution_viz(input,config_viz)
                 viz_data.log_entropy(N) = hist_entropy(log_nz_counts,viz_data.log_hist_win{N});
             
             end
-
+            P = viz_data.hist_counts{max(N-1,1)};
+            Q = viz_data.hist_counts{N};
+%             Ws=[W_list(idxs(N)),W_list(idxs(N))];
+            viz_data.SJ_increment(N)=sqrt(SJ_distance(P,Q));
+            viz_data.SJ_integrated(N) = sqrt(SJ_distance(Q,viz_data.hist_counts{1}));    
         end
-        
-
+%         for N = 1:Nmax
+%             NN = idxs(NN);
+%             P = viz_data.hist_counts{max(NN-1,1)};
+%             Q = viz_data.hist_counts{NN};
+% %             Ws=[W_list(idxs(N)),W_list(idxs(N))];
+%             viz_data.SJ_increment(N)=sqrt(SJ_distance(P,Q));
+%             viz_data.SJ_integrated(N) = sqrt(SJ_distance(Q,viz_data.hist_counts{1}));
+%         end
+% 
+%         for N=2:Nmax
+% %             P = viz_data.hist_counts{idxs(min(N-1,1))};
+% %             Q = viz_data.hist_counts{idxs(N)};
+% % %             Ws=[W_list(idxs(N)),W_list(idxs(N))];
+% %             viz_data.SJ_increment(N)=sqrt(SJ_distance(P,Q));
+% %             viz_data.SJ_integrated(N) = sqrt(SJ_distance(Q,viz_data.hist_counts{idxs(1)}));
+%         end
 
 end

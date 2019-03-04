@@ -9,7 +9,7 @@ function config = analysis_config(config)
     weight = config.viz;
     weight.scaling = false;
     weight.log_scaling = false;
-    weight.num_bins = 120;
+    weight.num_bins = 100;
     weight.win = [-.1,2.1];
     weight.scale = 1;
     weight.log_win = [-1,14];
@@ -18,7 +18,8 @@ function config = analysis_config(config)
     weight.fig_filename = '01_Weight_distribution';
     weight.fig_title = 'Two-body mutual information';
     weight.pos_def = true;
-    weight.plots = {'linXlinY','linXlogY','logXlogY','linEnt'};
+    weight.plots = {'linXlinY','linXlogY','logXlogY','linEnt','SJ_tot'};
+    weight.fields = {'G','weight_list'};
     config.viz.G.weight_list = weight;
 
     % % Degree distribution
@@ -34,14 +35,15 @@ function config = analysis_config(config)
     degree_list.fig_title='Scaled degree distribution ';
     degree_list.fig_filename = '02_degree_distribtion';
     degree_list.pos_def = true;
-    degree_list.plots = {'linXlinY','linXlogY','linEnt'};
+    degree_list.plots = {'linXlinY','linXlogY','linEnt','SJ_tot'};
+    degree_list.fields = {'G','degree_list'};
     config.viz.G.degree_list = degree_list;
 
     % centrality
     cent = config.viz;
     cent.scaling = true;
     cent.log_scaling = false;
-    cent.num_bins = 150;
+    cent.num_bins = 100;
     cent.win = [0,3];
     cent.scale = 1/(L-1);
     cent.log_win = [-2,2];
@@ -49,7 +51,8 @@ function config = analysis_config(config)
     cent.fid=41;
     cent.fig_title='Spin-node Centrality';
     cent.fig_filename = '03_node_centrality';
-    cent.plots = {'linXlinY','linXlogY','linEnt'};
+    cent.plots = {'linXlinY','linXlogY','linEnt','SJ_tot'};
+    cent.fields = {'G','node_centrality'};
     cent.pos_def = true;
     config.viz.G.node_centrality = cent;
 
@@ -66,7 +69,8 @@ function config = analysis_config(config)
     VN_ent.fid=3;
     VN_ent.fig_title='Single-site von Neumann entropy';
     VN_ent.fig_filename='04_Single-site_entropy';
-    VN_ent.plots = {'linXlinY','linXlogY','logXlogY','linEnt'};
+    VN_ent.plots = {'linXlinY','linXlogY','logXlogY','linEnt','SJ_tot'};
+    VN_ent.fields = {'P','entropy_VN'};
     VN_ent.pos_def = true;
     config.viz.P.entropy_VN = VN_ent;
 
@@ -91,7 +95,7 @@ function config = analysis_config(config)
     A_trace = config.viz;
     A_trace.scaling = true;
     A_trace.log_scaling = false;
-    A_trace.num_bins = 75;
+    A_trace.num_bins = 100;
     A_trace.win = [0,1];
     A_trace.scale = -9;
     A_trace.log_win = [-1.5,0.5];
@@ -99,7 +103,8 @@ function config = analysis_config(config)
     A_trace.fid=21;
     A_trace.fig_title='Total correlations';
     A_trace.fig_filename = '05_Aleph_trace';
-    A_trace.plots = {'linXlinY','linXlogY','linEnt'};
+    A_trace.plots = {'linXlinY','linXlogY','linEnt','SJ_tot'};
+    A_trace.fields = {'A','trace'};
     A_trace.pos_def = false;
     config.viz.A.trace = A_trace;
     
@@ -115,8 +120,9 @@ function config = analysis_config(config)
     TMI.fid=31;
     TMI.fig_title='Many-body correlations';
     TMI.fig_filename = '06_Total_higher_correlations';
-    TMI.plots = {'linXlinY','linEnt'};
+    TMI.plots = {'linXlinY','linEnt','SJ_tot'};
     TMI.pos_def = true;
+    TMI.fields = {'P','TMI'};
     config.viz.P.TMI = TMI;
 
 
@@ -131,8 +137,9 @@ function config = analysis_config(config)
     L_spec.fid=12;
     L_spec.fig_title='Scaled Laplacian eigenvalues';
     L_spec.fig_filename = '07_Laplacian_spectrum';
-    L_spec.plots = {'linXlinY','linXlogY','linEnt'};
+    L_spec.plots = {'linXlinY','linXlogY','linEnt','SJ_tot'};
     L_spec.pos_def = true;
+    L_spec.fields = {'L','evals'};
     config.viz.L.evals = L_spec;
     % Plot other curves: Average spectrum?
     
@@ -164,24 +171,26 @@ function config = analysis_config(config)
     A_spec.fig_title='QMI matrix eigenvalues';
     A_spec.fig_filename = '09_Aleph_spectrum';
     A_spec.pos_def = false;
-    A_spec.plots = {'linXlinY','linXlogY','linEnt'};
+    A_spec.fields = {'A','evals'};
+    A_spec.plots = {'linXlinY','linXlogY','linEnt','SJ_tot'};
     config.viz.A.evals = A_spec;
-    
-    % nonlocality?
-    A_proj = config.viz;
-    A_proj.scaling = false;
-    A_proj.log_scaling = false;
-    A_proj.num_bins = 100;
-    A_proj.win = [0,L*L];
-    A_proj.scale = 1;
-    A_proj.log_win = [-10,9];
-    A_proj.log_scale = 1;
-    A_proj.fid=61;
-    A_proj.fig_title='Sum over Aleph';
-    A_proj.fig_filename = '10_Aleph_area';
-    A_proj.pos_def = false;
-    A_proj.plots = {'linXlinY','linXlogY','linEnt'};
-    config.viz.A.unif_projection = A_proj;
+%     
+%     % nonlocality?
+%     A_proj = config.viz;
+%     A_proj.scaling = false;
+%     A_proj.log_scaling = false;
+%     A_proj.num_bins = 100;
+%     A_proj.win = [0,L*L];
+%     A_proj.scale = 1;
+%     A_proj.log_win = [-10,9];
+%     A_proj.log_scale = 1;
+%     A_proj.fid=61;
+%     A_proj.fig_title='Sum over Aleph';
+%     A_proj.fig_filename = '10_Aleph_area';
+%     A_proj.pos_def = false;
+%     A_proj.plots = {'linXlinY','linXlogY','linEnt','SJ_tot'};
+%     A_proj.fields = {'A','unif_projection'};
+%     config.viz.A.unif_projection = A_proj;
  
 
 

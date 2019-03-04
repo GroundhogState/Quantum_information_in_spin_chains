@@ -168,3 +168,17 @@ Made several significant improvements...
 	* QMI in Fock space?
 	* Compare posn and momentum
 	* 
+## 24 February
+OK: Today's goal is to find a good way to loop over multiple L's to look at finite length scaling.
+Already I have the following structure;
+* System size
+	* Disorder strength
+		* Single runs
+
+Currently, I can loop over disorder strengths. I need to be able to:
+* Load data from a given L
+* Process down to Histograms with a savepoint
+* Re-import (or pass currently loaded) hists from various L
+* Perform comparative study on the histograms
+That is, the loop over L is the same process as looping over W, but I'll need to create a folder in the L=x directory to stash the outputs (figures & cached histograms). 
+The short-term solution is the function I'll call dir_iter, which will look over a range of dirs (L=*) for a subdir ('out') and load the appropriate file from there (timestamp by creation). Then there's a dir_process part (maybe same function) - which you need to configure somehow with the specific processing function. 

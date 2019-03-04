@@ -1,13 +1,11 @@
-function plot_corrs(data,config)
+    function plot_corrs(data,config)
     
     Nmax = numel(data);
     W_list = config.W_list;
     [~,rank] = sort(W_list);%,1,length(W_list));
     rank = arrayfun(@(x) find(rank==x), 1:length(rank));
-%     Nmax = numel(config.W_list);
-    cm = colormap(plasma(50));
-%     sfigure(config_.fid); 
-    sfigure(666);
+%     cm = colormap(plasma(50));
+    sfigure(config.fid); 
     set(gcf,'color','w');
     clf;
     nsel = [1,3,4,5,6,7,9,10,2];
@@ -23,8 +21,16 @@ function plot_corrs(data,config)
 %             scatter(sc_dat(:,1,x),sc_dat(:,2,x),'x');
         end
         subplot(ceil(sqrt(length(nsel))),ceil(sqrt(length(nsel))),i)
-        HC = hist3(h3dat,[200,200]);
+        HC = hist3(h3dat,[config.num_bins,config.num_bins]);
         imagesc(HC);
+        title(sprintf('W=%.1f',W_list(nsel(i))))
+        xlabel(config.axes_labels{2})
+        ylabel(config.axes_labels{1})
+        bounds = [min(h3dat);max(h3dat)];
+        xticks(bounds(:,1))
+        yticks(bounds(:,2))
         hold on
     end
+    suptitle(config.fig_title);
+    colormap(plasma(50));
 end

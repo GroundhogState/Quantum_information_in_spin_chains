@@ -31,7 +31,12 @@ end
 
 function dyn_data = get_dyn_data(data,config)
 % Fields to add; L, num_times
-
+        
+        L = config.imp.L;
+        T =length(data.G.G_t);
+        d = 1:L;
+        del = d-d';
+        
         dyn_data.P.h_list = data.P.h_list;
         dyn_data.P.W = data.P.W;
         dyn_data.P.init = data.P.init;
@@ -44,8 +49,12 @@ function dyn_data = get_dyn_data(data,config)
         dyn_data.G.degree = zeros(size(data.G.node_cent));
         dyn_data.G.L_evals = zeros(size(data.G.node_cent));
         dyn_data.G.exp_A = zeros(size(data.G.G_t));
-        dyn_data.G.ent_deg_pair = zeros(length(data.G.G_t),length(data.P.h_list),2);
-        dyn_data.G.ent_cent = zeros(length(data.G.G_t),length(data.P.h_list),2);
+        
+        dyn_data.X.ent_deg_pair = zeros(length(data.G.G_t),length(data.P.h_list),2);
+        dyn_data.X.ent_cent = zeros(length(data.G.G_t),length(data.P.h_list),2);
+        dyn_data.X.qmi_dist = zeros(T,L^2,2);
+        
+        
         for ii=config.imp.starting_timestep:length(dyn_data.G.G_t)
             d_temp = squeeze(data.G.G_t(ii,:,:));
             diag_temp = diag(d_temp);
@@ -55,11 +64,12 @@ function dyn_data = get_dyn_data(data,config)
             dyn_data.G.G_t(ii,:,:) = G_t;
             dyn_data.G.traces(ii) = sum(diag_temp);
             A = (G_t + G_t');
-            Laplacian =   diag(sum(A)) - A;
+%             Laplacian =   diag(sum(A)) - A;
 %             dyn_data.G.L_evals(ii,:) = eigs(Laplacian,length(Laplacian));
 %             dyn_data.G.exp_A(ii,:,:) = expm(A);
-            dyn_data.X.ent_deg_pair(ii,:,:) = [diag(d_temp)';sum(A)];
-            dyn_data.X.ent_cent(ii,:,:) = [diag(d_temp)';data.G.node_cent(ii,:)];
+            dyn_data.X.ent_deg_pair(ii,:,:) = [diag(d_temp)';sum(A)]';
+            dyn_data.X.ent_cent(ii,:,:) = [diag(d_temp)';data.G.node_cent(ii,:)]';
+%             dyn_data.X.qmi_dist(ii,:,:) = [del(:),G_t(:)]';
         end
 
 %         G_t = zeros(size(data.G.G_t));
