@@ -1,4 +1,10 @@
 close all
+
+%add all subfolders to the path
+this_folder = fileparts(which(mfilename));
+% Add that folder plus all subfolders to the path.
+addpath(genpath(fullfile(this_folder,'lib')));
+
 % clear all
 % profile on
 % TODO: Test data appending function in save
@@ -18,13 +24,13 @@ config.gen.save = true;
 savepath = 'C:\Data\atomdat\';
 config.gen.savepath = fullfile(savepath,sprintf('L=%d',config.gen.L));
 config.verbose = 1;
-config.gen.freerun = true;
+config.gen.freerun = false;
 % Sample from the middle of the spectrum
 
 %% CAREFUL, this can take a long time to execute.
 % Generate eigenstate data
 
-% gen_data_atomized(config);
+gen_data_atomized(config);
 
 %% Import
 % % Visualize & analyze results
