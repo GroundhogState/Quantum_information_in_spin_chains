@@ -1,4 +1,10 @@
 close all
+
+%add all subfolders to the path
+this_folder = fileparts(which(mfilename));
+% Add that folder plus all subfolders to the path.
+addpath(genpath(fullfile(this_folder,'lib')));
+
 % clear all
 % profile on
 % TODO: Test data appending function in save
@@ -11,6 +17,7 @@ close all
 savepath = 'E:\Data\MBL_dat\atomdat';
 
 %% Generating data
+
 for L = 10:10
     config.gen.L = L;              % System size
     config.gen.bc = 'open';     % 'periodic' or 'open'
