@@ -1,13 +1,15 @@
 function import_data = import_atomized_data(config)
 % A wrapper for get_network_data
 %   TODO: Safety checks
-datapath = config.gen.savepath;
-subdirs = dir(fullfile(config.gen.savepath,'W=*'));
+datapath = config.imp.savepath;
+subdirs = dir(fullfile(config.imp.savepath,'W=*'));
 num_dirs = numel(subdirs);
 import_data.W = cell(num_dirs,1);
 import_data.net_data = cell(num_dirs,1);
 for dir_idx = 1:num_dirs
     subdir = subdirs(dir_idx).name;
+    config.datapath = subdir;
+%     import_mat_from(subdir)
     files = dir(fullfile(datapath,subdir,'*.mat'));
     if ~isnan(config.imp.num_files)
         num_files = min(config.imp.num_files,size(files,1));

@@ -2,14 +2,14 @@ function proc_data = process_atomized(data,config)
 
 proc_data.data = [];
 proc_data.conf = [];
-cats = config.viz.categories;
+categories = config.viz.categories;
 
-for cat = 1:numel(cats)
-    all_fields = fields(getfield(config.viz,cats{cat}));
+for cat = 1:numel(categories)
+    all_fields = fields(getfield(config.viz,categories{cat}));
     for ii=1:numel(all_fields)
-        config.viz.fields = {cats{cat},all_fields{ii}};
-        proc_data.conf = setfield(proc_data.conf,cats{cat},{ii},config);
-        proc_data.data = setfield(proc_data.data,cats{cat},{ii},config);
+        config.viz.fields = {categories{cat},all_fields{ii}};
+        proc_data.conf = setfield(proc_data.conf,categories{cat},{ii},config);
+        proc_data.data = setfield(proc_data.data,categories{cat},{ii},config);
     end
 end
 
@@ -24,6 +24,6 @@ if config.viz.save
     save(fullfile(config.viz.savepath,filename),'-struct','proc_data','-v7.3');
 end
 
-hlintext('Done!')
+fwtext('Done!')
 
 end
