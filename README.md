@@ -2,6 +2,12 @@
 
 Concepts from quantum information theory are used to reverse the conventional definition of a graph state and assign to a given many-body state a *mutual information graph*. Structural properties of this graph and the spectrum of its matrix representation are found to uncover signatures of the many-body localization transition in the Pal-Huse model.
 
+# Results
+
+Coming soon.
+
+# Using this project
+
 ## Getting started
 
 For a primer on the physics background to this project, read the [background](ref/background.md).
