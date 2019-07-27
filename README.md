@@ -4,19 +4,15 @@ Concepts from quantum information theory are used to reverse the conventional de
 
 **Status:** This project has been on the shelf for a while. The numerical work is mostly complete, but there is still some work to do in polishing/debugging graphs before they're presentable. 
 
-# Results
-
-Coming soon.
-
 # Using this project
 
 ## Getting started
 
+The program is encapsulated and configured in `main.m`.
+
 For a primer on the physics background to this project, read the [background](ref/background.md).
 
 The findings of this project are reported in [results](ref/results.md) (also in [HTML](ref/results.html).)
-
-To use the code, see **Usage**.
 
 ### Prerequisites
 
@@ -32,9 +28,6 @@ This code makes use of
 
 `git clone` into a directory of your convenience.
 
-## Usage
-
-The program is encapsulated and configured in `main.m`.
 
 #### Generating data
 Data generation is configured with the subfields of `config.gen`.
