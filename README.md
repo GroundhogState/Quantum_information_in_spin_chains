@@ -38,6 +38,7 @@ The `Ws` field specifies the values of the disorder bandwidth to generate, and `
 The configs are passed to `gen_data()` which does the heavy lifting. Generating 20 samples of 20 disorder strengths and computing the QMI graphs for 40 eigenstates in each sample (that is, 16000 graphs) took me a whole weekend. Thus a central goal is to speed up this program - the repeated partial tracing is currently the bottleneck, which could be addressed by a better algorithm (this is the task of my [rho_reduce](https://github.com/groundhogstate/rho_reduce) repo), or maybe just by porting to a faster language.
 
 Currently the best version I have is `v2g_rec()`, a depth-1 recursive method. It might be advantageous to extend this, and is called from within `gen_data()`.
+(Update: I have implemented a functional recursive partial-tracing algorithm which led to later, as-yet-undocumented progress on this project).
 
 To save generation time, some test data can be retrieved from my [Google drive](https://drive.google.com/open?id=1AL4ht4CKF_xUYg2D3hfJzdQP8q6KcRUO), request for invite.
 
