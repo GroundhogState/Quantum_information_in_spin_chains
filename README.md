@@ -1,6 +1,7 @@
 # Many-body localization through the graph state lens
 
 Concepts from quantum information theory are used to reverse the conventional definition of a graph state and assign to a given many-body state a *mutual information graph*. Structural properties of this graph and the spectrum of its matrix representation are found to uncover signatures of the many-body localization transition in the Pal-Huse model.
+For more background on the motivation for this project, see the readme for [this repo](https://github.com/GroundhogState/aubry_andre) (no longer maintained).
 
 **Status:** This project has been on the shelf for a while. The numerical work is mostly complete, but there is still some work to do in polishing/debugging graphs before they're presentable. 
 
